@@ -1,0 +1,9 @@
+make --dry-run --always-make --keep-going --print-directory
+make: Entering directory '/home/k4/mdns'
+gcc -c -g -O0 -Wall -I/usr -o main.o main.c
+gcc -c -g -O0 -Wall -I/usr -o mdns.o mdns.c
+gcc -c -g -O0 -Wall -I/usr -o config_init.o config_init.c
+gcc -c -g -O0 -Wall -I/usr -o forward_message.o forward_message.c
+gcc -g -O0 -Wall -I/usr main.o mdns.o config_init.o forward_message.o -o mdns    -lm -luci -lubus -lblobmsg_json -ljson-c -lubox -lgs_utils
+make: Leaving directory '/home/k4/mdns'
+ 
