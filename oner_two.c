@@ -13,6 +13,7 @@ int main(int argc, char **argv)
     int ret;
     int n;
     char buf[PACK_SIZE];
+    char str[1024];
     struct sockaddr_in sin;
     fd = socket( AF_INET, SOCK_STREAM, 0 );
     if ( fd < 0 ) {
@@ -22,18 +23,19 @@ int main(int argc, char **argv)
     bzero( &sin, sizeof(sin) );
     sin.sin_family = AF_INET;
     sin.sin_port = htons( 9999 );
-    sin.sin_addr.s_addr = inet_addr("127.0.0.1");
+    sin.sin_addr.s_addr = inet_addr("192.168.58.99990");
 
     
     if ( connect(fd, (void *)&sin, sizeof(sin)) < 0 ) {
         printf("%s\n", strerror( errno ));
     }
 
-    while ( ( n = read(fd, buf, PACK_SIZE) ) > 0 ) {
-        buf[PACK_SIZE] = 0;
-        if( fputs(buf, stdout) == EOF ) {
-            printf("err\n");
-        }
+    while ( 1 ) {
+        memset(buf, 0x00, sizeof(buf));
+        scanf( "%s", str );
+        write( fd, str, strlen(str) );
+        int n = read( fd, buf, sizeof(buf) );
+        fputs( buf, stdout );
     }
     printf( "return\n" );
     

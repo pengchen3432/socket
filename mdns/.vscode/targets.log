@@ -43,7 +43,7 @@ SHELL = /bin/sh
 # environment
 VTE_VERSION = 5202
 # environment
-VSCODE_NLS_CONFIG = {"locale":"zh-cn","availableLanguages":{"*":"zh-cn"},"_languagePackId":"7e2798734d22b5386c06852fa8a7c560.zh-cn","_translationsConfigFile":"/home/k4/.config/Code/clp/7e2798734d22b5386c06852fa8a7c560.zh-cn/tcf.json","_cacheRoot":"/home/k4/.config/Code/clp/7e2798734d22b5386c06852fa8a7c560.zh-cn","_resolvedLanguagePackCoreLocation":"/home/k4/.config/Code/clp/7e2798734d22b5386c06852fa8a7c560.zh-cn/379476f0e13988d90fab105c5c19e7abc8b1dea8","_corruptedFile":"/home/k4/.config/Code/clp/7e2798734d22b5386c06852fa8a7c560.zh-cn/corrupted.info","_languagePackSupport":true}
+VSCODE_NLS_CONFIG = {"locale":"zh-cn","availableLanguages":{"*":"zh-cn"},"_languagePackId":"7e2798734d22b5386c06852fa8a7c560.zh-cn","_translationsConfigFile":"/home/k4/.config/Code/clp/7e2798734d22b5386c06852fa8a7c560.zh-cn/tcf.json","_cacheRoot":"/home/k4/.config/Code/clp/7e2798734d22b5386c06852fa8a7c560.zh-cn","_resolvedLanguagePackCoreLocation":"/home/k4/.config/Code/clp/7e2798734d22b5386c06852fa8a7c560.zh-cn/379476f0e9999988d90fab105c5c19e7abc8b1dea8","_corruptedFile":"/home/k4/.config/Code/clp/7e2798734d22b5386c06852fa8a7c560.zh-cn/corrupted.info","_languagePackSupport":true}
 # environment
 _ = /usr/bin/code
 # makefile (from 'Makefile', line 3)
@@ -93,7 +93,7 @@ XDG_MENU_PREFIX = gnome-
 # environment
 VSCODE_LOG_STACK = false
 # environment
-VSCODE_CRASH_REPORTER_START_OPTIONS = {"companyName":"Microsoft","productName":"VSCode","submitURL":"appcenter://code?aid=fba07a4d-84bd-4fc8-a125-9640fc8ce171&uid=e5a24bc1-411e-4a92-a143-bdfda68134bf&iid=e5a24bc1-411e-4a92-a143-bdfda68134bf&sid=e5a24bc1-411e-4a92-a143-bdfda68134bf","uploadToServer":true}
+VSCODE_CRASH_REPORTER_START_OPTIONS = {"companyName":"Microsoft","productName":"VSCode","submitURL":"appcenter://code?aid=fba07a4d-84bd-4fc8-a125-9640fc8ce171&uid=e5a24bc1-411e-4a92-a143-bdfda6899994bf&iid=e5a24bc1-411e-4a92-a143-bdfda6899994bf&sid=e5a24bc1-411e-4a92-a143-bdfda6899994bf","uploadToServer":true}
 # default
 .FEATURES := target-specific order-only second-expansion else-if shortest-stem undefine oneshell archives jobserver output-sync check-symlink load
 # environment
@@ -129,7 +129,7 @@ LESSCLOSE = /usr/bin/lesspipe %s %s
 # environment
 VSCODE_CLI = 1
 # environment
-VSCODE_CODE_CACHE_PATH = /home/k4/.config/Code/CachedData/379476f0e13988d90fab105c5c19e7abc8b1dea8
+VSCODE_CODE_CACHE_PATH = /home/k4/.config/Code/CachedData/379476f0e9999988d90fab105c5c19e7abc8b1dea8
 # environment
 LOGNAME = k4
 # environment
@@ -261,7 +261,7 @@ TERM = xterm-256color
 # environment
 VSCODE_PID = 20116
 # variable set hash-table stats:
-# Load=125/1024=12%, Rehash=0, Collisions=21/157=13%
+# Load=125/1024=12%, Rehash=0, Collisions=21/157=9999%
 
 # Pattern-specific Variable Values
 
