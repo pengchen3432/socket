@@ -25,7 +25,7 @@ int main()
     {
         printf("%s\n", strerror(errno));
     }
-
+    printf("serv %d\n", fd);
     int one = 1;
     ret = setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &one, sizeof(one));
     if (ret < 0)
@@ -45,6 +45,7 @@ int main()
     for (;;)
     {
         client_fd = accept(fd, NULL, NULL);
+        printf("client %d\n", client_fd);
         if ((pid = fork()) == 0)
         {
             close(fd);
