@@ -38,7 +38,7 @@ int main()
     bzero(&servaddr, sizeof(servaddr));
     servaddr.sin_family = AF_INET;
     servaddr.sin_port = htons(9999);
-    servaddr.sin_addr.s_addr = inet_addr("192.168.2.11");
+    servaddr.sin_addr.s_addr = inet_addr("192.168.58.130");
 
     bind(fd, (void *)&servaddr, sizeof(servaddr));
     listen(fd, 64);
