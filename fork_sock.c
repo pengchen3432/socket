@@ -22,7 +22,7 @@ int main()
     socklen_t len = sizeof(cliaddr);
     const int one = 1;
 
-    signal(SIGCHLD, hand);
+    //signal(SIGCHLD, hand);
     fd = socket(AF_INET, SOCK_STREAM, 0);
     if (fd < 0)
     {
@@ -38,10 +38,10 @@ int main()
     bzero(&servaddr, sizeof(servaddr));
     servaddr.sin_family = AF_INET;
     servaddr.sin_port = htons(9999);
-    servaddr.sin_addr.s_addr = inet_addr("192.168.58.130");
+    servaddr.sin_addr.s_addr = inet_addr("192.168.2.11");
 
     bind(fd, (void *)&servaddr, sizeof(servaddr));
-    listen(fd, 64);
+    listen(fd, 2);
 
     for (;;)
     {
