@@ -6,7 +6,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Fri Nov  5 15:44:54 2021
+# Make data base, printed on Tue Nov 16 20:35:07 2021
 
 # Variables
 
@@ -28,6 +28,8 @@ XDG_SESSION_TYPE = x11
 VSCODE_LOG_NATIVE = false
 # automatic
 ?D = $(patsubst %/,%,$(dir $?))
+# environment
+IM_CONFIG_PHASE = 2
 # automatic
 @D = $(patsubst %/,%,$(dir $@))
 # environment
@@ -37,13 +39,13 @@ GDMSESSION = ubuntu
 # environment
 XMODIFIERS = @im=fcitx
 # makefile
-CURDIR := /home/k4/mdns
+CURDIR := /home/k4/GWN_HZ-REPO/system/opensource/user/mdns
 # makefile
 SHELL = /bin/sh
 # environment
 VTE_VERSION = 5202
 # environment
-VSCODE_NLS_CONFIG = {"locale":"zh-cn","availableLanguages":{"*":"zh-cn"},"_languagePackId":"7e2798734d22b5386c06852fa8a7c560.zh-cn","_translationsConfigFile":"/home/k4/.config/Code/clp/7e2798734d22b5386c06852fa8a7c560.zh-cn/tcf.json","_cacheRoot":"/home/k4/.config/Code/clp/7e2798734d22b5386c06852fa8a7c560.zh-cn","_resolvedLanguagePackCoreLocation":"/home/k4/.config/Code/clp/7e2798734d22b5386c06852fa8a7c560.zh-cn/379476f0e9999988d90fab105c5c19e7abc8b1dea8","_corruptedFile":"/home/k4/.config/Code/clp/7e2798734d22b5386c06852fa8a7c560.zh-cn/corrupted.info","_languagePackSupport":true}
+VSCODE_NLS_CONFIG = {"locale":"zh-cn","availableLanguages":{"*":"zh-cn"},"_languagePackId":"7e2798734d22b5386c06852fa8a7c560.zh-cn","_translationsConfigFile":"/home/k4/.config/Code/clp/7e2798734d22b5386c06852fa8a7c560.zh-cn/tcf.json","_cacheRoot":"/home/k4/.config/Code/clp/7e2798734d22b5386c06852fa8a7c560.zh-cn","_resolvedLanguagePackCoreLocation":"/home/k4/.config/Code/clp/7e2798734d22b5386c06852fa8a7c560.zh-cn/379476f0e13988d90fab105c5c19e7abc8b1dea8","_corruptedFile":"/home/k4/.config/Code/clp/7e2798734d22b5386c06852fa8a7c560.zh-cn/corrupted.info","_languagePackSupport":true}
 # environment
 _ = /usr/bin/code
 # makefile (from 'Makefile', line 3)
@@ -55,7 +57,7 @@ MAKEFILE_LIST :=  Makefile
 # automatic
 @F = $(notdir $@)
 # environment
-IM_CONFIG_PHASE = 2
+GIO_LAUNCHED_DESKTOP_FILE = /etc/xdg/autostart/org.gnome.SettingsDaemon.MediaKeys.desktop
 # environment
 USERNAME = k4
 # environment
@@ -69,13 +71,15 @@ DBUS_SESSION_BUS_ADDRESS = unix:path=/run/user/1000/bus
 # environment
 VSCODE_VERBOSE_LOGGING = true
 # environment
+TERMINATOR_UUID = urn:uuid:6faf420e-cd34-474c-9ce2-780e49301403
+# environment
 CLUTTER_IM_MODULE = xim
 # environment
 LESSOPEN = | /usr/bin/lesspipe %s
 # environment
 LC_NAME = zh_SG.UTF-8
 # environment
-VSCODE_CWD = /home/k4/mdns
+VSCODE_CWD = /home/k4/GWN_HZ-REPO/system/opensource/user/mdns
 # default
 MAKE_HOST := x86_64-pc-linux-gnu
 # environment
@@ -83,7 +87,7 @@ PATH = /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/
 # environment
 GPG_AGENT_INFO = /run/user/1000/gnupg/S.gpg-agent:0:1
 # environment
-SESSION_MANAGER = local/k4:@/tmp/.ICE-unix/1723,unix/k4:/tmp/.ICE-unix/1723
+SESSION_MANAGER = local/k4:@/tmp/.ICE-unix/1891,unix/k4:/tmp/.ICE-unix/1891
 # environment
 XDG_RUNTIME_DIR = /run/user/1000
 # environment
@@ -93,7 +97,7 @@ XDG_MENU_PREFIX = gnome-
 # environment
 VSCODE_LOG_STACK = false
 # environment
-VSCODE_CRASH_REPORTER_START_OPTIONS = {"companyName":"Microsoft","productName":"VSCode","submitURL":"appcenter://code?aid=fba07a4d-84bd-4fc8-a125-9640fc8ce171&uid=e5a24bc1-411e-4a92-a143-bdfda6899994bf&iid=e5a24bc1-411e-4a92-a143-bdfda6899994bf&sid=e5a24bc1-411e-4a92-a143-bdfda6899994bf","uploadToServer":true}
+VSCODE_CRASH_REPORTER_START_OPTIONS = {"companyName":"Microsoft","productName":"VSCode","submitURL":"appcenter://code?aid=fba07a4d-84bd-4fc8-a125-9640fc8ce171&uid=e5a24bc1-411e-4a92-a143-bdfda68134bf&iid=e5a24bc1-411e-4a92-a143-bdfda68134bf&sid=e5a24bc1-411e-4a92-a143-bdfda68134bf","uploadToServer":true}
 # default
 .FEATURES := target-specific order-only second-expansion else-if shortest-stem undefine oneshell archives jobserver output-sync check-symlink load
 # environment
@@ -102,6 +106,8 @@ LS_COLORS = rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:
 XDG_SESSION_DESKTOP = ubuntu
 # environment
 SSH_AUTH_SOCK = /run/user/1000/keyring/ssh
+# environment
+GIO_LAUNCHED_DESKTOP_FILE_PID = 2229
 # automatic
 %F = $(notdir $%)
 # environment
@@ -111,11 +117,11 @@ GTK_IM_MODULE = fcitx
 # environment
 VSCODE_PIPE_LOGGING = true
 # environment
-PWD = /home/k4/mdns
+PWD = /home/k4/GWN_HZ-REPO/system/opensource/user/mdns
 # environment
 XDG_SEAT = seat0
 # environment
-SSH_AGENT_PID = 1814
+SSH_AGENT_PID = 1978
 # environment
 ORIGINAL_XDG_CURRENT_DESKTOP = ubuntu:GNOME
 # environment
@@ -129,7 +135,7 @@ LESSCLOSE = /usr/bin/lesspipe %s %s
 # environment
 VSCODE_CLI = 1
 # environment
-VSCODE_CODE_CACHE_PATH = /home/k4/.config/Code/CachedData/379476f0e9999988d90fab105c5c19e7abc8b1dea8
+VSCODE_CODE_CACHE_PATH = /home/k4/.config/Code/CachedData/379476f0e13988d90fab105c5c19e7abc8b1dea8
 # environment
 LOGNAME = k4
 # environment
@@ -165,9 +171,9 @@ CC = $(CROSS)gcc
 # environment
 GNOME_SHELL_SESSION_MODE = ubuntu
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-cd497dce-162e-461c-93e0-7fcdbee3fe8c.sock
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-df3b2330-d534-455a-9d04-506770308a0f.sock
 # environment
-XDG_SESSION_ID = 2
+XDG_SESSION_ID = 4
 # environment
 USER = k4
 # environment
@@ -183,7 +189,9 @@ LC_TELEPHONE = zh_SG.UTF-8
 # default
 MAKE_COMMAND := make
 # environment
-OLDPWD = /home/k4
+OLDPWD = /home/k4/GWN_HZ-REPO/system/opensource/user
+# environment
+TERMINATOR_DBUS_PATH = /net/tenshu/Terminator2
 # default
 .VARIABLES := 
 # automatic
@@ -207,9 +215,9 @@ GDK_BACKEND = x11
 # environment
 LC_PAPER = zh_SG.UTF-8
 # environment
-LC_IDENTIFICATION = zh_SG.UTF-8
-# environment
 QT_ACCESSIBILITY = 1
+# environment
+DESKTOP_AUTOSTART_ID = 10ed1654d957455d8516370448745192100000018910007
 # environment
 DEFAULTS_PATH = /usr/share/gconf/ubuntu.default.path
 # environment
@@ -230,16 +238,10 @@ LC_MEASUREMENT = zh_SG.UTF-8
 LC_ALL = C
 # environment
 QT4_IM_MODULE = fcitx
-# environment
-GJS_DEBUG_TOPICS = JS ERROR;JS LOG
 # makefile (from 'Makefile', line 4)
 LIBS = -lm -luci -lubus -lblobmsg_json -ljson-c -lubox -lgs_utils
-# environment
-GNOME_TERMINAL_SCREEN = /org/gnome/Terminal/screen/9f9cb458_85c7_493e_a8c8_222f5299fd27
 # automatic
 ^F = $(notdir $^)
-# environment
-GNOME_TERMINAL_SERVICE = :1.5538
 # default
 SUFFIXES := 
 # environment
@@ -249,7 +251,7 @@ WINDOWPATH = 2
 # default
 .INCLUDE_DIRS = /usr/include /usr/local/include /usr/include
 # environment
-GJS_DEBUG_OUTPUT = stderr
+LC_IDENTIFICATION = zh_SG.UTF-8
 # default
 .RECIPEPREFIX := 
 # environment
@@ -259,9 +261,11 @@ LANG = C
 # environment
 TERM = xterm-256color
 # environment
-VSCODE_PID = 20116
+TERMINATOR_DBUS_NAME = net.tenshu.Terminator20x1a6021154d881c
+# environment
+VSCODE_PID = 5715
 # variable set hash-table stats:
-# Load=125/1024=12%, Rehash=0, Collisions=21/157=9999%
+# Load=127/1024=12%, Rehash=0, Collisions=22/152=14%
 
 # Pattern-specific Variable Values
 
@@ -269,8 +273,9 @@ VSCODE_PID = 20116
 
 # Directories
 
-# . (device 2054, inode 16519017): 18 files, no impossibilities.
+# . (device 2054, inode 22559734): 18 files, no impossibilities.
 
+ 
 # 18 files, no impossibilities in 1 directories.
 
 # Implicit Rules
@@ -279,39 +284,53 @@ VSCODE_PID = 20116
 #  recipe to execute (from 'Makefile', line 8):
 	$(CC) -c $(CFLAGS) -o $@ $<
 
- 
 # 1 implicit rules, 0 (0.0%) terminal.
 
 # Files
 
+# Not a target:
+mdns.c:
+#  Implicit rule search has been done.
+#  Last modified 2021-11-12 08:55:24.991936534
+#  File has been updated.
+#  Successfully updated.
+
 all: mdns
 #  Command line target.
 #  Implicit rule search has not been done.
-#  File does not exist.
+#  Last modified 2514-05-30 09:53:03.107374182
 #  File has been updated.
-#  Needs to be updated (-q is set).
-# variable set hash-table stats:
-# Load=0/32=0%, Rehash=0, Collisions=0/7=0%
+#  Successfully updated.
 #  recipe to execute (from 'Makefile', line 6):
 	
 
 # Not a target:
 main.c:
 #  Implicit rule search has been done.
-#  Last modified 2021-11-05 12:30:58.738147451
+#  Last modified 2021-11-12 09:13:31.7854141
 #  File has been updated.
 #  Successfully updated.
 
 # Not a target:
-config_init.o:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
+forward_message.c:
+#  Implicit rule search has been done.
+#  Last modified 2021-11-12 17:53:49.01322166
+#  File has been updated.
+#  Successfully updated.
+
+config_init.o: config_init.c
+#  Implicit rule search has been done.
+#  Implicit/static pattern stem: 'config_init'
+#  Last modified 2021-11-15 09:45:16.367679092
+#  File has been updated.
+#  Successfully updated.
+#  recipe to execute (from 'Makefile', line 8):
+	$(CC) -c $(CFLAGS) -o $@ $<
 
 # Not a target:
 Makefile:
 #  Implicit rule search has been done.
-#  Last modified 2021-11-05 12:30:58.710146848
+#  Last modified 2021-11-09 12:09:32.865288072
 #  File has been updated.
 #  Successfully updated.
 
@@ -322,18 +341,26 @@ Makefile:
 #  File has not been updated.
 
 # Not a target:
-mdns.o:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
+config_init.c:
+#  Implicit rule search has been done.
+#  Last modified 2021-11-12 09:02:02.358373607
+#  File has been updated.
+#  Successfully updated.
+
+mdns.o: mdns.c
+#  Implicit rule search has been done.
+#  Implicit/static pattern stem: 'mdns'
+#  Last modified 2021-11-15 09:45:16.323678339
+#  File has been updated.
+#  Successfully updated.
+#  recipe to execute (from 'Makefile', line 8):
+	$(CC) -c $(CFLAGS) -o $@ $<
 
 mdns: main.o mdns.o config_init.o forward_message.o
 #  Implicit rule search has not been done.
-#  Last modified 2021-11-05 12:30:58.710146848
+#  Last modified 2021-11-15 09:45:16.427680117
 #  File has been updated.
-#  Needs to be updated (-q is set).
-# variable set hash-table stats:
-# Load=0/32=0%, Rehash=0, Collisions=0/7=0%
+#  Successfully updated.
 #  recipe to execute (from 'Makefile', line 11):
 	$(CC) $(CFLAGS) $^ -o $@    $(LIBS)
 
@@ -347,50 +374,35 @@ clean:
 main.o: main.c
 #  Implicit rule search has been done.
 #  Implicit/static pattern stem: 'main'
-#  Last modified 2021-11-05 12:30:58.710146848
+#  Last modified 2021-11-15 09:45:16.243676972
 #  File has been updated.
-#  Needs to be updated (-q is set).
-# automatic
-# @ := main.o
-# automatic
-# % := 
-# automatic
-# * := main
-# automatic
-# + := main.c
-# automatic
-# | := 
-# automatic
-# < := main.c
-# automatic
-# ^ := main.c
-# automatic
-# ? := main.c
-# variable set hash-table stats:
-# Load=8/32=25%, Rehash=0, Collisions=1/17=6%
+#  Successfully updated.
 #  recipe to execute (from 'Makefile', line 8):
 	$(CC) -c $(CFLAGS) -o $@ $<
 
-# Not a target:
-forward_message.o:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
+forward_message.o: forward_message.c
+#  Implicit rule search has been done.
+#  Implicit/static pattern stem: 'forward_message'
+#  Last modified 2021-11-15 09:45:16.415679912
+#  File has been updated.
+#  Successfully updated.
+#  recipe to execute (from 'Makefile', line 8):
+	$(CC) -c $(CFLAGS) -o $@ $<
 
 # files hash-table stats:
-# Load=11/1024=1%, Rehash=0, Collisions=0/31=0%
+# Load=14/1024=1%, Rehash=0, Collisions=0/43=0%
 # VPATH Search Paths
 
 # No 'vpath' search paths.
 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 27 / storage = 243 B / avg = 9 B
-# current buf: size = 8162 B / used = 243 B / count = 27 / avg = 9 B
+# strcache buffers: 1 (0) / strings = 29 / storage = 271 B / avg = 9 B
+# current buf: size = 8162 B / used = 271 B / count = 29 / avg = 9 B
 
-# strcache performance: lookups = 43 / hit rate = 37%
+# strcache performance: lookups = 52 / hit rate = 44%
 # hash-table stats:
-# Load=27/8192=0%, Rehash=0, Collisions=1/43=2%
-# Finished Make data base on Fri Nov  5 15:44:54 2021
+# Load=29/8192=0%, Rehash=0, Collisions=1/52=2%
+# Finished Make data base on Tue Nov 16 20:35:07 2021
 
  

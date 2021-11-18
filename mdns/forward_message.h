@@ -53,12 +53,14 @@
 //===========================
 // Typedefs
 //===========================
-struct vlan_hdr {
+struct vlan_hdr
+{
     unsigned short h_vlan_encapsulated_proto;
     unsigned short h_vlan_TCI;
 };
 
-struct ip_udp_mdns_packet {
+struct ip_udp_mdns_packet
+{
     struct ether_header eth;
     struct iphdr ip;
     struct udphdr udp;
@@ -68,23 +70,23 @@ struct ip_udp_mdns_packet {
 //===========================
 // Globals
 //===========================
-extern char* app_name;
+extern char *app_name;
 
 //===========================
 // Functions
 //===========================
-int mdns_packet_offset( struct ip_udp_mdns_packet *packet );
-int hit_target_vlan( char *buf, char *packet,int packet_length,unsigned short dvlan );
+int mdns_packet_offset(struct ip_udp_mdns_packet *packet);
+int hit_target_vlan(char *buf, int packet_length, unsigned short dvlan);
 int socket_init();
-int bind_socket_interface( int sockfd, char *interface );
-void  add_socket_bind_ssid_list( struct socket_bind_ssid **socket_bind_ssid_list_head, struct socket_bind_ssid **socket_bind_ssid_list_tail, int sockfd,struct ssid *ssids);
-int dst_vlan_is_exist( struct ssid *head, int vlan );
-int allow_all_services_to_pass( struct allow_services *services_list );
-struct ssid *query_ssid_by_socket( struct socket_bind_ssid *socket_bind_ssid_list_head, int sockfd);
-int recove_packet( char *buf, int sockfd );
+int bind_socket_interface(int sockfd, char *interface);
+void add_socket_bind_ssid_list(struct socket_bind_ssid **socket_bind_ssid_list_head, struct socket_bind_ssid **socket_bind_ssid_list_tail, int sockfd, struct ssid *ssids);
+int dst_vlan_is_exist(struct ssid *head, int vlan);
+int allow_all_services_to_pass(struct allow_services *services_list);
+struct ssid *query_ssid_by_socket(struct socket_bind_ssid *socket_bind_ssid_list_head, int sockfd);
+int recove_packet(char *buf, int sockfd);
 int bridge_interface_init();
-int Allow_current_service_to_pass( struct mdns_pkt *mdns, struct allow_services *services_list );
-void send_packet_to_bridge( char *packet,int packet_length, int s );
-void printf_ssids( struct ssid *ssids_list_head );
+int Allow_current_service_to_pass(struct mdns_pkt *mdns, struct allow_services *services_list);
+void send_packet_to_bridge(char *packet, int packet_length, int s);
+void printf_ssids(struct ssid *ssids_list_head);
 
 #endif

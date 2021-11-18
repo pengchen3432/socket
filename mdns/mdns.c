@@ -40,12 +40,11 @@
 #include <netinet/in.h>
 #endif
 
+#define DEFAULT_TTL 120
 
-#define DEFAULT_TTL		120
-
-
-struct name_comp {
-	uint8_t *label;	// label
+struct name_comp
+{
+	uint8_t *label; // label
 	size_t pos;		// position in msg
 
 	struct name_comp *next;
@@ -55,39 +54,41 @@ struct name_comp {
 
 // duplicates a name
 //inline uint8_t *dup_nlabel(const uint8_t *n) {
-uint8_t *dup_nlabel(const uint8_t *n) {
+uint8_t *dup_nlabel(const uint8_t *n)
+{
 
-	return (uint8_t *) strdup((char *) n);
+	return (uint8_t *)strdup((char *)n);
 }
 
 // duplicates a label
-uint8_t *dup_label(const uint8_t *label) {
+uint8_t *dup_label(const uint8_t *label)
+{
 	int len = *label + 1;
 	uint8_t *newlabel;
 	newlabel = malloc(len + 1);
-	strncpy((char *) newlabel, (char *) label, len);
+	strncpy((char *)newlabel, (char *)label, len);
 	newlabel[len] = '\0';
 	return newlabel;
 }
 
-uint8_t *join_nlabel(const uint8_t *n1, const uint8_t *n2) {
+uint8_t *join_nlabel(const uint8_t *n1, const uint8_t *n2)
+{
 	int len1, len2;
 	uint8_t *s;
 
-
-
-	len1 = strlen((char *) n1);
-	len2 = strlen((char *) n2);
+	len1 = strlen((char *)n1);
+	len2 = strlen((char *)n2);
 
 	s = malloc(len1 + len2 + 1);
-	strncpy((char *) s, (char *) n1, len1);
-	strncpy((char *) s+len1, (char *) n2, len2);
+	strncpy((char *)s, (char *)n1, len1);
+	strncpy((char *)s + len1, (char *)n2, len2);
 	s[len1 + len2] = '\0';
 	return s;
 }
 
 // returns a human-readable name label in dotted form
-char *nlabel_to_str(const uint8_t *name) {
+char *nlabel_to_str(const uint8_t *name)
+{
 	char *label, *labelp;
 	const uint8_t *p;
 
@@ -95,8 +96,9 @@ char *nlabel_to_str(const uint8_t *name) {
 
 	label = labelp = malloc(256);
 
-	for (p = name; *p; p++) {
-		strncpy(labelp, (char *) p + 1, *p);
+	for (p = name; *p; p++)
+	{
+		strncpy(labelp, (char *)p + 1, *p);
 		labelp += *p;
 		*labelp = '.';
 		labelp++;
@@ -112,17 +114,24 @@ char *nlabel_to_str(const uint8_t *name) {
 // returns the length of a label field
 // does NOT uncompress the field, so it could be as small as 2 bytes
 // or 1 for the root
-static size_t label_len(uint8_t *pkt_buf, size_t pkt_len, size_t off) {
+static size_t label_len(uint8_t *pkt_buf, size_t pkt_len, size_t off)
+{
 	uint8_t *p;
 	uint8_t *e = pkt_buf + pkt_len;
 	size_t len = 0;
 
-	for (p = pkt_buf + off; p < e; p++) {
-		if (*p == 0) {
+	for (p = pkt_buf + off; p < e; p++)
+	{
+		if (*p == 0)
+		{
 			return len + 1;
-		} else if ((*p & 0xC0) == 0xC0) {
+		}
+		else if ((*p & 0xC0) == 0xC0)
+		{
 			return len + 2;
-		} else {
+		}
+		else
+		{
 			len += *p + 1;
 			p += *p;
 		}
@@ -133,7 +142,8 @@ static size_t label_len(uint8_t *pkt_buf, size_t pkt_len, size_t off) {
 
 // creates a label
 // free() after use
-uint8_t *create_label(const char *txt) {
+uint8_t *create_label(const char *txt)
+{
 	int len;
 	uint8_t *s;
 
@@ -142,7 +152,7 @@ uint8_t *create_label(const char *txt) {
 
 	s = malloc(len + 2);
 	s[0] = len;
-	strncpy((char *) s + 1, txt, len);
+	strncpy((char *)s + 1, txt, len);
 	s[len + 1] = '\0';
 
 	return s;
@@ -150,7 +160,8 @@ uint8_t *create_label(const char *txt) {
 
 // creates a uncompressed name label given a DNS name like "apple.b.com"
 // free() after use
-uint8_t *create_nlabel(const char *name) {
+uint8_t *create_nlabel(const char *name)
+{
 	char *label;
 	char *p, *e, *lenpos;
 	int len = 0;
@@ -162,14 +173,15 @@ uint8_t *create_nlabel(const char *name) {
 	if (label == NULL)
 		return NULL;
 
-	strncpy((char *) label + 1, name, len);
+	strncpy((char *)label + 1, name, len);
 	label[len + 1] = '\0';
 
 	p = label;
 	e = p + len;
 	lenpos = p;
 
-	while (p < e) {
+	while (p < e)
+	{
 		char *dot = memchr(p + 1, '.', e - p - 1);
 		*lenpos = 0;
 
@@ -181,18 +193,20 @@ uint8_t *create_nlabel(const char *name) {
 		lenpos = dot;
 	}
 
-	return (uint8_t *) label;
+	return (uint8_t *)label;
 }
 
 // copies a label from the buffer into a newly-allocated string
 // free() after use
-static uint8_t *copy_label(uint8_t *pkt_buf, size_t pkt_len, size_t off) {
+static uint8_t *copy_label(uint8_t *pkt_buf, size_t pkt_len, size_t off)
+{
 	int len;
 
 	if (off > pkt_len)
 		return NULL;
 	len = pkt_buf[off] + 1;
-	if (off + len > pkt_len) {
+	if (off + len > pkt_len)
+	{
 		DEBUG_PRINTF("label length exceeds packet buffer\n");
 		return NULL;
 	}
@@ -202,7 +216,8 @@ static uint8_t *copy_label(uint8_t *pkt_buf, size_t pkt_len, size_t off) {
 
 // uncompresses a name
 // free() after use
-static uint8_t *uncompress_nlabel(uint8_t *pkt_buf, size_t pkt_len, size_t off) {
+static uint8_t *uncompress_nlabel(uint8_t *pkt_buf, size_t pkt_len, size_t off)
+{
 	uint8_t *p;
 	uint8_t *e = pkt_buf + pkt_len;
 	size_t len = 0;
@@ -211,13 +226,17 @@ static uint8_t *uncompress_nlabel(uint8_t *pkt_buf, size_t pkt_len, size_t off) 
 		return NULL;
 
 	// calculate length of uncompressed label
-	for (p = pkt_buf + off; *p && p < e; p++) {
+	for (p = pkt_buf + off; *p && p < e; p++)
+	{
 		size_t llen = 0;
-		if ((*p & 0xC0) == 0xC0) {
+		if ((*p & 0xC0) == 0xC0)
+		{
 			uint8_t *p2 = pkt_buf + (((p[0] & ~0xC0) << 8) | p[1]);
 			llen = *p2 + 1;
 			p = p2 + llen - 1;
-		} else {
+		}
+		else
+		{
 			llen = *p + 1;
 			p += llen - 1;
 		}
@@ -229,81 +248,98 @@ static uint8_t *uncompress_nlabel(uint8_t *pkt_buf, size_t pkt_len, size_t off) 
 		return NULL;
 
 	// FIXME: must merge this with above code
-	for (p = pkt_buf + off; *p && p < e; p++) {
+	for (p = pkt_buf + off; *p && p < e; p++)
+	{
 		size_t llen = 0;
-		if ((*p & 0xC0) == 0xC0) {
+		if ((*p & 0xC0) == 0xC0)
+		{
 			uint8_t *p2 = pkt_buf + (((p[0] & ~0xC0) << 8) | p[1]);
 			llen = *p2 + 1;
-			strncpy(sp, (char *) p2, llen);
+			strncpy(sp, (char *)p2, llen);
 			p = p2 + llen - 1;
-		} else {
+		}
+		else
+		{
 			llen = *p + 1;
-			strncpy(sp, (char *) p, llen);
+			strncpy(sp, (char *)p, llen);
 			p += llen - 1;
 		}
 		sp += llen;
 	}
 	*sp = '\0';
 
-	return (uint8_t *) str;
+	return (uint8_t *)str;
 }
 
 // ----- RR list & group functions -----
 
-const char *rr_get_type_name(enum rr_type type) {
-	switch (type) {
-		case RR_A:		return "A";
-		case RR_PTR:	return "PTR";
-		case RR_TXT:	return "TXT";
-		case RR_AAAA:	return "AAAA";
-		case RR_SRV:	return "SRV";
-		case RR_NSEC:	return "NSEC";
-		case RR_ANY:	return "ANY";
+const char *rr_get_type_name(enum rr_type type)
+{
+	switch (type)
+	{
+	case RR_A:
+		return "A";
+	case RR_PTR:
+		return "PTR";
+	case RR_TXT:
+		return "TXT";
+	case RR_AAAA:
+		return "AAAA";
+	case RR_SRV:
+		return "SRV";
+	case RR_NSEC:
+		return "NSEC";
+	case RR_ANY:
+		return "ANY";
 	}
 	return NULL;
 }
 
-void rr_entry_destroy(struct rr_entry *rr) {
+void rr_entry_destroy(struct rr_entry *rr)
+{
 	struct rr_data_txt *txt_rec;
 	assert(rr);
 
 	// check rr_type and free data elements
-	switch (rr->type) {
-		case RR_PTR:
-			if (rr->data.PTR.name) 
-				free(rr->data.PTR.name);
-			// don't free entry
-			break;
+	switch (rr->type)
+	{
+	case RR_PTR:
+		if (rr->data.PTR.name)
+			free(rr->data.PTR.name);
+		// don't free entry
+		break;
 
-		case RR_TXT:
-			txt_rec = &rr->data.TXT;
-			while (txt_rec) {
-				struct rr_data_txt *next = txt_rec->next;
-				if (txt_rec->txt) 
-					free(txt_rec->txt);
+	case RR_TXT:
+		txt_rec = &rr->data.TXT;
+		while (txt_rec)
+		{
+			struct rr_data_txt *next = txt_rec->next;
+			if (txt_rec->txt)
+				free(txt_rec->txt);
 
-				// only free() if it wasn't part of the struct
-				if (txt_rec != &rr->data.TXT)
-					free(txt_rec);
+			// only free() if it wasn't part of the struct
+			if (txt_rec != &rr->data.TXT)
+				free(txt_rec);
 
-				txt_rec = next;
-			}
-			break;
+			txt_rec = next;
+		}
+		break;
 
-		case RR_SRV:
-			if (rr->data.SRV.target)
-				free(rr->data.SRV.target);
-			break;
+	case RR_SRV:
+		if (rr->data.SRV.target)
+			free(rr->data.SRV.target);
+		break;
 
-		case RR_AAAA:
-			if (rr->data.AAAA.addr) {
-				free(rr->data.AAAA.addr);
-			}
-			break;
+	case RR_AAAA:
+		if (rr->data.AAAA.addr)
+		{
+			free(rr->data.AAAA.addr);
+		}
+		break;
 
-		default:
-			// nothing to free
-			break;
+	default:
+		// nothing to free
+		break;
 	}
 
 	free(rr->name);
@@ -311,10 +347,12 @@ void rr_entry_destroy(struct rr_entry *rr) {
 }
 
 // destroys an RR list (and optionally, items)
-void rr_list_destroy(struct rr_list *rr, char destroy_items) {
+void rr_list_destroy(struct rr_list *rr, char destroy_items)
+{
 	struct rr_list *rr_next;
 
-	for (; rr; rr = rr_next) {
+	for (; rr; rr = rr_next)
+	{
 		rr_next = rr->next;
 		if (destroy_items)
 			rr_entry_destroy(rr->e);
@@ -322,21 +360,29 @@ void rr_list_destroy(struct rr_list *rr, char destroy_items) {
 	}
 }
 
-int rr_list_count(struct rr_list *rr) {
+int rr_list_count(struct rr_list *rr)
+{
 	int i = 0;
-	for (; rr; i++, rr = rr->next);
+	for (; rr; i++, rr = rr->next)
+		;
 	return i;
 }
 
-struct rr_entry *rr_list_remove(struct rr_list **rr_head, struct rr_entry *rr) {
+struct rr_entry *rr_list_remove(struct rr_list **rr_head, struct rr_entry *rr)
+{
 	struct rr_list *le = *rr_head, *pe = NULL;
-	for (; le; le = le->next) {
-		if (le->e == rr) {
-			if (pe == NULL) {
+	for (; le; le = le->next)
+	{
+		if (le->e == rr)
+		{
+			if (pe == NULL)
+			{
 				*rr_head = le->next;
 				free(le);
 				return rr;
-			} else {
+			}
+			else
+			{
 				pe->next = le->next;
 				free(le);
 				return rr;
@@ -351,18 +397,24 @@ struct rr_entry *rr_list_remove(struct rr_list **rr_head, struct rr_entry *rr) {
 // if the RR is already in the list, it will not be added
 // RRs are compared by memory location - not its contents
 // return value of 0 means item not added
-int rr_list_append(struct rr_list **rr_head, struct rr_entry *rr) {
+int rr_list_append(struct rr_list **rr_head, struct rr_entry *rr)
+{
 	struct rr_list *node = malloc(sizeof(struct rr_list));
 	node->e = rr;
 	node->next = NULL;
 
-	if (*rr_head == NULL) {
+	if (*rr_head == NULL)
+	{
 		*rr_head = node;
-	} else {
+	}
+	else
+	{
 		struct rr_list *e = *rr_head, *taile;
-		for (; e; e = e->next) {
+		for (; e; e = e->next)
+		{
 			// already in list - don't add
-			if (e->e == rr) {
+			if (e->e == rr)
+			{
 				free(node);
 				return 0;
 			}
@@ -374,28 +426,31 @@ int rr_list_append(struct rr_list **rr_head, struct rr_entry *rr) {
 	return 1;
 }
 
-#define FILL_RR_ENTRY(rr, _name, _type)	\
-	rr->name = _name;			\
-	rr->type = _type;			\
-	rr->ttl    = DEFAULT_TTL;		\
-	rr->cache_flush = 1;		\
-	rr->rr_class    = 1;
+#define FILL_RR_ENTRY(rr, _name, _type) \
+	rr->name = _name;                   \
+	rr->type = _type;                   \
+	rr->ttl = DEFAULT_TTL;              \
+	rr->cache_flush = 1;                \
+	rr->rr_class = 1;
 
-struct rr_entry *rr_create_a(uint8_t *name, struct in_addr addr) {
+struct rr_entry *rr_create_a(uint8_t *name, struct in_addr addr)
+{
 	DECL_MALLOC_ZERO_STRUCT(rr, rr_entry);
 	FILL_RR_ENTRY(rr, name, RR_A);
 	rr->data.A.addr = addr.s_addr;
 	return rr;
 }
 
-struct rr_entry *rr_create_aaaa(uint8_t *name, struct in6_addr *addr) {
+struct rr_entry *rr_create_aaaa(uint8_t *name, struct in6_addr *addr)
+{
 	DECL_MALLOC_ZERO_STRUCT(rr, rr_entry);
 	FILL_RR_ENTRY(rr, name, RR_AAAA);
 	rr->data.AAAA.addr = addr;
 	return rr;
 }
 
-struct rr_entry *rr_create_srv(uint8_t *name, uint16_t port, uint8_t *target) {
+struct rr_entry *rr_create_srv(uint8_t *name, uint16_t port, uint8_t *target)
+{
 	DECL_MALLOC_ZERO_STRUCT(rr, rr_entry);
 	FILL_RR_ENTRY(rr, name, RR_SRV);
 	rr->data.SRV.port = port;
@@ -403,41 +458,47 @@ struct rr_entry *rr_create_srv(uint8_t *name, uint16_t port, uint8_t *target) {
 	return rr;
 }
 
-struct rr_entry *rr_create_ptr(uint8_t *name, struct rr_entry *d_rr) {
+struct rr_entry *rr_create_ptr(uint8_t *name, struct rr_entry *d_rr)
+{
 	DECL_MALLOC_ZERO_STRUCT(rr, rr_entry);
 	FILL_RR_ENTRY(rr, name, RR_PTR);
-	rr->cache_flush = 0;	// PTRs shouldn't have their cache flush bit set
+	rr->cache_flush = 0; // PTRs shouldn't have their cache flush bit set
 	rr->data.PTR.entry = d_rr;
 	return rr;
 }
 
-struct rr_entry *rr_create(uint8_t *name, enum rr_type type) {
+struct rr_entry *rr_create(uint8_t *name, enum rr_type type)
+{
 	DECL_MALLOC_ZERO_STRUCT(rr, rr_entry);
 	FILL_RR_ENTRY(rr, name, type);
 	return rr;
 }
 
-void rr_set_nsec(struct rr_entry *rr_nsec, enum rr_type type) {
+void rr_set_nsec(struct rr_entry *rr_nsec, enum rr_type type)
+{
 	assert(rr_nsec->type = RR_NSEC);
 	assert((type / 8) < sizeof(rr_nsec->data.NSEC.bitmap));
 
-	rr_nsec->data.NSEC.bitmap[ type / 8 ] = 1 << (7 - (type % 8));
+	rr_nsec->data.NSEC.bitmap[type / 8] = 1 << (7 - (type % 8));
 }
 
-void rr_add_txt(struct rr_entry *rr_txt, const char *txt) {
+void rr_add_txt(struct rr_entry *rr_txt, const char *txt)
+{
 	struct rr_data_txt *txt_rec;
 	assert(rr_txt->type == RR_TXT);
 
 	txt_rec = &rr_txt->data.TXT;
 
 	// is current data filled?
-	if (txt_rec->txt == NULL) {
+	if (txt_rec->txt == NULL)
+	{
 		txt_rec->txt = create_label(txt);
 		return;
 	}
 
 	// find the last node
-	for (; txt_rec->next; txt_rec = txt_rec->next);
+	for (; txt_rec->next; txt_rec = txt_rec->next)
+		;
 
 	// create a new empty node
 	txt_rec->next = malloc(sizeof(struct rr_data_txt));
@@ -448,14 +509,17 @@ void rr_add_txt(struct rr_entry *rr_txt, const char *txt) {
 }
 
 // adds a record to an rr_group
-void rr_group_add(struct rr_group **group, struct rr_entry *rr) {
+void rr_group_add(struct rr_group **group, struct rr_entry *rr)
+{
 	struct rr_group *g;
 
 	assert(rr != NULL);
 
-	if (*group) {
+	if (*group)
+	{
 		g = rr_group_find(*group, rr->name);
-		if (g) {
+		if (g)
+		{
 			rr_list_append(&g->rr, rr);
 			return;
 		}
@@ -471,18 +535,22 @@ void rr_group_add(struct rr_group **group, struct rr_entry *rr) {
 }
 
 // finds a rr_group matching the given name
-struct rr_group *rr_group_find(struct rr_group* g, uint8_t *name) {
-	for (; g; g = g->next) {
+struct rr_group *rr_group_find(struct rr_group *g, uint8_t *name)
+{
+	for (; g; g = g->next)
+	{
 		if (cmp_nlabel(g->name, name) == 0)
 			return g;
 	}
 	return NULL;
 }
 
-struct rr_entry *rr_entry_find(struct rr_list *rr_list, uint8_t *name, uint16_t type) {
+struct rr_entry *rr_entry_find(struct rr_list *rr_list, uint8_t *name, uint16_t type)
+{
 	struct rr_list *rr = rr_list;
-	for (; rr; rr = rr->next) {
-		if (rr->e->type == type && cmp_nlabel(rr->e->name, name) == 0) 
+	for (; rr; rr = rr->next)
+	{
+		if (rr->e->type == type && cmp_nlabel(rr->e->name, name) == 0)
 			return rr->e;
 	}
 	return NULL;
@@ -490,13 +558,19 @@ struct rr_entry *rr_entry_find(struct rr_list *rr_list, uint8_t *name, uint16_t 
 
 // looks for a matching entry in rr_list
 // if entry is a PTR, we need to check if the PTR target also matches
-struct rr_entry *rr_entry_match(struct rr_list *rr_list, struct rr_entry *entry) {
+struct rr_entry *rr_entry_match(struct rr_list *rr_list, struct rr_entry *entry)
+{
 	struct rr_list *rr = rr_list;
-	for (; rr; rr = rr->next) {
-		if (rr->e->type == entry->type && cmp_nlabel(rr->e->name, entry->name) == 0) {
-			if (entry->type != RR_PTR) {
+	for (; rr; rr = rr->next)
+	{
+		if (rr->e->type == entry->type && cmp_nlabel(rr->e->name, entry->name) == 0)
+		{
+			if (entry->type != RR_PTR)
+			{
 				return rr->e;
-			} else if (cmp_nlabel(MDNS_RR_GET_PTR_NAME(entry), MDNS_RR_GET_PTR_NAME(rr->e)) == 0) {
+			}
+			else if (cmp_nlabel(MDNS_RR_GET_PTR_NAME(entry), MDNS_RR_GET_PTR_NAME(rr->e)) == 0)
+			{
 				// if it's a PTR, we need to make sure PTR target also matches
 				return rr->e;
 			}
@@ -505,10 +579,12 @@ struct rr_entry *rr_entry_match(struct rr_list *rr_list, struct rr_entry *entry)
 	return NULL;
 }
 
-void rr_group_destroy(struct rr_group *group) {
+void rr_group_destroy(struct rr_group *group)
+{
 	struct rr_group *g = group;
 
-	while (g) {
+	while (g)
+	{
 		struct rr_group *nextg = g->next;
 		free(g->name);
 		rr_list_destroy(g->rr, 1);
@@ -517,50 +593,55 @@ void rr_group_destroy(struct rr_group *group) {
 	}
 }
 
-uint8_t *mdns_write_u16(uint8_t *ptr, const uint16_t v) {
-	*ptr++ = (uint8_t) (v >> 8) & 0xFF;
-	*ptr++ = (uint8_t) (v >> 0) & 0xFF;
+uint8_t *mdns_write_u16(uint8_t *ptr, const uint16_t v)
+{
+	*ptr++ = (uint8_t)(v >> 8) & 0xFF;
+	*ptr++ = (uint8_t)(v >> 0) & 0xFF;
 	return ptr;
 }
 
-uint8_t *mdns_write_u32(uint8_t *ptr, const uint32_t v) {
-	*ptr++ = (uint8_t) (v >> 24) & 0xFF;
-	*ptr++ = (uint8_t) (v >> 16) & 0xFF;
-	*ptr++ = (uint8_t) (v >>    8) & 0xFF;
-	*ptr++ = (uint8_t) (v >>    0) & 0xFF;
+uint8_t *mdns_write_u32(uint8_t *ptr, const uint32_t v)
+{
+	*ptr++ = (uint8_t)(v >> 24) & 0xFF;
+	*ptr++ = (uint8_t)(v >> 16) & 0xFF;
+	*ptr++ = (uint8_t)(v >> 8) & 0xFF;
+	*ptr++ = (uint8_t)(v >> 0) & 0xFF;
 	return ptr;
 }
 
-uint16_t mdns_read_u16(const uint8_t *ptr) {
-	return    ((ptr[0] & 0xFF) << 8) | 
-			((ptr[1] & 0xFF) << 0);
+uint16_t mdns_read_u16(const uint8_t *ptr)
+{
+	return ((ptr[0] & 0xFF) << 8) |
+		   ((ptr[1] & 0xFF) << 0);
 }
 
-uint32_t mdns_read_u32(const uint8_t *ptr) {
-	return    ((ptr[0] & 0xFF) << 24) | 
-			((ptr[1] & 0xFF) << 16) | 
-			((ptr[2] & 0xFF) <<    8) | 
-			((ptr[3] & 0xFF) <<    0);
+uint32_t mdns_read_u32(const uint8_t *ptr)
+{
+	return ((ptr[0] & 0xFF) << 24) |
+		   ((ptr[1] & 0xFF) << 16) |
+		   ((ptr[2] & 0xFF) << 8) |
+		   ((ptr[3] & 0xFF) << 0);
 }
 
 // initialize the packet for reply
 // clears the packet of list structures but not its list items
-void mdns_init_reply(struct mdns_pkt *pkt, uint16_t id) {
+void mdns_init_reply(struct mdns_pkt *pkt, uint16_t id)
+{
 	// copy transaction ID
 	pkt->id = id;
 
 	// response flags
 	pkt->flags = MDNS_FLAG_RESP | MDNS_FLAG_AA;
 
-	rr_list_destroy(pkt->rr_qn,     0);
-	rr_list_destroy(pkt->rr_ans,    0);
+	rr_list_destroy(pkt->rr_qn, 0);
+	rr_list_destroy(pkt->rr_ans, 0);
 	rr_list_destroy(pkt->rr_auth, 0);
-	rr_list_destroy(pkt->rr_add,    0);
+	rr_list_destroy(pkt->rr_add, 0);
 
-	pkt->rr_qn        = NULL;
-	pkt->rr_ans     = NULL;
-	pkt->rr_auth    = NULL;
-	pkt->rr_add     = NULL;
+	pkt->rr_qn = NULL;
+	pkt->rr_ans = NULL;
+	pkt->rr_auth = NULL;
+	pkt->rr_add = NULL;
 
 	pkt->num_qn = 0;
 	pkt->num_ans_rr = 0;
@@ -569,7 +650,8 @@ void mdns_init_reply(struct mdns_pkt *pkt, uint16_t id) {
 }
 
 // destroys an mdns_pkt struct, including its contents
-void mdns_pkt_destroy(struct mdns_pkt *p) {
+void mdns_pkt_destroy(struct mdns_pkt *p)
+{
 	rr_list_destroy(p->rr_qn, 1);
 	rr_list_destroy(p->rr_ans, 1);
 	rr_list_destroy(p->rr_auth, 1);
@@ -578,18 +660,18 @@ void mdns_pkt_destroy(struct mdns_pkt *p) {
 	free(p);
 }
 
-
 // parse the MDNS questions section
 // stores the parsed data in the given mdns_pkt struct
-static size_t mdns_parse_qn(uint8_t *pkt_buf, size_t pkt_len, size_t off, 
-		struct mdns_pkt *pkt) {
+static size_t mdns_parse_qn(uint8_t *pkt_buf, size_t pkt_len, size_t off,
+							struct mdns_pkt *pkt)
+{
 	const uint8_t *p = pkt_buf + off;
 	struct rr_entry *rr;
 	uint8_t *name;
-     
+
 	assert(pkt != NULL);
 
-	rr = malloc(sizeof(struct rr_entry)); 
+	rr = malloc(sizeof(struct rr_entry));
 	memset(rr, 0, sizeof(struct rr_entry));
 
 	name = uncompress_nlabel(pkt_buf, pkt_len, off);
@@ -604,14 +686,15 @@ static size_t mdns_parse_qn(uint8_t *pkt_buf, size_t pkt_len, size_t off,
 	p += sizeof(uint16_t);
 
 	rr_list_append(&pkt->rr_qn, rr);
-	
+
 	return p - (pkt_buf + off);
 }
 
 // parse the MDNS RR section
 // stores the parsed data in the given mdns_pkt struct
-static size_t mdns_parse_rr(uint8_t *pkt_buf, size_t pkt_len, size_t off, 
-		struct mdns_pkt *pkt) {
+static size_t mdns_parse_rr(uint8_t *pkt_buf, size_t pkt_len, size_t off,
+							struct mdns_pkt *pkt)
+{
 	const uint8_t *p = pkt_buf + off;
 	const uint8_t *e = pkt_buf + pkt_len;
 	struct rr_entry *rr;
@@ -625,7 +708,7 @@ static size_t mdns_parse_rr(uint8_t *pkt_buf, size_t pkt_len, size_t off,
 	if (off > pkt_len)
 		return 0;
 
-	rr = malloc(sizeof(struct rr_entry)); 
+	rr = malloc(sizeof(struct rr_entry));
 	memset(rr, 0, sizeof(struct rr_entry));
 
 	name = uncompress_nlabel(pkt_buf, pkt_len, off);
@@ -646,7 +729,8 @@ static size_t mdns_parse_rr(uint8_t *pkt_buf, size_t pkt_len, size_t off,
 	rr_data_len = mdns_read_u16(p);
 	p += sizeof(uint16_t);
 
-	if (p + rr_data_len > e) {
+	if (p + rr_data_len > e)
+	{
 		DEBUG_PRINTF("rr_data_len goes beyond packet buffer: %zu > %zu\n", rr_data_len, e - p);
 		rr_entry_destroy(rr);
 		return 0;
@@ -654,113 +738,130 @@ static size_t mdns_parse_rr(uint8_t *pkt_buf, size_t pkt_len, size_t off,
 
 	e = p + rr_data_len;
 	// see if we can parse the RR data
-	switch (rr->type) {
-		case RR_A:
-			if (rr_data_len < sizeof(uint32_t)) {
-				DEBUG_PRINTF("invalid rr_data_len=%zu for A record\n", rr_data_len);
+	switch (rr->type)
+	{
+	case RR_A:
+		if (rr_data_len < sizeof(uint32_t))
+		{
+			DEBUG_PRINTF("invalid rr_data_len=%zu for A record\n", rr_data_len);
+			parse_error = 1;
+			break;
+		}
+		rr->data.A.addr = ntohl(mdns_read_u32(p)); /* addr already in net order */
+		p += sizeof(uint32_t);
+		break;
+
+	case RR_AAAA:
+	{
+		int i;
+		if (rr_data_len < sizeof(struct in6_addr))
+		{
+			DEBUG_PRINTF("invalid rr_data_len=%zu for AAAA record\n", rr_data_len);
+			parse_error = 1;
+			break;
+		}
+		rr->data.AAAA.addr = malloc(sizeof(struct in6_addr));
+		for (i = 0; i < sizeof(struct in6_addr); i++)
+			rr->data.AAAA.addr->s6_addr[i] = p[i];
+		p += sizeof(struct in6_addr);
+		break;
+	}
+
+	case RR_PTR:
+		rr->data.PTR.name = uncompress_nlabel(pkt_buf, pkt_len, p - pkt_buf);
+		if (rr->data.PTR.name == NULL)
+		{
+			DEBUG_PRINTF("unable to parse/uncompress label for PTR name\n");
+			parse_error = 1;
+			break;
+		}
+		p += rr_data_len;
+		break;
+
+	case RR_TXT:
+		txt_rec = &rr->data.TXT;
+
+		// not supposed to happen, but we should handle it
+		if (rr_data_len == 0)
+		{
+			DEBUG_PRINTF("WARN: rr_data_len for TXT is 0\n");
+			txt_rec->txt = create_label("");
+			break;
+		}
+
+		while (1)
+		{
+			txt_rec->txt = copy_label(pkt_buf, pkt_len, p - pkt_buf);
+			if (txt_rec->txt == NULL)
+			{
+				DEBUG_PRINTF("unable to copy label for TXT record\n");
 				parse_error = 1;
 				break;
 			}
-			rr->data.A.addr = ntohl(mdns_read_u32(p)); /* addr already in net order */
-			p += sizeof(uint32_t);
-			break;
+			p += txt_rec->txt[0] + 1;
 
-		case RR_AAAA: {
-			int i;
-			if (rr_data_len < sizeof(struct in6_addr)) {
-				DEBUG_PRINTF("invalid rr_data_len=%zu for AAAA record\n", rr_data_len);
-				parse_error = 1;
+			if (p >= e)
 				break;
-			}
-			rr->data.AAAA.addr = malloc(sizeof(struct in6_addr));
-			for (i = 0; i < sizeof(struct in6_addr); i++)
-				rr->data.AAAA.addr->s6_addr[i] = p[i];
-			p += sizeof(struct in6_addr);
-			break;
-			}
 
+			// allocate another record
+			txt_rec->next = malloc(sizeof(struct rr_data_txt));
+			txt_rec = txt_rec->next;
+			txt_rec->next = NULL;
+		}
+		break;
 
-		case RR_PTR:
-			rr->data.PTR.name = uncompress_nlabel(pkt_buf, pkt_len, p - pkt_buf);
-			if (rr->data.PTR.name == NULL) {
-				DEBUG_PRINTF("unable to parse/uncompress label for PTR name\n");
-				parse_error = 1;
-				break;
-			}
-			p += rr_data_len;
-			break;
-
-		case RR_TXT:
-			txt_rec = &rr->data.TXT;
-
-			// not supposed to happen, but we should handle it
-			if (rr_data_len == 0) {
-				DEBUG_PRINTF("WARN: rr_data_len for TXT is 0\n");
-				txt_rec->txt = create_label("");
-				break;
-			}
-
-			while (1) {
-				txt_rec->txt = copy_label(pkt_buf, pkt_len, p - pkt_buf);
-				if (txt_rec->txt == NULL) {
-					DEBUG_PRINTF("unable to copy label for TXT record\n");
-					parse_error = 1;
-					break;
-				}
-				p += txt_rec->txt[0] + 1;
-
-				if (p >= e) 
-					break;
-
-				// allocate another record
-				txt_rec->next = malloc(sizeof(struct rr_data_txt));
-				txt_rec = txt_rec->next;
-				txt_rec->next = NULL;
-			}
-			break;
-
-		default:
-			// skip to end of RR data
-			p = e;
+	default:
+		// skip to end of RR data
+		p = e;
 	}
 
 	// if there was a parse error, destroy partial rr_entry
-	if (parse_error) {
+	if (parse_error)
+	{
 		rr_entry_destroy(rr);
 		return 0;
 	}
 
 	rr_list_append(&pkt->rr_ans, rr);
-	
+
 	return p - (pkt_buf + off);
 }
 
 // parse a MDNS packet into an mdns_pkt struct
-struct mdns_pkt *mdns_parse_pkt(uint8_t *pkt_buf, size_t pkt_len) {
+struct mdns_pkt *mdns_parse_pkt(uint8_t *pkt_buf, size_t pkt_len)
+{
 	uint8_t *p = pkt_buf;
 	size_t off;
 	struct mdns_pkt *pkt;
 	int i;
 
-	if (pkt_len < 12) 
+	if (pkt_len < 12)
 		return NULL;
 
 	MALLOC_ZERO_STRUCT(pkt, mdns_pkt);
 
 	// parse header
-	pkt->id 			= mdns_read_u16(p); p += sizeof(uint16_t);
-	pkt->flags 			= mdns_read_u16(p); p += sizeof(uint16_t);
-	pkt->num_qn 		= mdns_read_u16(p); p += sizeof(uint16_t);
-	pkt->num_ans_rr 	= mdns_read_u16(p); p += sizeof(uint16_t);
-	pkt->num_auth_rr 	= mdns_read_u16(p); p += sizeof(uint16_t);
-	pkt->num_add_rr 	= mdns_read_u16(p); p += sizeof(uint16_t);
+	pkt->id = mdns_read_u16(p);
+	p += sizeof(uint16_t);
+	pkt->flags = mdns_read_u16(p);
+	p += sizeof(uint16_t);
+	pkt->num_qn = mdns_read_u16(p);
+	p += sizeof(uint16_t);
+	pkt->num_ans_rr = mdns_read_u16(p);
+	p += sizeof(uint16_t);
+	pkt->num_auth_rr = mdns_read_u16(p);
+	p += sizeof(uint16_t);
+	pkt->num_add_rr = mdns_read_u16(p);
+	p += sizeof(uint16_t);
 
 	off = p - pkt_buf;
 
 	// parse questions
-	for (i = 0; i < pkt->num_qn; i++) {
+	for (i = 0; i < pkt->num_qn; i++)
+	{
 		size_t l = mdns_parse_qn(pkt_buf, pkt_len, off, pkt);
-		if (! l) {
+		if (!l)
+		{
 			DEBUG_PRINTF("error parsing question #%d\n", i);
 			mdns_pkt_destroy(pkt);
 			return NULL;
@@ -770,9 +871,11 @@ struct mdns_pkt *mdns_parse_pkt(uint8_t *pkt_buf, size_t pkt_len) {
 	}
 
 	// parse answer RRs
-	for (i = 0; i < pkt->num_ans_rr; i++) {
+	for (i = 0; i < pkt->num_ans_rr; i++)
+	{
 		size_t l = mdns_parse_rr(pkt_buf, pkt_len, off, pkt);
-		if (! l) {
+		if (!l)
+		{
 			DEBUG_PRINTF("error parsing answer #%d\n", i);
 			mdns_pkt_destroy(pkt);
 			return NULL;
@@ -788,19 +891,24 @@ struct mdns_pkt *mdns_parse_pkt(uint8_t *pkt_buf, size_t pkt_len) {
 
 // encodes a name (label) into a packet using the name compression scheme
 // encoded names will be added to the compression list for subsequent use
-static size_t mdns_encode_name(uint8_t *pkt_buf, size_t pkt_len, size_t off, 
-		const uint8_t *name, struct name_comp *comp) {
+static size_t mdns_encode_name(uint8_t *pkt_buf, size_t pkt_len, size_t off,
+							   const uint8_t *name, struct name_comp *comp)
+{
 	struct name_comp *c, *c_tail = NULL;
 	uint8_t *p = pkt_buf + off;
 	size_t len = 0;
 
-	if (name) {
-		while (*name) {
+	if (name)
+	{
+		while (*name)
+		{
 			int segment_len;
 
 			// find match for compression
-			for (c = comp; c; c = c->next) {
-				if (cmp_nlabel(name, c->label) == 0) {
+			for (c = comp; c; c = c->next)
+			{
+				if (cmp_nlabel(name, c->label) == 0)
+				{
 					mdns_write_u16(p, 0xC000 | (c->pos & ~0xC000));
 					return len + sizeof(uint16_t);
 				}
@@ -813,9 +921,9 @@ static size_t mdns_encode_name(uint8_t *pkt_buf, size_t pkt_len, size_t off,
 
 			// copy this segment
 			segment_len = *name + 1;
-			strncpy((char *) p, (char *) name, segment_len);
+			strncpy((char *)p, (char *)name, segment_len);
 
-			new_c->label = (uint8_t *) name;
+			new_c->label = (uint8_t *)name;
 			new_c->pos = p - pkt_buf;
 			c_tail->next = new_c;
 
@@ -826,7 +934,7 @@ static size_t mdns_encode_name(uint8_t *pkt_buf, size_t pkt_len, size_t off,
 		}
 	}
 
-	*p = '\0';	// root "label"
+	*p = '\0'; // root "label"
 	len += 1;
 
 	return len;
@@ -834,8 +942,9 @@ static size_t mdns_encode_name(uint8_t *pkt_buf, size_t pkt_len, size_t off,
 
 // encodes an RR entry at the given offset
 // returns the size of the entire RR entry
-static size_t mdns_encode_rr(uint8_t *pkt_buf, size_t pkt_len, size_t off, 
-		struct rr_entry *rr, struct name_comp *comp) {
+static size_t mdns_encode_rr(uint8_t *pkt_buf, size_t pkt_len, size_t off,
+							 struct rr_entry *rr, struct name_comp *comp)
+{
 	uint8_t *p = pkt_buf + off, *p_data;
 	size_t l;
 	struct rr_data_txt *txt_rec;
@@ -857,66 +966,66 @@ static size_t mdns_encode_rr(uint8_t *pkt_buf, size_t pkt_len, size_t off,
 
 	// TTL
 	p = mdns_write_u32(p, rr->ttl);
-	
+
 	// data length (filled in later)
 	p += sizeof(uint16_t);
 
 	// start of data marker
 	p_data = p;
 
-	switch (rr->type) {
-		case RR_A:
-			/* htonl() needed coz addr already in net order */
-			p = mdns_write_u32(p, htonl(rr->data.A.addr));
-			break;
+	switch (rr->type)
+	{
+	case RR_A:
+		/* htonl() needed coz addr already in net order */
+		p = mdns_write_u32(p, htonl(rr->data.A.addr));
+		break;
 
-		case RR_AAAA:
-			for (i = 0; i < sizeof(struct in6_addr); i++)
-				*p++ = rr->data.AAAA.addr->s6_addr[i];
-			break;
+	case RR_AAAA:
+		for (i = 0; i < sizeof(struct in6_addr); i++)
+			*p++ = rr->data.AAAA.addr->s6_addr[i];
+		break;
 
-		case RR_PTR:
-			label = rr->data.PTR.name ? 
-					rr->data.PTR.name : 
-					rr->data.PTR.entry->name;
-			p += mdns_encode_name(pkt_buf, pkt_len, p - pkt_buf, label, comp);
-			break;
+	case RR_PTR:
+		label = rr->data.PTR.name ? rr->data.PTR.name : rr->data.PTR.entry->name;
+		p += mdns_encode_name(pkt_buf, pkt_len, p - pkt_buf, label, comp);
+		break;
 
-		case RR_TXT:
-			txt_rec = &rr->data.TXT;
-			for (; txt_rec; txt_rec = txt_rec->next) {
-				int len = txt_rec->txt[0] + 1;
-				strncpy((char *) p, (char *) txt_rec->txt, len);
-				p += len;
-			}
-			break;
+	case RR_TXT:
+		txt_rec = &rr->data.TXT;
+		for (; txt_rec; txt_rec = txt_rec->next)
+		{
+			int len = txt_rec->txt[0] + 1;
+			strncpy((char *)p, (char *)txt_rec->txt, len);
+			p += len;
+		}
+		break;
 
-		case RR_SRV:
-			p = mdns_write_u16(p, rr->data.SRV.priority);
-			
-			p = mdns_write_u16(p, rr->data.SRV.weight);
+	case RR_SRV:
+		p = mdns_write_u16(p, rr->data.SRV.priority);
 
-			p = mdns_write_u16(p, rr->data.SRV.port);
+		p = mdns_write_u16(p, rr->data.SRV.weight);
 
-			p += mdns_encode_name(pkt_buf, pkt_len, p - pkt_buf, 
-					rr->data.SRV.target, comp);
-			break;
+		p = mdns_write_u16(p, rr->data.SRV.port);
 
-		case RR_NSEC:
-			p += mdns_encode_name(pkt_buf, pkt_len, p - pkt_buf, 
-					rr->name, comp);
+		p += mdns_encode_name(pkt_buf, pkt_len, p - pkt_buf,
+							  rr->data.SRV.target, comp);
+		break;
 
-			*p++ = 0;	// bitmap window/block number
+	case RR_NSEC:
+		p += mdns_encode_name(pkt_buf, pkt_len, p - pkt_buf,
+							  rr->name, comp);
 
-			*p++ = sizeof(rr->data.NSEC.bitmap);	// bitmap length
+		*p++ = 0; // bitmap window/block number
 
-			for (i = 0; i < sizeof(rr->data.NSEC.bitmap); i++) 
-				*p++ = rr->data.NSEC.bitmap[i];
+		*p++ = sizeof(rr->data.NSEC.bitmap); // bitmap length
 
-			break;
+		for (i = 0; i < sizeof(rr->data.NSEC.bitmap); i++)
+			*p++ = rr->data.NSEC.bitmap[i];
 
-		default:
-			DEBUG_PRINTF("unhandled rr type 0x%02x\n", rr->type);
+		break;
+
+	default:
+		DEBUG_PRINTF("unhandled rr type 0x%02x\n", rr->type);
 	}
 
 	// calculate data length based on p
@@ -930,7 +1039,8 @@ static size_t mdns_encode_rr(uint8_t *pkt_buf, size_t pkt_len, size_t off,
 
 // encodes a MDNS packet from the given mdns_pkt struct into a buffer
 // returns the size of the entire MDNS packet
-size_t mdns_encode_pkt(struct mdns_pkt *answer, uint8_t *pkt_buf, size_t pkt_len) {
+size_t mdns_encode_pkt(struct mdns_pkt *answer, uint8_t *pkt_buf, size_t pkt_len)
+{
 	struct name_comp *comp;
 	uint8_t *p = pkt_buf;
 	//uint8_t *e = pkt_buf + pkt_len;
@@ -963,31 +1073,34 @@ size_t mdns_encode_pkt(struct mdns_pkt *answer, uint8_t *pkt_buf, size_t pkt_len
 	memset(comp, 0, sizeof(struct name_comp));
 
 	// dummy entry
-	comp->label = (uint8_t *) "";
+	comp->label = (uint8_t *)"";
 	comp->pos = 0;
 
 	// skip encoding of qn
-	rr_set[0] =	answer->rr_ans;
+	rr_set[0] = answer->rr_ans;
 	rr_set[1] = answer->rr_auth;
-	rr_set[2] =	answer->rr_add;
+	rr_set[2] = answer->rr_add;
 
 	// encode answer, authority and additional RRs
-	for (i = 0; i < sizeof(rr_set) / sizeof(rr_set[0]); i++) {
+	for (i = 0; i < sizeof(rr_set) / sizeof(rr_set[0]); i++)
+	{
 		struct rr_list *rr = rr_set[i];
-		for (; rr; rr = rr->next) {
+		for (; rr; rr = rr->next)
+		{
 			size_t l = mdns_encode_rr(pkt_buf, pkt_len, off, rr->e, comp);
 			off += l;
 
-			if (off >= pkt_len) {
+			if (off >= pkt_len)
+			{
 				DEBUG_PRINTF("packet buffer too small\n");
 				return -1;
 			}
 		}
-
 	}
 
 	// free name compression list
-	while (comp) {
+	while (comp)
+	{
 		struct name_comp *c = comp->next;
 		free(comp);
 		comp = c;
@@ -995,4 +1108,3 @@ size_t mdns_encode_pkt(struct mdns_pkt *answer, uint8_t *pkt_buf, size_t pkt_len
 
 	return off;
 }
-

@@ -88,28 +88,15 @@ int mdns_packet_offset(
 //=============================================================================
 int hit_target_vlan(
     char *buf,
-    char *packet,
     int packet_length,
     unsigned short dvlan)
 //=============================================================================
 {
-    if (dvlan == 0)
-    {
-        memcpy(packet, buf, packet_length);
-        return packet_length;
-    }
-
-    // 复制mac头部
-    memcpy(packet, buf, sizeof(char) * 12);
-
     // 打上目的tag
     struct vlan_hdr vlanheader;
     vlanheader.h_vlan_encapsulated_proto = htons(0x8100);
     vlanheader.h_vlan_TCI = htons(dvlan);
-    memcpy(packet + 12, &vlanheader, sizeof(char) * 4);
-
-    // 复制报文
-    memcpy(packet + 16, buf + 12, sizeof(char) * (packet_length - 12));
+    memcpy(buf, &vlanheader, sizeof(char) * 4);
 
     return packet_length + 4;
 }
@@ -162,6 +149,7 @@ int bind_socket_interface(
         return -1;
     }
 
+    bzero(&sur, sizeof(sur));
     sur.sll_family = AF_PACKET;
     sur.sll_protocol = htons(ETH_P_ALL);
     sur.sll_ifindex = ifindex;
@@ -221,7 +209,7 @@ int allow_all_services_to_pass(
     struct allow_services *services_list)
 //=============================================================================
 {
-    if (!strcmp(services_list->services_name, "0"))
+    if (!strcmp(services_list->services_name_id, "0"))
     {
         return 1;
     }
@@ -270,7 +258,7 @@ int recove_packet(
     msg.msg_namelen = sizeof(sll);
     msg.msg_iovlen = 1;
     bytes = recvmsg(sockfd, &msg, 0);
-    if (bytes < 0)
+    if (bytes <= 0)
     {
         syslog(LOG_ERR, "%s - %s:Packet read error, ignoring %s\n", app_name, __func__, strerror(errno));
         return -1;
@@ -324,6 +312,7 @@ int bridge_interface_init()
         return -1;
     }
 
+    bzero(&dst, sizeof(dst));
     dst.sll_family = AF_PACKET;
     dst.sll_protocol = htons(ETH_P_ALL);
     dst.sll_ifindex = ifindex;
@@ -333,7 +322,7 @@ int bridge_interface_init()
         return -1;
     }
 
-    return 1;
+    return 0;
 }
 
 //=============================================================================
@@ -352,7 +341,7 @@ int Allow_current_service_to_pass(
     {
         qu_list = mdns->rr_qn;
         an_list = mdns->rr_ans;
-        str = g_services_list[atoi(services_list->services_name)];
+        str = g_services_list[atoi(services_list->services_name_id)];
         // Services allowed in the request　
         while (qu_list)
         {
@@ -448,7 +437,7 @@ void printf_ssids(
 
                 while (head)
                 {
-                    printf("%s ", g_services_list[atoi(head->services_name)]);
+                    printf("%s ", g_services_list[atoi(head->services_name_id)]);
                     head = head->next;
                 }
                 printf("\n");

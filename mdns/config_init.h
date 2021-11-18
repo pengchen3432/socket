@@ -33,28 +33,32 @@
 //===========================
 // Typedefs
 //===========================
-struct dvlan_service {
+struct dvlan_service
+{
     unsigned short dvlan;
     struct allow_services *services_list;
     struct dvlan_service *next;
 };
 
-struct ssid {
-    char id[10];
-    char vlan[10];
+struct ssid
+{
+    char id[8];
+    char vlan[8];
     char bonjour_forward;
-    char interface_2g[10];
-    char interface_5g[10];
+    char interface_2g[8];
+    char interface_5g[8];
     struct dvlan_service *dvlan_service_list;
     struct ssid *next;
 };
 
-struct allow_services {
-    char services_name[4];
+struct allow_services
+{
+    char services_name_id[4];
     struct allow_services *next;
 };
 
-struct socket_bind_ssid {
+struct socket_bind_ssid
+{
     int sock;
     struct ssid *s;
     struct socket_bind_ssid *next;
@@ -63,7 +67,7 @@ struct socket_bind_ssid {
 //===========================
 // Globals
 //===========================
-extern char* app_name;
+extern char *app_name;
 
 //===========================
 // Functions

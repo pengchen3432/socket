@@ -1,10 +1,3 @@
 {
-        "makefile.extensionOutputFolder": "./.vscode",
-        "files.associations": {
-                "filter.h": "c",
-                "if_ether.h": "c",
-                "udp.h": "c",
-                "forward_message.h": "c",
-                "if_packet.h": "c"
-        }
+    "makefile.extensionOutputFolder": "./.vscode"
 }
