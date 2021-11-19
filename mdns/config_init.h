@@ -77,5 +77,10 @@ struct allow_services *new_allow_services();
 struct socket_bind_ssid *new_socket_bind_ssid();
 struct ssid *parse_config();
 void add_global_socket_bind_ssid_list(struct socket_bind_ssid **socket_bind_ssid_list_head, struct socket_bind_ssid **socket_bind_ssid_list_tail, struct socket_bind_ssid *e);
-
+void vlan_to_vlan_mutual_mapping(struct ssid *ssid_list_head);
+void add_difference_service(struct allow_services *current_services_list,struct allow_services *dst_services_list);
+void add_vlan_services_to_tail(struct dvlan_service *head,struct dvlan_service *node);
+int free_services_list(struct allow_services *head);
+struct dvlan_service* find_vlan(struct dvlan_service *head,unsigned short vlan);
+struct dvlan_service* copy_services(struct allow_services *services_list,unsigned short vlan);
 #endif

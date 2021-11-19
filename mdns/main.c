@@ -85,6 +85,7 @@ int main()
         return -1;
     }
 
+    printf("111111111111\n");
     // parser mdns file
     ssids_list_head = parse_config();
     if (!ssids_list_head)
@@ -93,6 +94,9 @@ int main()
         return -1;
     }
 
+    printf_ssids(ssids_list_head);
+    return 0;
+    
     ssids = ssids_list_head;
     // Monitor the ssid interface with the bonjour switch turned on
     while (ssids)
@@ -175,7 +179,7 @@ int main()
             {
                 packet_length = bytes;
                 // Determine whether the destination vlan exists
-                if (dst_vlan_is_exist(ssids_list_head, dvlan_service_list->dvlan))
+                if (dst_vlan_is_exist(ssids_list_head, dvlan_service_list->dvlan) != NULL)
                 {
                     // Allow all services to pass
                     if (allow_all_services_to_pass(dvlan_service_list->services_list))

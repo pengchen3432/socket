@@ -3,6 +3,10 @@
         "in.h": "c",
         "ip.h": "c",
         "signal.h": "c",
-        "istream": "c"
+        "istream": "c",
+        "*.tcc": "c",
+        "string_view": "c",
+        "limits": "c",
+        "algorithm": "c"
     }
 }

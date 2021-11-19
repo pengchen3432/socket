@@ -80,7 +80,7 @@ int hit_target_vlan(char *buf, int packet_length, unsigned short dvlan);
 int socket_init();
 int bind_socket_interface(int sockfd, char *interface);
 void add_socket_bind_ssid_list(struct socket_bind_ssid **socket_bind_ssid_list_head, struct socket_bind_ssid **socket_bind_ssid_list_tail, int sockfd, struct ssid *ssids);
-int dst_vlan_is_exist(struct ssid *head, int vlan);
+struct ssid *dst_vlan_is_exist(struct ssid *head, int vlan);
 int allow_all_services_to_pass(struct allow_services *services_list);
 struct ssid *query_ssid_by_socket(struct socket_bind_ssid *socket_bind_ssid_list_head, int sockfd);
 int recove_packet(char *buf, int sockfd);

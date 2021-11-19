@@ -186,7 +186,8 @@ void add_socket_bind_ssid_list(
 }
 
 //=============================================================================
-int dst_vlan_is_exist(
+struct ssid *
+dst_vlan_is_exist(
     struct ssid *ssids_list_head,
     int vlan)
 //=============================================================================
@@ -197,11 +198,11 @@ int dst_vlan_is_exist(
     {
         if (vlan == atoi(head->vlan))
         {
-            return 1;
+            return head;
         }
         head = head->next;
     }
-    return 0;
+    return NULL;
 }
 
 //=============================================================================

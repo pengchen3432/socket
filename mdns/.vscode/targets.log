@@ -6,7 +6,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Tue Nov 16 20:35:07 2021
+# Make data base, printed on Thu Nov 18 10:12:40 2021
 
 # Variables
 
@@ -39,7 +39,7 @@ GDMSESSION = ubuntu
 # environment
 XMODIFIERS = @im=fcitx
 # makefile
-CURDIR := /home/k4/GWN_HZ-REPO/system/opensource/user/mdns
+CURDIR := /home/k4/socket/mdns
 # makefile
 SHELL = /bin/sh
 # environment
@@ -71,7 +71,7 @@ DBUS_SESSION_BUS_ADDRESS = unix:path=/run/user/1000/bus
 # environment
 VSCODE_VERBOSE_LOGGING = true
 # environment
-TERMINATOR_UUID = urn:uuid:6faf420e-cd34-474c-9ce2-780e49301403
+TERMINATOR_UUID = urn:uuid:ba110376-c32c-4a49-ba02-08e3d8d29d60
 # environment
 CLUTTER_IM_MODULE = xim
 # environment
@@ -79,7 +79,7 @@ LESSOPEN = | /usr/bin/lesspipe %s
 # environment
 LC_NAME = zh_SG.UTF-8
 # environment
-VSCODE_CWD = /home/k4/GWN_HZ-REPO/system/opensource/user/mdns
+VSCODE_CWD = /home/k4/socket/mdns
 # default
 MAKE_HOST := x86_64-pc-linux-gnu
 # environment
@@ -117,7 +117,7 @@ GTK_IM_MODULE = fcitx
 # environment
 VSCODE_PIPE_LOGGING = true
 # environment
-PWD = /home/k4/GWN_HZ-REPO/system/opensource/user/mdns
+PWD = /home/k4/socket/mdns
 # environment
 XDG_SEAT = seat0
 # environment
@@ -171,7 +171,7 @@ CC = $(CROSS)gcc
 # environment
 GNOME_SHELL_SESSION_MODE = ubuntu
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-df3b2330-d534-455a-9d04-506770308a0f.sock
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-a902c411-8336-4091-a02d-0a80e8bd6509.sock
 # environment
 XDG_SESSION_ID = 4
 # environment
@@ -189,7 +189,7 @@ LC_TELEPHONE = zh_SG.UTF-8
 # default
 MAKE_COMMAND := make
 # environment
-OLDPWD = /home/k4/GWN_HZ-REPO/system/opensource/user
+OLDPWD = /home/k4/socket
 # environment
 TERMINATOR_DBUS_PATH = /net/tenshu/Terminator2
 # default
@@ -263,9 +263,9 @@ TERM = xterm-256color
 # environment
 TERMINATOR_DBUS_NAME = net.tenshu.Terminator20x1a6021154d881c
 # environment
-VSCODE_PID = 5715
+VSCODE_PID = 30678
 # variable set hash-table stats:
-# Load=127/1024=12%, Rehash=0, Collisions=22/152=14%
+# Load=127/1024=12%, Rehash=0, Collisions=22/160=14%
 
 # Pattern-specific Variable Values
 
@@ -273,9 +273,8 @@ VSCODE_PID = 5715
 
 # Directories
 
-# . (device 2054, inode 22559734): 18 files, no impossibilities.
+# . (device 2054, inode 20066177): 18 files, no impossibilities.
 
- 
 # 18 files, no impossibilities in 1 directories.
 
 # Implicit Rules
@@ -284,6 +283,7 @@ VSCODE_PID = 5715
 #  recipe to execute (from 'Makefile', line 8):
 	$(CC) -c $(CFLAGS) -o $@ $<
 
+ 
 # 1 implicit rules, 0 (0.0%) terminal.
 
 # Files
@@ -291,46 +291,54 @@ VSCODE_PID = 5715
 # Not a target:
 mdns.c:
 #  Implicit rule search has been done.
-#  Last modified 2021-11-12 08:55:24.991936534
+#  Last modified 2021-11-18 10:11:04.757231963
 #  File has been updated.
 #  Successfully updated.
 
 all: mdns
 #  Command line target.
 #  Implicit rule search has not been done.
-#  Last modified 2514-05-30 09:53:03.107374182
+#  File does not exist.
 #  File has been updated.
-#  Successfully updated.
+#  Needs to be updated (-q is set).
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/8=0%
 #  recipe to execute (from 'Makefile', line 6):
 	
 
 # Not a target:
 main.c:
 #  Implicit rule search has been done.
-#  Last modified 2021-11-12 09:13:31.7854141
+#  Last modified 2021-11-18 10:11:04.74523179
 #  File has been updated.
 #  Successfully updated.
 
 # Not a target:
 forward_message.c:
 #  Implicit rule search has been done.
-#  Last modified 2021-11-12 17:53:49.01322166
+#  Last modified 2021-11-18 10:11:04.825232945
 #  File has been updated.
 #  Successfully updated.
 
 config_init.o: config_init.c
 #  Implicit rule search has been done.
 #  Implicit/static pattern stem: 'config_init'
-#  Last modified 2021-11-15 09:45:16.367679092
+#  Last modified 2021-11-18 10:11:04.857233407
 #  File has been updated.
 #  Successfully updated.
 #  recipe to execute (from 'Makefile', line 8):
 	$(CC) -c $(CFLAGS) -o $@ $<
 
 # Not a target:
+.SUFFIXES:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
 Makefile:
 #  Implicit rule search has been done.
-#  Last modified 2021-11-09 12:09:32.865288072
+#  Last modified 2021-11-18 10:11:04.769232137
 #  File has been updated.
 #  Successfully updated.
 
@@ -343,14 +351,14 @@ Makefile:
 # Not a target:
 config_init.c:
 #  Implicit rule search has been done.
-#  Last modified 2021-11-12 09:02:02.358373607
+#  Last modified 2021-11-18 10:11:04.785232368
 #  File has been updated.
 #  Successfully updated.
 
 mdns.o: mdns.c
 #  Implicit rule search has been done.
 #  Implicit/static pattern stem: 'mdns'
-#  Last modified 2021-11-15 09:45:16.323678339
+#  Last modified 2021-11-18 10:11:04.853233349
 #  File has been updated.
 #  Successfully updated.
 #  recipe to execute (from 'Makefile', line 8):
@@ -358,9 +366,28 @@ mdns.o: mdns.c
 
 mdns: main.o mdns.o config_init.o forward_message.o
 #  Implicit rule search has not been done.
-#  Last modified 2021-11-15 09:45:16.427680117
+#  Implicit/static pattern stem: ''
+#  Last modified 2021-11-18 10:11:04.801232598
 #  File has been updated.
-#  Successfully updated.
+#  Needs to be updated (-q is set).
+# automatic
+# @ := mdns
+# automatic
+# % := 
+# automatic
+# * := 
+# automatic
+# + := main.o mdns.o config_init.o forward_message.o
+# automatic
+# | := 
+# automatic
+# < := main.o
+# automatic
+# ^ := main.o mdns.o config_init.o forward_message.o
+# automatic
+# ? := main.o mdns.o config_init.o forward_message.o
+# variable set hash-table stats:
+# Load=8/32=25%, Rehash=0, Collisions=1/18=6%
 #  recipe to execute (from 'Makefile', line 11):
 	$(CC) $(CFLAGS) $^ -o $@    $(LIBS)
 
@@ -374,7 +401,7 @@ clean:
 main.o: main.c
 #  Implicit rule search has been done.
 #  Implicit/static pattern stem: 'main'
-#  Last modified 2021-11-15 09:45:16.243676972
+#  Last modified 2021-11-18 10:11:04.849233291
 #  File has been updated.
 #  Successfully updated.
 #  recipe to execute (from 'Makefile', line 8):
@@ -383,14 +410,14 @@ main.o: main.c
 forward_message.o: forward_message.c
 #  Implicit rule search has been done.
 #  Implicit/static pattern stem: 'forward_message'
-#  Last modified 2021-11-15 09:45:16.415679912
+#  Last modified 2021-11-18 10:11:04.861233465
 #  File has been updated.
 #  Successfully updated.
 #  recipe to execute (from 'Makefile', line 8):
 	$(CC) -c $(CFLAGS) -o $@ $<
 
 # files hash-table stats:
-# Load=14/1024=1%, Rehash=0, Collisions=0/43=0%
+# Load=14/1024=1%, Rehash=0, Collisions=0/44=0%
 # VPATH Search Paths
 
 # No 'vpath' search paths.
@@ -400,9 +427,9 @@ forward_message.o: forward_message.c
 # strcache buffers: 1 (0) / strings = 29 / storage = 271 B / avg = 9 B
 # current buf: size = 8162 B / used = 271 B / count = 29 / avg = 9 B
 
-# strcache performance: lookups = 52 / hit rate = 44%
+# strcache performance: lookups = 53 / hit rate = 45%
 # hash-table stats:
-# Load=29/8192=0%, Rehash=0, Collisions=1/52=2%
-# Finished Make data base on Tue Nov 16 20:35:07 2021
+# Load=29/8192=0%, Rehash=0, Collisions=1/53=2%
+# Finished Make data base on Thu Nov 18 10:12:40 2021
 
  
