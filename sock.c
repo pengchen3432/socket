@@ -1,8 +1,3 @@
-<<<<<<< HEAD
-dsadasdas
-=======
-hahahahah
->>>>>>> 0c1a6bd1bf0eeaf2851ee3bcdafd57d4aa352dc8
 #include <stdio.h>
 #include <sys/socket.h>
 #include <sys/types.h>
@@ -42,7 +37,6 @@ int main()
 
     for (;;)
     {
-        lalalalalal
         memset(buf, 0x00, sizeof(buf));
         n = recv(fd, buf, sizeof(buf), 0);
         printf("=========================\n");
