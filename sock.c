@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-=======
-
->>>>>>> e125860505337e41cf6e1475e5b562ff601aa5d4
 #include <stdio.h>
 #include <sys/socket.h>
 #include <sys/types.h>
