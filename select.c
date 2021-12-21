@@ -45,6 +45,7 @@ int main()
 
     for (;;)
     {
+        printf("11111\n");
         rset = all;
         n = select(max_fd + 1, &rset, NULL, NULL, NULL);
         if (FD_ISSET(fd, &rset))
@@ -90,6 +91,7 @@ int main()
             {
                 if ((n = read(sockfd, buf, sizeof(buf))) == 0)
                 {
+                    printf("exit\n");
                     close(sockfd);
                     FD_CLR(sockfd, &all);
                     client[i] = -1;
