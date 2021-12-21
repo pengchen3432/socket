@@ -38,7 +38,6 @@ int main()
 
     for (;;)
     {
-       bendi
         memset(buf, 0x00, sizeof(buf));
         n = recv(fd, buf, sizeof(buf), 0);
         printf("=========================\n");
@@ -64,5 +63,4 @@ int main()
         }
         printf("=========================\n\n");
     }
-    hhdasdasdas
 }
