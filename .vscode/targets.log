@@ -8,7 +8,7 @@ make: *** No rule to make target 'all'.  Stop.
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Tue Dec 21 13:43:06 2021
+# Make data base, printed on Tue Dec 21 16:29:02 2021
 
 # Variables
 
@@ -71,7 +71,7 @@ DBUS_SESSION_BUS_ADDRESS = unix:path=/run/user/1000/bus
 # environment
 VSCODE_VERBOSE_LOGGING = true
 # environment
-TERMINATOR_UUID = urn:uuid:e1b6e73d-005e-49e8-b47e-c0841f980f59
+TERMINATOR_UUID = urn:uuid:782f8e42-9847-45bc-92d2-436cf48e3df2
 # environment
 CLUTTER_IM_MODULE = xim
 # environment
@@ -169,7 +169,7 @@ SHLVL = 1
 # environment
 GNOME_SHELL_SESSION_MODE = ubuntu
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-3199d8d6-b81b-4fb8-b04c-490f263f5e10.sock
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-468aba8a-b682-4697-afaa-446f172ca84f.sock
 # environment
 XDG_SESSION_ID = 2
 # environment
@@ -187,7 +187,7 @@ LC_TELEPHONE = zh_SG.UTF-8
 # default
 MAKE_COMMAND := make
 # environment
-OLDPWD = /home/k4/socket/my_test
+OLDPWD = /home/k4
 # environment
 TERMINATOR_DBUS_PATH = /net/tenshu/Terminator2
 # default
@@ -212,8 +212,6 @@ BREAKPAD_DUMP_LOCATION = /home/k4/.config/Code/exthost Crash Reports
 GDK_BACKEND = x11
 # environment
 LC_PAPER = zh_SG.UTF-8
-# environment
-NO_AT_BRIDGE = 1
 # environment
 QT_ACCESSIBILITY = 1
 # environment
@@ -261,9 +259,9 @@ TERM = xterm-256color
 # environment
 TERMINATOR_DBUS_NAME = net.tenshu.Terminator20x1a6021154d881c
 # environment
-VSCODE_PID = 19952
+VSCODE_PID = 22329
 # variable set hash-table stats:
-# Load=125/1024=12%, Rehash=0, Collisions=22/147=15%
+# Load=124/1024=12%, Rehash=0, Collisions=22/146=15%
 
 # Pattern-specific Variable Values
 
@@ -321,6 +319,7 @@ GNUmakefile:
 
 # No 'vpath' search paths.
 
+ 
 # No general ('VPATH' variable) search path.
 
 # strcache buffers: 1 (0) / strings = 55 / storage = 503 B / avg = 9 B
@@ -329,6 +328,6 @@ GNUmakefile:
 # strcache performance: lookups = 58 / hit rate = 5%
 # hash-table stats:
 # Load=55/8192=1%, Rehash=0, Collisions=1/58=2%
-# Finished Make data base on Tue Dec 21 13:43:06 2021
+# Finished Make data base on Tue Dec 21 16:29:02 2021
 
  
