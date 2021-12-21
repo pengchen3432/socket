@@ -64,5 +64,5 @@ int main()
         }
         printf("=========================\n\n");
     }
-    cp 6666
+    lalalalal
 }
