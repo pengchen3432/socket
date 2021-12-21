@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {
     "makefile.extensionOutputFolder": "./.vscode",
     "files.associations": {
@@ -9,3 +10,6 @@
         "utility": "cpp"
     }
 }
+=======
+{}
+>>>>>>> 035d2c7e2d4cf0554278f6a6573f80353945ef9f
