@@ -42,6 +42,7 @@ int main()
 
     for (;;)
     {
+        lalalalalal
         memset(buf, 0x00, sizeof(buf));
         n = recv(fd, buf, sizeof(buf), 0);
         printf("=========================\n");
