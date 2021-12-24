@@ -7,6 +7,17 @@
         "*.tcc": "c",
         "string_view": "c",
         "limits": "c",
-        "algorithm": "c"
+        "algorithm": "c",
+        "array": "cpp",
+        "initializer_list": "cpp",
+        "utility": "cpp",
+        "unordered_map": "cpp",
+        "fstream": "cpp",
+        "optional": "cpp",
+        "ostream": "cpp",
+        "vector": "cpp",
+        "sstream": "cpp",
+        "streambuf": "cpp",
+        "tuple": "cpp"
     }
 }
