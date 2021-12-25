@@ -1,3 +1,5 @@
+git stash
+git add 
 #include <stdio.h>
 #include <sys/socket.h>
 #include <sys/types.h>
