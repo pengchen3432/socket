@@ -1,0 +1,267 @@
+Wed Dec 29 08:31:35 2021 daemon.debug ubusd[502]: ubusd_create_object: -->ubusd add object stats
+root@Grandstream:~# Wed Dec 29 08:31:35 2021 daemon.debug controller: main: Grandstream Controller ARCH=mtk7621
+Wed Dec 29 08:31:35 2021 daemon.debug controller: main: Compiled on Oct 13 2021 15:58:35
+Wed Dec 29 08:31:35 2021 daemon.debug controller: database_check_version: Database is using version 5
+Wed Dec 29 08:31:35 2021 daemon.debug ubusd[502]: ubusd_create_object: -->ubusd add object controller
+Wed Dec 29 08:31:35 2021 daemon.debug ubusd[502]: ubusd_create_object: -->ubusd add object controller.core
+Wed Dec 29 08:31:35 2021 daemon.debug ubusd[502]: ubusd_create_object: -->ubusd add object controller.config
+Wed Dec 29 08:31:35 2021 daemon.debug ubusd[502]: ubusd_create_object: -->ubusd add object controller.discovery
+Wed Dec 29 08:31:35 2021 daemon.debug ubusd[502]: ubusd_create_object: -->ubusd add object controller.icc
+Wed Dec 29 08:31:35 2021 daemon.debug ubusd[502]: ubusd_create_object: -->ubusd add object controller.analysis
+Wed Dec 29 08:31:35 2021 daemon.debug ubusd[502]: ubusd_create_object: -->ubusd add object controller.rrm
+Wed Dec 29 08:31:35 2021 daemon.debug controller: core_init: mac: c0:74:ad:9a:99:58
+Wed Dec 29 08:31:35 2021 daemon.debug controller: core_init: product_model: GWN7630
+Wed Dec 29 08:31:35 2021 daemon.debug controller: core_init: part_number: 9640001611A
+Wed Dec 29 08:31:35 2021 daemon.debug controller: core_init: version_boot: 0.0.0.1
+Wed Dec 29 08:31:35 2021 daemon.debug controller: core_init: version_firmware: 1.2.2.1
+Wed Dec 29 08:31:35 2021 daemon.debug controller: core_init: new_version_firmware: 1.2.2.1
+Wed Dec 29 08:31:35 2021 daemon.debug controller: core_init: version_mask: 0x0007
+Wed Dec 29 08:31:35 2021 daemon.debug controller: ifstat_load: Loaded interface tracking for device lan0
+Wed Dec 29 08:31:35 2021 daemon.debug controller: ifstat_load: Loaded interface tracking for device lan1
+Wed Dec 29 08:31:35 2021 daemon.debug controller: master_set_sock_opts: Using socket 12
+Wed Dec 29 08:31:35 2021 daemon.debug controller: master_set_sock_opts: SO_KEEPALIVE is 0
+Wed Dec 29 08:31:35 2021 daemon.debug controller: master_set_sock_opts: TCP_KEEPCNT is 9
+Wed Dec 29 08:31:35 2021 daemon.debug controller: master_set_sock_opts: TCP_KEEPIDLE is 120
+Wed Dec 29 08:31:35 2021 daemon.debug controller: master_set_sock_opts: TCP_KEEPINTVL is 75
+Wed Dec 29 08:31:35 2021 daemon.debug controller: apsm_sm_unpaired: c074ad9a9958 EVT_AP_LOADED
+Wed Dec 29 08:31:35 2021 daemon.debug controller: apsm_sm_unpaired: c074ad9a9958 EVT_AP_STATE_EXIT
+Wed Dec 29 08:31:35 2021 daemon.debug controller: apsm_sm_paired: c074ad9a9958 EVT_AP_STATE_ENTER EVT_AP_LOADED
+Wed Dec 29 08:31:35 2021 daemon.debug controller: apsm_sm_unpaired: 000b82b4b558 EVT_AP_LOADED
+Wed Dec 29 08:31:35 2021 daemon.debug controller: apsm_sm_unpaired: 000b82b4b558 EVT_AP_STATE_EXIT
+Wed Dec 29 08:31:35 2021 daemon.debug controller: apsm_sm_paired: 000b82b4b558 EVT_AP_STATE_ENTER EVT_AP_LOADED
+Wed Dec 29 08:31:35 2021 daemon.debug controller: apsm_sm_paired: 000b82b4b558 EVT_AP_UPDATE
+Wed Dec 29 08:31:35 2021 daemon.debug controller: socket_setup: Opening broadcast AF_INET socket fd 13 on 192.168.2.193
+Wed Dec 29 08:31:35 2021 daemon.debug controller: socket_setup: Bound socket to interface br-lan0_ex port 14
+Wed Dec 29 08:31:35 2021 daemon.debug controller: socket_setup: Opening unicast AF_INET socket fd 14 on 0.0.0.0
+Wed Dec 29 08:31:35 2021 daemon.debug controller: rrm_init: start
+Wed Dec 29 08:31:35 2021 kern.debug kernel: dnsanalysis: kernel receive controller_enable = 0
+Wed Dec 29 08:31:35 2021 daemon.debug controller: is_wifi_config_update: config file not change
+Wed Dec 29 08:31:35 2021 daemon.debug controller: is_wifi_config_update: new_md5=92b9acb1214c4d9901fef15db6b4c39e, old_md5=92b9acb1214c4d9901fef15db6b4c39e
+Wed Dec 29 08:31:35 2021 daemon.debug controller: rrm_config_init: ap status is already AP_CHN_ACS, radio=0
+Wed Dec 29 08:31:35 2021 daemon.debug controller: get_ap_auto_txpower_status: ######get radio=0, auto_txpower_status_value=0
+Wed Dec 29 08:31:35 2021 daemon.debug controller: set_ap_auto_txpower_status: ######radio=0, auto_txpower_status_value=0
+Wed Dec 29 08:31:35 2021 daemon.debug controller: rrm_config_init: radio=0, mac=c074ad9a9958, dca=0, tpc=0, chd=0, auto_chan_enable=1, auto_txpower_enable = 0, auto_txpower_status = 0, active_streams=4
+Wed Dec 29 08:31:35 2021 daemon.debug controller: rrm_config_init: ap status is already AP_CHN_ACS, radio=1
+Wed Dec 29 08:31:35 2021 daemon.debug controller: get_ap_auto_txpower_status: ######get radio=1, auto_txpower_status_value=0
+Wed Dec 29 08:31:35 2021 daemon.debug controller: set_ap_auto_txpower_status: ######radio=1, auto_txpower_status_value=0
+Wed Dec 29 08:31:35 2021 daemon.debug controller: rrm_config_init: radio=1, mac=c074ad9a9958, dca=0, tpc=0, chd=0, auto_chan_enable=1, auto_txpower_enable = 0, auto_txpower_status = 0, active_streams=4
+Wed Dec 29 08:31:35 2021 daemon.debug controller: nbr_timer_init: nrand = 177
+Wed Dec 29 08:31:35 2021 daemon.debug controller: nbr_timer_init: nrand = 110
+Wed Dec 29 08:31:35 2021 daemon.debug controller: geoanalytic_init:  - success 2.4G disabled 5G disabled
+Wed Dec 29 08:31:37 2021 daemon.debug controller: run_shell_command: Executing: pidof sshpfd.sh
+Wed Dec 29 08:31:37 2021 daemon.debug controller: run_shell_command: Shell returned 0 bytes
+Wed Dec 29 08:31:38 2021 user.debug syslog: gsdcs - dcs_pkt_handle_hello: Neighbor id 00:0b:82:b4:b5:58, DAP id in hello packet c0:74:ad:9a:99:58, BDAP id in hello packet 00:0b:82:b4:b5:58
+Wed Dec 29 08:31:40 2021 user.debug syslog: gsdcs - dcs_make_hello_header: Cannot get mesh role, keep it no change!
+Wed Dec 29 08:31:41 2021 daemon.debug controller: uloop_fd_cb: uloop_fd_cb
+Wed Dec 29 08:31:45 2021 daemon.debug controller: server_cb: server_cb
+Wed Dec 29 08:31:45 2021 daemon.debug controller: server_cb: Identified preprocessing data 000b82b4b558 from 192.168.2.113(tls version 3, need_update 1)
+Wed Dec 29 08:31:45 2021 daemon.debug controller: server_cb: New connection for device 000b82b4b558 192.168.2.113
+Wed Dec 29 08:31:45 2021 daemon.debug controller: apsm_sm_paired: 000b82b4b558 EVT_AP_OFFLINE
+Wed Dec 29 08:31:45 2021 daemon.debug controller: apsm_sm_paired: Closing connection for device 000b82b4b558 0xc3c920
+Wed Dec 29 08:31:45 2021 daemon.debug controller: icc_master_close: Device 000b82b4b558 closing ICC
+Wed Dec 29 08:31:45 2021 daemon.debug controller: icc_master_close: ICC going offline
+Wed Dec 29 08:31:45 2021 daemon.debug controller: util_close_ustream_fd: util_close_ustream_fd: Warnning!! tried to close an already closed socket fd(0)!!
+Wed Dec 29 08:31:45 2021 daemon.debug controller: server_cb: Slave 000b82b4b558 0xc3c920 connected with ustream_fd 0xc3cb48 on fd 16
+Wed Dec 29 08:31:45 2021 daemon.debug controller: apsm_sm_paired: 000b82b4b558 EVT_AP_ONLINE
+Wed Dec 29 08:31:45 2021 daemon.debug controller: apsm_sm_paired: 000b82b4b558 EVT_AP_STATE_EXIT
+Wed Dec 29 08:31:45 2021 daemon.debug controller: apsm_sm_online: 000b82b4b558 EVT_AP_STATE_ENTER EVT_AP_ONLINE
+Wed Dec 29 08:31:45 2021 daemon.debug controller: master_ssl_notify_connected_cb: Device [00:0b:82:b4:b5:58] <192.168.2.113> online
+Wed Dec 29 08:31:45 2021 daemon.debug controller: master_parse_message: Receive command ICC_DISCOVERY_INFO from slave 00:0b:82:b4:b5:58
+Wed Dec 29 08:31:45 2021 user.debug syslog: gsdcs - dcs_get_election_state: Get election state...
+Wed Dec 29 08:31:45 2021 daemon.debug controller: get_election_state: get_election_state.182 [{"elect_state":{"DAP":"c0:74:ad:9a:99:58","BDAP":"00:0b:82:b4:b5:58","myself":"DAP"}}]
+Wed Dec 29 08:31:45 2021 daemon.debug controller: dcs_elect_state_change: old_myself = , new_myself = DAP
+Wed Dec 29 08:31:45 2021 daemon.debug controller: dcs_elect_state_change: clean rrm_devices...
+Wed Dec 29 08:31:45 2021 daemon.debug controller: dcs_elect_state_change: clean rrm_clients...
+Wed Dec 29 08:31:45 2021 daemon.debug controller: set_ap_auto_txpower_status: ######radio=0, auto_txpower_status_value=0
+Wed Dec 29 08:31:45 2021 daemon.debug controller: set_ap_auto_txpower_status: ######radio=1, auto_txpower_status_value=0
+Wed Dec 29 08:31:45 2021 daemon.debug controller: master_parse_message: Receive command ICC_IDENTIFY from slave 00:0b:82:b4:b5:58
+Wed Dec 29 08:31:45 2021 daemon.debug controller: master_parse_message: Device 000b82b4b558 accepted master hash
+Wed Dec 29 08:31:45 2021 daemon.debug controller: icc_send_provision_hash: icc_send_provision_hash
+Wed Dec 29 08:31:45 2021 daemon.debug controller: apsm_sm_online: apsm_sm_online: send aes shared key to slave
+Wed Dec 29 08:31:45 2021 daemon.debug controller: master_parse_message: Receive command ICC_WIFI_CAP from slave 00:0b:82:b4:b5:58
+Wed Dec 29 08:31:45 2021 daemon.debug controller: master_parse_message: Receive command ICC_PROVISION_HASH from slave 00:0b:82:b4:b5:58
+Wed Dec 29 08:31:46 2021 daemon.debug controller: icc_buffer_config: Running: grandstream_config_bundle.sh 000b82b4b558 0
+Wed Dec 29 08:31:46 2021 daemon.debug controller: master_parse_message: ICC_PROVISION_HASH: sent resync to AP (dev=000b82b4b558)
+Wed Dec 29 08:31:46 2021 daemon.debug controller: apsm_sm_provision: 000b82b4b558 EVT_AP_STATE_ENTER EVT_AP_PROVISION
+Wed Dec 29 08:31:46 2021 daemon.debug controller: apsm_sm_provision: 000b82b4b558 EVT_AP_HEARTBEAT
+Wed Dec 29 08:31:46 2021 daemon.debug controller: master_parse_message: Receive command ICC_RSSPONSE_NDS_HASH from slave 00:0b:82:b4:b5:58
+Wed Dec 29 08:31:46 2021 daemon.debug controller: master_parse_message: Webroot hash received from slave
+Wed Dec 29 08:31:46 2021 daemon.debug controller: run_shell_command: Executing: /usr/bin/cportal_webroot_hash.sh local
+Wed Dec 29 08:31:46 2021 daemon.debug controller: run_shell_command: Shell returned 52 bytes
+Wed Dec 29 08:31:46 2021 daemon.debug controller: icc_compare_nds_hash: Shell returned: 7f55a3d10a70c103c4c05b5fac2566a8 /www/resources.tar
+Wed Dec 29 08:31:46 2021 daemon.debug controller: icc_compare_nds_hash: Own hash: 7f55a3d10a70c103c4c05b5fac2566a8, len 32
+Wed Dec 29 08:31:46 2021 daemon.debug controller: icc_compare_nds_hash: Slave hash: 7f55a3d10a70c103c4c05b5fac2566a8 len 32
+Wed Dec 29 08:31:46 2021 daemon.debug controller: icc_compare_nds_hash: icc_compare_nds_hash: Slave has the updated webroot
+Wed Dec 29 08:31:46 2021 daemon.debug controller: icc_process_nds_hash: icc_process_nds_hash: Slave has the updated webroot
+Wed Dec 29 08:31:46 2021 daemon.debug controller: apsm_sm_provision: 000b82b4b558 EVT_AP_HEARTBEAT
+Wed Dec 29 08:31:46 2021 daemon.debug controller: master_parse_message: Receive command ICC_MNEMONIC from slave 00:0b:82:b4:b5:58
+Wed Dec 29 08:31:46 2021 daemon.debug controller: process_mnemonic: Received extended command: send_shared_key from 00:0b:82:b4:b5:58
+Wed Dec 29 08:31:46 2021 daemon.debug controller: process_mnemonic: Unknown extended command: send_shared_key
+Wed Dec 29 08:31:46 2021 daemon.debug controller: apsm_sm_provision: 000b82b4b558 EVT_AP_HEARTBEAT
+Wed Dec 29 08:31:46 2021 daemon.debug controller: master_parse_message: Receive command ICC_PROVISION_RESYNC from slave 00:0b:82:b4:b5:58
+Wed Dec 29 08:31:46 2021 daemon.debug controller: apsm_sm_provision: 000b82b4b558 EVT_AP_PROVISION_COMPLETE
+Wed Dec 29 08:31:46 2021 daemon.debug controller: config_provision_complete: config_provision_complete
+Wed Dec 29 08:31:46 2021 daemon.debug controller: apsm_sm_provision: 000b82b4b558 EVT_AP_HEARTBEAT
+Wed Dec 29 08:31:46 2021 daemon.debug controller: close_connection_timer_handler: Closing connection
+Wed Dec 29 08:31:46 2021 daemon.debug controller: icc_master_close: Device 000b82b4b558 closing ICC
+Wed Dec 29 08:31:46 2021 daemon.debug controller: icc_master_close: ICC going offline
+Wed Dec 29 08:31:46 2021 daemon.debug controller: util_close_ustream_fd: Shutdown socket 16 ret 0 0
+Wed Dec 29 08:31:46 2021 daemon.debug controller: util_close_ustream_fd: Closed 16 ret 0 0
+Wed Dec 29 08:31:48 2021 user.debug syslog: gsdcs - dcs_pkt_handle_hello: Neighbor id 00:0b:82:b4:b5:58, DAP id in hello packet c0:74:ad:9a:99:58, BDAP id in hello packet 00:0b:82:b4:b5:58
+Wed Dec 29 08:31:50 2021 user.debug udhcpc: AP IP:"192.168.2.193" Mask:"255.255.255.0"
+Wed Dec 29 08:31:50 2021 user.debug syslog: gsdcs - dcs_make_hello_header: Cannot get mesh role, keep it no change!
+Wed Dec 29 08:31:51 2021 daemon.debug controller: uloop_fd_cb: uloop_fd_cb
+Wed Dec 29 08:31:52 2021 daemon.debug controller: server_cb: server_cb
+Wed Dec 29 08:31:52 2021 daemon.debug controller: server_cb: New connection for device 000b82b4b558 192.168.2.113
+Wed Dec 29 08:31:52 2021 daemon.debug controller: apsm_sm_provision: 000b82b4b558 EVT_AP_OFFLINE
+Wed Dec 29 08:31:52 2021 daemon.debug controller: apsm_sm_provision: Closing connection for device 000b82b4b558
+Wed Dec 29 08:31:52 2021 daemon.debug controller: icc_master_close: Device 000b82b4b558 closing ICC
+Wed Dec 29 08:31:52 2021 daemon.debug controller: icc_master_close: ICC going offline
+Wed Dec 29 08:31:52 2021 daemon.debug controller: util_close_ustream_fd: util_close_ustream_fd: Warnning!! tried to close an already closed socket fd(0)!!
+Wed Dec 29 08:31:52 2021 daemon.debug controller: apsm_sm_provision: 000b82b4b558 EVT_AP_STATE_EXIT
+Wed Dec 29 08:31:52 2021 daemon.debug controller: apsm_sm_paired: 000b82b4b558 EVT_AP_STATE_ENTER EVT_AP_OFFLINE
+Wed Dec 29 08:31:52 2021 daemon.debug controller: server_cb: Slave 000b82b4b558 0xc3c920 connected with ustream_fd 0xc3cb48 on fd 16
+Wed Dec 29 08:31:52 2021 daemon.debug controller: master_state_cb: connection to slave closed
+Wed Dec 29 08:31:52 2021 daemon.debug controller: apsm_sm_paired: 000b82b4b558 EVT_AP_OFFLINE
+Wed Dec 29 08:31:52 2021 daemon.debug controller: apsm_sm_paired: Closing connection for device 000b82b4b558 0xc3c920
+Wed Dec 29 08:31:52 2021 daemon.debug controller: icc_master_close: Device 000b82b4b558 closing ICC
+Wed Dec 29 08:31:52 2021 daemon.debug controller: icc_master_close: ICC going offline
+Wed Dec 29 08:31:52 2021 daemon.debug controller: util_close_ustream_fd: Shutdown socket 16 ret 0 0
+Wed Dec 29 08:31:52 2021 daemon.debug controller: util_close_ustream_fd: Closed 16 ret 0 0
+Wed Dec 29 08:31:53 2021 daemon.debug controller: run_shell_command: Executing: pidof sshpfd.sh
+Wed Dec 29 08:31:53 2021 daemon.debug controller: run_shell_command: Shell returned 0 bytes
+Wed Dec 29 08:31:55 2021 daemon.debug controller: icc_get_cp_clients_info_cb: sta count is 0
+Wed Dec 29 08:31:55 2021 daemon.debug controller: uloop_fd_cb: uloop_fd_cb
+Wed Dec 29 08:31:55 2021 user.debug syslog: gsdcs - dcs_get_election_state: Get election state...
+Wed Dec 29 08:31:55 2021 daemon.debug controller: get_election_state: get_election_state.182 [{"elect_state":{"DAP":"c0:74:ad:9a:99:58","BDAP":"00:0b:82:b4:b5:58","myself":"DAP"}}]
+Wed Dec 29 08:31:58 2021 user.debug syslog: gsdcs - dcs_pkt_handle_hello: Neighbor id 00:0b:82:b4:b5:58, DAP id in hello packet c0:74:ad:9a:99:58, BDAP id in hello packet 00:0b:82:b4:b5:58
+Wed Dec 29 08:31:59 2021 daemon.debug controller: server_cb: server_cb
+Wed Dec 29 08:31:59 2021 daemon.debug controller: server_cb: Identified preprocessing data 000b82b4b558 from 192.168.2.113(tls version 3, need_update 1)
+Wed Dec 29 08:31:59 2021 daemon.debug controller: server_cb: New connection for device 000b82b4b558 192.168.2.113
+Wed Dec 29 08:31:59 2021 daemon.debug controller: apsm_sm_paired: 000b82b4b558 EVT_AP_OFFLINE
+Wed Dec 29 08:31:59 2021 daemon.debug controller: apsm_sm_paired: Closing connection for device 000b82b4b558 0xc3c920
+Wed Dec 29 08:31:59 2021 daemon.debug controller: icc_master_close: Device 000b82b4b558 closing ICC
+Wed Dec 29 08:31:59 2021 daemon.debug controller: icc_master_close: ICC going offline
+Wed Dec 29 08:31:59 2021 daemon.debug controller: util_close_ustream_fd: util_close_ustream_fd: Warnning!! tried to close an already closed socket fd(0)!!
+Wed Dec 29 08:31:59 2021 daemon.debug controller: server_cb: Slave 000b82b4b558 0xc3c920 connected with ustream_fd 0xc3cb48 on fd 16
+Wed Dec 29 08:32:00 2021 daemon.debug controller: apsm_sm_paired: 000b82b4b558 EVT_AP_ONLINE
+Wed Dec 29 08:32:00 2021 daemon.debug controller: apsm_sm_paired: 000b82b4b558 EVT_AP_STATE_EXIT
+Wed Dec 29 08:32:00 2021 daemon.debug controller: apsm_sm_online: 000b82b4b558 EVT_AP_STATE_ENTER EVT_AP_ONLINE
+Wed Dec 29 08:32:00 2021 daemon.debug controller: master_ssl_notify_connected_cb: Device [00:0b:82:b4:b5:58] <192.168.2.113> online
+Wed Dec 29 08:32:00 2021 daemon.debug controller: master_parse_message: Receive command ICC_DISCOVERY_INFO from slave 00:0b:82:b4:b5:58
+Wed Dec 29 08:32:00 2021 user.debug syslog: gsdcs - dcs_make_hello_header: Cannot get mesh role, keep it no change!
+Wed Dec 29 08:32:00 2021 daemon.debug controller: master_parse_message: Receive command ICC_IDENTIFY from slave 00:0b:82:b4:b5:58
+Wed Dec 29 08:32:00 2021 daemon.debug controller: master_parse_message: Device 000b82b4b558 accepted master hash
+Wed Dec 29 08:32:00 2021 daemon.debug controller: icc_send_provision_hash: icc_send_provision_hash
+Wed Dec 29 08:32:00 2021 daemon.debug controller: apsm_sm_online: apsm_sm_online: send aes shared key to slave
+Wed Dec 29 08:32:00 2021 daemon.debug controller: master_parse_message: Receive command ICC_WIFI_CAP from slave 00:0b:82:b4:b5:58
+Wed Dec 29 08:32:00 2021 daemon.debug controller: master_parse_message: Receive command ICC_PROVISION_HASH from slave 00:0b:82:b4:b5:58
+Wed Dec 29 08:32:00 2021 daemon.debug controller: master_parse_message: ICC_PROVISION_HASH (dev = 000b82b4b558): configuration up to date
+Wed Dec 29 08:32:00 2021 daemon.debug controller: config_provision_complete: config_provision_complete
+Wed Dec 29 08:32:00 2021 daemon.debug controller: master_parse_message: Receive command ICC_RSSPONSE_NDS_HASH from slave 00:0b:82:b4:b5:58
+Wed Dec 29 08:32:00 2021 daemon.debug controller: master_parse_message: Webroot hash received from slave
+Wed Dec 29 08:32:00 2021 daemon.debug controller: run_shell_command: Executing: /usr/bin/cportal_webroot_hash.sh local
+Wed Dec 29 08:32:00 2021 daemon.debug controller: run_shell_command: Shell returned 52 bytes
+Wed Dec 29 08:32:00 2021 daemon.debug controller: icc_compare_nds_hash: Shell returned: 7f55a3d10a70c103c4c05b5fac2566a8 /www/resources.tar
+Wed Dec 29 08:32:00 2021 daemon.debug controller: icc_compare_nds_hash: Own hash: 7f55a3d10a70c103c4c05b5fac2566a8, len 32
+Wed Dec 29 08:32:00 2021 daemon.debug controller: icc_compare_nds_hash: Slave hash: 7f55a3d10a70c103c4c05b5fac2566a8 len 32
+Wed Dec 29 08:32:00 2021 daemon.debug controller: icc_compare_nds_hash: icc_compare_nds_hash: Slave has the updated webroot
+Wed Dec 29 08:32:00 2021 daemon.debug controller: icc_process_nds_hash: icc_process_nds_hash: Slave has the updated webroot
+Wed Dec 29 08:32:00 2021 daemon.debug controller: master_parse_message: Receive command ICC_MNEMONIC from slave 00:0b:82:b4:b5:58
+Wed Dec 29 08:32:00 2021 daemon.debug controller: process_mnemonic: Received extended command: send_shared_key from 00:0b:82:b4:b5:58
+Wed Dec 29 08:32:00 2021 daemon.debug controller: process_mnemonic: Unknown extended command: send_shared_key
+Wed Dec 29 08:32:04 2021 daemon.debug controller: master_parse_message: Receive command ICC_CLOUD_PING from slave 00:0b:82:b4:b5:58
+Wed Dec 29 08:32:05 2021 user.debug syslog: gsdcs - dcs_get_election_state: Get election state...
+Wed Dec 29 08:32:05 2021 daemon.debug controller: get_election_state: get_election_state.182 [{"elect_state":{"DAP":"c0:74:ad:9a:99:58","BDAP":"00:0b:82:b4:b5:58","myself":"DAP"}}]
+Wed Dec 29 08:32:08 2021 user.debug syslog: gsdcs - dcs_pkt_handle_hello: Neighbor id 00:0b:82:b4:b5:58, DAP id in hello packet c0:74:ad:9a:99:58, BDAP id in hello packet 00:0b:82:b4:b5:58
+Wed Dec 29 08:32:09 2021 daemon.debug controller: run_shell_command: Executing: pidof sshpfd.sh
+Wed Dec 29 08:32:09 2021 daemon.debug controller: run_shell_command: Shell returned 0 bytes
+Wed Dec 29 08:32:10 2021 user.debug syslog: gsdcs - dcs_make_hello_header: Cannot get mesh role, keep it no change!
+Wed Dec 29 08:32:14 2021 user.debug system_monitor: controller role is master, rss is 3860
+Wed Dec 29 08:32:15 2021 daemon.debug controller: master_parse_message: Receive command ICC_STATUS_UPDATE from slave 00:0b:82:b4:b5:58
+Wed Dec 29 08:32:15 2021 daemon.debug controller: process_status_update: Connect using ipv4, so update ipv6
+Wed Dec 29 08:32:15 2021 daemon.debug controller: master_parse_message: Receive command ICC_CLOUD_PING from slave 00:0b:82:b4:b5:58
+Wed Dec 29 08:32:15 2021 daemon.debug controller: icc_get_cp_clients_info_cb: sta count is 0
+Wed Dec 29 08:32:15 2021 user.debug syslog: gsdcs - dcs_get_election_state: Get election state...
+Wed Dec 29 08:32:15 2021 daemon.debug controller: get_election_state: get_election_state.182 [{"elect_state":{"DAP":"c0:74:ad:9a:99:58","BDAP":"00:0b:82:b4:b5:58","myself":"DAP"}}]
+Wed Dec 29 08:32:18 2021 user.debug syslog: gsdcs - dcs_pkt_handle_hello: Neighbor id 00:0b:82:b4:b5:58, DAP id in hello packet c0:74:ad:9a:99:58, BDAP id in hello packet 00:0b:82:b4:b5:58
+Wed Dec 29 08:32:20 2021 user.debug syslog: gsdcs - dcs_make_hello_header: Cannot get mesh role, keep it no change!
+Wed Dec 29 08:32:25 2021 daemon.debug controller: master_parse_message: Receive command ICC_CLOUD_PING from slave 00:0b:82:b4:b5:58
+Wed Dec 29 08:32:25 2021 daemon.debug rogue-ap: dap_classify_rogue_handler:502 *****
+Wed Dec 29 08:32:25 2021 user.debug syslog: gsdcs - dcs_get_election_state: Get election state...
+Wed Dec 29 08:32:25 2021 daemon.debug controller: get_election_state: get_election_state.182 [{"elect_state":{"DAP":"c0:74:ad:9a:99:58","BDAP":"00:0b:82:b4:b5:58","myself":"DAP"}}]
+Wed Dec 29 08:32:25 2021 daemon.debug controller: run_shell_command: Executing: pidof sshpfd.sh
+Wed Dec 29 08:32:25 2021 daemon.debug controller: run_shell_command: Shell returned 0 bytes
+Wed Dec 29 08:32:27 2021 daemon.debug rogue-ap: dap_report_to_master:938 *****
+Wed Dec 29 08:32:27 2021 user.debug syslog: gsdcs - dcs_get_election_state: Get election state...
+Wed Dec 29 08:32:27 2021 daemon.debug rogue-ap: masterIP:192.168.2.193 
+Wed Dec 29 08:32:27 2021 daemon.debug rogue-ap: wifi0:ath0 6 wifi1:athi0 149 
+Wed Dec 29 08:32:28 2021 user.debug syslog: gsdcs - dcs_pkt_handle_hello: Neighbor id 00:0b:82:b4:b5:58, DAP id in hello packet c0:74:ad:9a:99:58, BDAP id in hello packet 00:0b:82:b4:b5:58
+Wed Dec 29 08:32:30 2021 user.debug syslog: gsdcs - dcs_make_hello_header: Cannot get mesh role, keep it no change!
+Wed Dec 29 08:32:35 2021 daemon.debug controller: master_parse_message: Receive command ICC_STATUS_UPDATE from slave 00:0b:82:b4:b5:58
+Wed Dec 29 08:32:35 2021 daemon.debug controller: process_status_update: Connect using ipv4, so update ipv6
+Wed Dec 29 08:32:35 2021 daemon.debug controller: master_parse_message: Receive command ICC_CLOUD_PING from slave 00:0b:82:b4:b5:58
+Wed Dec 29 08:32:35 2021 daemon.debug controller: icc_get_cp_clients_info_cb: sta count is 0
+Wed Dec 29 08:32:35 2021 daemon.debug controller: devices_remove_offline_handler: timeout...
+Wed Dec 29 08:32:35 2021 user.debug syslog: gsdcs - dcs_get_election_state: Get election state...
+Wed Dec 29 08:32:35 2021 daemon.debug controller: get_election_state: get_election_state.182 [{"elect_state":{"DAP":"c0:74:ad:9a:99:58","BDAP":"00:0b:82:b4:b5:58","myself":"DAP"}}]
+Wed Dec 29 08:32:38 2021 user.debug syslog: gsdcs - dcs_pkt_handle_hello: Neighbor id 00:0b:82:b4:b5:58, DAP id in hello packet c0:74:ad:9a:99:58, BDAP id in hello packet 00:0b:82:b4:b5:58
+Wed Dec 29 08:32:40 2021 user.debug syslog: gsdcs - dcs_make_hello_header: Cannot get mesh role, keep it no change!
+Wed Dec 29 08:32:41 2021 daemon.debug controller: run_shell_command: Executing: pidof sshpfd.sh
+Wed Dec 29 08:32:41 2021 daemon.debug controller: run_shell_command: Shell returned 0 bytes
+Wed Dec 29 08:32:43 2021 daemon.debug rogue-ap: dap_deliver_handler:738 *****
+Wed Dec 29 08:32:45 2021 daemon.debug controller: master_parse_message: Receive command ICC_CLOUD_PING from slave 00:0b:82:b4:b5:58
+Wed Dec 29 08:32:45 2021 user.debug syslog: gsdcs - dcs_get_election_state: Get election state...
+Wed Dec 29 08:32:45 2021 daemon.debug controller: get_election_state: get_election_state.182 [{"elect_state":{"DAP":"c0:74:ad:9a:99:58","BDAP":"00:0b:82:b4:b5:58","myself":"DAP"}}]
+SeYEENBsWed Dec 29 08:32:48 2021 user.debug syslog: gsdcs - dcs_pkt_handle_hello: Neighbor id 00:0b:82:b4:b5:58, DAP id in hello packet c0:74:ad:9a:99:58, BDAP id in hello packet 00:0b:82:b4:b5:58
+Wed Dec 29 08:32:50 2021 user.debug syslog: gsdcs - dcs_make_hello_header: Cannot get mesh role, keep it no change!
+Wed Dec 29 08:32:51 2021 user.debug udhcpc: AP IP:"192.168.2.193" Mask:"255.255.255.0"
+Wed Dec 29 08:32:55 2021 daemon.debug controller: master_parse_message: Receive command ICC_STATUS_UPDATE from slave 00:0b:82:b4:b5:58
+Wed Dec 29 08:32:55 2021 daemon.debug controller: process_status_update: Connect using ipv4, so update ipv6
+Wed Dec 29 08:32:55 2021 daemon.debug controller: master_parse_message: Receive command ICC_CLOUD_PING from slave 00:0b:82:b4:b5:58
+Wed Dec 29 08:32:55 2021 daemon.debug controller: icc_get_cp_clients_info_cb: sta count is 0
+Wed Dec 29 08:32:55 2021 user.debug syslog: gsdcs - dcs_get_election_state: Get election state...
+Wed Dec 29 08:32:55 2021 daemon.debug controller: get_election_state: get_election_state.182 [{"elect_state":{"DAP":"c0:74:ad:9a:99:58","BDAP":"00:0b:82:b4:b5:58","myself":"DAP"}}]
+Wed Dec 29 08:32:57 2021 daemon.debug controller: run_shell_command: Executing: pidof sshpfd.sh
+Wed Dec 29 08:32:57 2021 daemon.debug controller: run_shell_command: Shell returned 0 bytes
+Wed Dec 29 08:32:58 2021 user.debug syslog: gsdcs - dcs_pkt_handle_hello: Neighbor id 00:0b:82:b4:b5:58, DAP id in hello packet c0:74:ad:9a:99:58, BDAP id in hello packet 00:0b:82:b4:b5:58
+Wed Dec 29 08:33:00 2021 user.debug syslog: gsdcs - dcs_make_hello_header: Cannot get mesh role, keep it no change!
+Wed Dec 29 08:33:05 2021 daemon.debug controller: master_parse_message: Receive command ICC_CLOUD_PING from slave 00:0b:82:b4:b5:58
+Wed Dec 29 08:33:05 2021 user.debug syslog: gsdcs - dcs_get_election_state: Get election state...
+Wed Dec 29 08:33:05 2021 daemon.debug controller: get_election_state: get_election_state.182 [{"elect_state":{"DAP":"c0:74:ad:9a:99:58","BDAP":"00:0b:82:b4:b5:58","myself":"DAP"}}]
+Wed Dec 29 08:33:08 2021 user.debug syslog: gsdcs - dcs_pkt_handle_hello: Neighbor id 00:0b:82:b4:b5:58, DAP id in hello packet c0:74:ad:9a:99:58, BDAP id in hello packet 00:0b:82:b4:b5:58
+Wed Dec 29 08:33:10 2021 user.debug syslog: gsdcs - dcs_make_hello_header: Cannot get mesh role, keep it no change!
+Wed Dec 29 08:33:10 2021 daemon.debug controller: master_parse_message: Receive command ICC_MNEMONIC from slave 00:0b:82:b4:b5:58
+Wed Dec 29 08:33:10 2021 daemon.debug controller: process_mnemonic: Received extended command: up_rrm_param from 00:0b:82:b4:b5:58
+Wed Dec 29 08:33:10 2021 daemon.debug controller: update_ap_nbr: 00:0b:82:b5:26:30 wasn't paired
+Wed Dec 29 08:33:13 2021 daemon.debug controller: run_shell_command: Executing: pidof sshpfd.sh
+Wed Dec 29 08:33:13 2021 daemon.debug controller: run_shell_command: Shell returned 0 bytes
+Wed Dec 29 08:33:14 2021 user.debug system_monitor: controller role is master, rss is 3940
+Wed Dec 29 08:33:15 2021 daemon.debug controller: master_parse_message: Receive command ICC_STATUS_UPDATE from slave 00:0b:82:b4:b5:58
+Wed Dec 29 08:33:15 2021 daemon.debug controller: process_status_update: Connect using ipv4, so update ipv6
+Wed Dec 29 08:33:15 2021 daemon.debug controller: master_parse_message: Receive command ICC_CLOUD_PING from slave 00:0b:82:b4:b5:58
+Wed Dec 29 08:33:15 2021 daemon.debug controller: icc_get_cp_clients_info_cb: sta count is 0
+Wed Dec 29 08:33:15 2021 user.debug syslog: gsdcs - dcs_get_election_state: Get election state...
+Wed Dec 29 08:33:15 2021 daemon.debug controller: get_election_state: get_election_state.182 [{"elect_state":{"DAP":"c0:74:ad:9a:99:58","BDAP":"00:0b:82:b4:b5:58","myself":"DAP"}}]
+Wed Dec 29 08:33:18 2021 user.debug syslog: gsdcs - dcs_pkt_handle_hello: Neighbor id 00:0b:82:b4:b5:58, DAP id in hello packet c0:74:ad:9a:99:58, BDAP id in hello packet 00:0b:82:b4:b5:58
+Wed Dec 29 08:33:20 2021 user.debug syslog: gsdcs - dcs_make_hello_header: Cannot get mesh role, keep it no change!
+Wed Dec 29 08:33:25 2021 daemon.debug controller: master_parse_message: Receive command ICC_CLOUD_PING from slave 00:0b:82:b4:b5:58
+Wed Dec 29 08:33:25 2021 user.debug syslog: gsdcs - dcs_get_election_state: Get election state...
+Wed Dec 29 08:33:25 2021 daemon.debug controller: get_election_state: get_election_state.182 [{"elect_state":{"DAP":"c0:74:ad:9a:99:58","BDAP":"00:0b:82:b4:b5:58","myself":"DAP"}}]
+Wed Dec 29 08:33:27 2021 daemon.debug rogue-ap: dap_classify_rogue_handler:502 *****
+Wed Dec 29 08:33:28 2021 user.debug syslog: gsdcs - dcs_pkt_handle_hello: Neighbor id 00:0b:82:b4:b5:58, DAP id in hello packet c0:74:ad:9a:99:58, BDAP id in hello packet 00:0b:82:b4:b5:58
+Wed Dec 29 08:33:29 2021 user.debug syslog: gsdcs - dcs_get_election_state: Get election state...
+Wed Dec 29 08:33:29 2021 daemon.debug rogue-ap: masterIP:192.168.2.193 
+Wed Dec 29 08:33:29 2021 daemon.debug rogue-ap: wifi0:ath0 6 wifi1:athi0 149 
+Wed Dec 29 08:33:29 2021 daemon.debug controller: run_shell_command: Executing: pidof sshpfd.sh
+Wed Dec 29 08:33:29 2021 daemon.debug controller: run_shell_command: Shell returned 0 bytes
+Wed Dec 29 08:33:30 2021 user.debug syslog: gsdcs - dcs_make_hello_header: Cannot get mesh role, keep it no change!
+Wed Dec 29 08:33:35 2021 daemon.debug controller: master_parse_message: Receive command ICC_STATUS_UPDATE from slave 00:0b:82:b4:b5:58
+Wed Dec 29 08:33:35 2021 daemon.debug controller: process_status_update: Connect using ipv4, so update ipv6
+Wed Dec 29 08:33:35 2021 daemon.debug controller: master_parse_message: Receive command ICC_CLOUD_PING from slave 00:0b:82:b4:b5:58
+Wed Dec 29 08:33:35 2021 daemon.debug controller: icc_get_cp_clients_info_cb: sta count is 0
+Wed Dec 29 08:33:35 2021 daemon.debug controller: devices_remove_offline_handler: timeout...
+Wed Dec 29 08:33:35 2021 user.debug syslog: gsdcs - dcs_get_election_state: Get election state...
+Wed Dec 29 08:33:35 2021 daemon.debug controller: get_election_state: get_election_state.182 [{"elect_state":{"DAP":"c0:74:ad:9a:99:58","BDAP":"00:0b:82:b4:b5:58","myself":"DAP"}}]
+Wed Dec 29 08:33:38 2021 user.debug syslog: gsdcs - dcs_pkt_handle_hello: Neighbor id 00:0b:82:b4:b5:58, DAP id in hello packet c0:74:ad:9a:99:58, BDAP id in hello packet 00:0b:82:b4:b5:58
+Wed Dec 29 08:33:40 2021 user.debug syslog: gsdcs - dcs_make_hello_header: Cannot get mesh role, keep it no change!
