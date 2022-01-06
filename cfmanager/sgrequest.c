@@ -71,6 +71,13 @@ enum {
 
     __RADIO_TYPE_MAX
 };
+
+enum {
+    DEV_AVAILABLE,
+    DEV_MEMBER,
+
+    __DEV_MAX
+};
 //=================
 //  Globals
 //=================
@@ -229,16 +236,13 @@ const struct blobmsg_policy cm_addit_ssid_policy[__CM_ADDIT_SSID_MAX] = {
     [CM_ADDIT_SSID_BMS] = { .name = "bms", .type = BLOBMSG_TYPE_STRING },
     [CM_ADDIT_SSID_BRIDGE_ENABLE] = { .name = "bridgeEnable", .type = BLOBMSG_TYPE_BOOL },
     [CM_ADDIT_SSID_80211W] = { .name = "80211w", .type = BLOBMSG_TYPE_STRING },
+    [CM_ADDIT_SSID_VLAN] = { .name = "vlan", .type = BLOBMSG_TYPE_STRING },
     [CM_ADDIT_SSID_PORTAL_ENABLE] = { .name = "portalEnable", .type = BLOBMSG_TYPE_BOOL },
     [CM_ADDIT_SSID_PORTAL_POLICY] = { .name = "portalPolicy", .type = BLOBMSG_TYPE_STRING },
     [CM_ADDIT_SSID_UPRATE] = { .name = "upRateLimit", .type = BLOBMSG_TYPE_STRING },
     [CM_ADDIT_SSID_DOWNRATE] = { .name = "downRateLimit", .type = BLOBMSG_TYPE_STRING },
     [CM_ADDIT_SSID_SCHEDULE_ENABLE] = { .name = "scheduleEnable", .type = BLOBMSG_TYPE_BOOL },
     [CM_ADDIT_SSID_SCHEDULE_ID] = { .name = "scheduleId", .type = BLOBMSG_TYPE_STRING },
-    [CM_ADDIT_SSID_VLAN_ENABLE] = { .name = "vlanEnable", .type = BLOBMSG_TYPE_BOOL },
-    [CM_ADDIT_SSID_VLAN_ID] = { .name = "vlanId", .type = BLOBMSG_TYPE_STRING },
-    [CM_ADDIT_SSID_MEMBER_DEV_MAC] = { .name = "memberDevMac", .type = BLOBMSG_TYPE_ARRAY },
-    [CM_ADDIT_SSID_AVAILABLE_DEV_MAC] = { .name = "availableDevMac", .type = BLOBMSG_TYPE_ARRAY },
 };
 
 const struct blobmsg_policy lan_policy[__LAN_MAX] = {
@@ -443,7 +447,7 @@ const struct blobmsg_policy basic_system_policy[__BASIC_SET_MAX] = {
 
 const struct blobmsg_policy cm_extern_sys_log_policy[_EXTERNAL_LOG_MAX] = {
     [CM_ISSUE_AP_LIST] = { .name = "issueApList", .type = BLOBMSG_TYPE_ARRAY },
-    [CM_EXTERN_LOG_URI] = { .name = "logUri", .type = BLOBMSG_TYPE_STRING },
+    [CM_EXTERN_LOG_URI] = { .name = "logUrl", .type = BLOBMSG_TYPE_STRING },
     [CM_EXTERN_LOG_LEVEL] = { .name = "logLevel", .type = BLOBMSG_TYPE_STRING },
     [CM_EXTERN_LOG_PROTOCOL] = { .name = "logProtocol", .type = BLOBMSG_TYPE_STRING },
 };
@@ -455,7 +459,7 @@ const struct blobmsg_policy cm_email_policy[_CM_EMAIL_MAX] = {
     [CM_EMAIL_PASSWORD] = { .name = "password", .type = BLOBMSG_TYPE_STRING},
     [CM_EMAIL_DO_NOT_VALIDATE] = { .name = "doNotValidate", .type = BLOBMSG_TYPE_BOOL},
     [CM_EMAIL_ENABLE_NOTIFICATION] = { .name = "enableNotification", .type = BLOBMSG_TYPE_BOOL},
-    [CM_EMAIL_FROM_CM_EMAIL_ADDRESS] = { .name = "fromEmailAddress", .type = BLOBMSG_TYPE_STRING},
+    [CM_EMAIL_FROM_ADDRESS] = { .name = "fromEmailAddress", .type = BLOBMSG_TYPE_STRING},
     [CM_EMAIL_FROM_NAME] = { .name = "fromName", .type = BLOBMSG_TYPE_STRING},
     [CM_EMAIL_EMAILADDRESS] = { .name = "emailaddress", .type = BLOBMSG_TYPE_ARRAY},
 };
@@ -531,14 +535,13 @@ const struct blobmsg_policy cm_ap_policy[__CM_AP_MAX] = {
     [CM_AP_5G_DISABLE] = { .name = "5gDisable", .type = BLOBMSG_TYPE_STRING },
     [CM_AP_5G_WIDTH] = { .name = "5gWidth", .type = BLOBMSG_TYPE_STRING },
     [CM_AP_5G_CHANNEL] = { .name = "5gChannel", .type = BLOBMSG_TYPE_STRING },
-    [CM_AP_5G_POWER] = { .name = "5gTxPower", .type = BLOBMSG_TYPE_STRING },
+    [CM_AP_5G_POWER] = { .name = "5gTXPower", .type = BLOBMSG_TYPE_STRING },
     [CM_AP_5G_CUSTOM_TXPOWER] = { .name = "5gCustomTxPower", .type = BLOBMSG_TYPE_STRING },
     [CM_AP_5G_RSSI_TYPE] = { .name = "5gRssiType", .type = BLOBMSG_TYPE_STRING },
     [CM_AP_5G_RSSI_THRESHOLD] = { .name = "5gRssiThreshold", .type = BLOBMSG_TYPE_STRING },
     [CM_AP_5G_RATE_LIMIT_TYPE] = { .name = "5gRateLimitType", .type = BLOBMSG_TYPE_STRING },
     [CM_AP_5G_MINI_RATE] = { .name = "5gMiniRate", .type = BLOBMSG_TYPE_STRING },
     [CM_AP_5G_SHORTGI] = { .name = "5gShortgi", .type = BLOBMSG_TYPE_STRING },
-    [CM_AP_APSMAC] = { .name = "apsMac", .type = BLOBMSG_TYPE_ARRAY },
 };
 
 // vpn client
@@ -634,12 +637,8 @@ const struct blobmsg_policy static_route_ipv4_policy[__STATIC_ROUTE_IPV4_MAX] = 
     [STATIC_ROUTE_IPV4_ACTION] = { .name = "action", .type = BLOBMSG_TYPE_STRING },
 };
 
-const struct blobmsg_policy cm_get_prired_devices_policy[__CM_GET_PAIRED_DEVICES_MAX] = {
-    [CM_GET_PAIRED_DEVICES_DEVTYPE] = { .name = "devType", .type = BLOBMSG_TYPE_STRING },
-    [CM_GET_PAIRED_DEVICES_START] = { .name = "start", .type = BLOBMSG_TYPE_STRING },
-    [CM_GET_PAIRED_DEVICES_AMOUNT] = { .name = "amount", .type = BLOBMSG_TYPE_STRING },
-    [CM_GET_PAIRED_DEVICES_FILTER] = { .name = "filter", .type = BLOBMSG_TYPE_STRING },
-    [CM_GET_PAIRED_DEVICES_DEVTYPE_FILTER] = { .name = "devTypeFilter", .type = BLOBMSG_TYPE_STRING },
+const struct blobmsg_policy get_prired_devices_policy[__GS_GET_PAIRED_DEVICES_MAX] = {
+    [GS_GET_PAIRED_DEVICES_DEVTYPE] = { .name = "devType", .type = BLOBMSG_TYPE_STRING },
 };
 
 const struct blobmsg_policy get_devices_from_controller_list_policy[__GS_CONTROLLER_DEVICES_ATTR_MAX] = {
@@ -861,11 +860,6 @@ const struct blobmsg_policy cm_schedule_get_policy[__CM_SCHEDULE_ABTIME_MAX] = {
 
 static struct blobmsg_policy get_ap_info_policy[__GET_AP_INFO_MAX] = {
     [GET_AP_INFO_MAC]= { .name = "mac", .type = BLOBMSG_TYPE_STRING },
-};
-
-static struct blobmsg_policy cm_dev_add_ssid_policy[__CM_DEV_ADD_SSID_MAX] = {
-    [CM_DEV_ADD_SSID_MAC] = { .name = "mac", .type = BLOBMSG_TYPE_STRING },
-    [CM_DEV_ADD_SSID_SSIDS] = { .name = "ssidsId", .type = BLOBMSG_TYPE_ARRAY },
 };
 
 /*
@@ -2502,8 +2496,8 @@ sgreq_set_additional_ssid(
 )
 //=============================================================================
 {
-    struct blob_attr *tb[__CM_ADDIT_SSID_MAX];
-    struct blob_attr *cm_tb[__CM_ADDIT_SSID_MAX];
+    struct blob_attr *tb[__WIRELESS_MAX];
+    struct blob_attr *cm_tb[__WIRELESS_MAX];
     struct cm_config *cm_cfg = NULL;
     char section_name[BUF_LEN_32] = { 0 };
     char *section_type = "additional_ssid";
@@ -2514,9 +2508,6 @@ sgreq_set_additional_ssid(
     int i = 0;
     bool config_change = false;
     bool need_reload_ap = false;
-    bool force_load = false;
-    bool member_dev_change = false;
-    bool available_dev_change = false;
 
     blobmsg_parse( cm_addit_ssid_policy,
         __CM_ADDIT_SSID_MAX,
@@ -2566,8 +2557,8 @@ sgreq_set_additional_ssid(
             blob_len( cm_cfg->cf_section.config ) );
     }
 
-    for( i = 0; i < __CM_ADDIT_SSID_MAX; i++ ) {
-        if( !tb[i] || CM_ADDIT_SSID_ACTION == i ) {
+    for( ; i < __CM_ADDIT_SSID_MAX; i++ ) {
+        if( !tb[i] ) {
             continue;
         }
 
@@ -2584,14 +2575,6 @@ sgreq_set_additional_ssid(
                     config_uci_set( path, "1", 0 );
                 }
                 break;
-            case CM_ADDIT_SSID_MEMBER_DEV_MAC:
-            case CM_ADDIT_SSID_AVAILABLE_DEV_MAC:
-                member_dev_change = config_addit_ssid_set_dev( tb[CM_ADDIT_SSID_MEMBER_DEV_MAC], DEV_MEMBER, section_name );
-                available_dev_change = config_addit_ssid_set_dev( tb[CM_ADDIT_SSID_AVAILABLE_DEV_MAC], DEV_AVAILABLE, section_name );
-                if( member_dev_change || available_dev_change ) {
-                    need_reload_ap = true;
-                }
-                break;;
             default:
                 break;
         }
@@ -2605,14 +2588,13 @@ sgreq_set_additional_ssid(
 
 return_value:
 
-    if( config_change || need_reload_ap ) {
+    if( config_change ) {
         config_commit( CFMANAGER_CONFIG_NAME, false );
 
         if( need_reload_ap ) {
             config_commit( CFMANAGER_CONFIG_NAME, false );
-            force_load = true;
         }
-        cfparse_load_file( CFMANAGER_CONFIG_NAME, CM_VLTREE_ADDIT_SSID, force_load );
+        cfparse_load_file( CFMANAGER_CONFIG_NAME, CM_VLTREE_ADDIT_SSID, false );
     }
 
     blob_buf_init( &reply, 0 );
@@ -4573,10 +4555,12 @@ sgreq_set_extern_sys_log(
     struct blob_attr *tb[_EXTERNAL_LOG_MAX] = { 0 };
     struct blob_attr *cm_tb[_EXTERNAL_LOG_MAX] = { 0 };
     struct cm_config *cm_cfg = NULL;
+    struct blob_attr *cur;
     char path[LOOKUP_STR_SIZE] = { 0 };
     int error_state = 0;
     int i = 0;
     int flag = 0;
+    unsigned int rem;
 
     blobmsg_parse( cm_extern_sys_log_policy,
     _EXTERNAL_LOG_MAX,
@@ -4597,10 +4581,10 @@ sgreq_set_extern_sys_log(
 
     if ( cm_cfg ) {
         blobmsg_parse( cm_extern_sys_log_policy,
-            _EXTERNAL_LOG_MAX,
-            cm_tb,
-            blob_data( cm_cfg->cf_section.config ),
-            blob_len( cm_cfg->cf_section.config  ) );
+        _EXTERNAL_LOG_MAX,
+        cm_tb,
+        blob_data( cm_cfg->cf_section.config ),
+        blob_len( cm_cfg->cf_section.config  ) );
     }
 
     for( i = 0; i < _EXTERNAL_LOG_MAX; i++ ) {
@@ -4612,8 +4596,17 @@ sgreq_set_extern_sys_log(
         }
 
         sprintf( path, "%s.debug.%s", CFMANAGER_CONFIG_NAME, cm_extern_sys_log_policy[i].name );
-        config_set_by_blob( tb[i], path, cm_extern_sys_log_policy[i].type );
 
+        if( cm_extern_sys_log_policy[i].type == BLOBMSG_TYPE_ARRAY ) {
+            config_uci_del( path, 0 );
+            blobmsg_for_each_attr(cur, data, rem) {
+                config_uci_add_list( path, blobmsg_get_string( cur ), 0 );
+            }
+        }
+        else{
+            config_set_by_blob( tb[i], path, cm_extern_sys_log_policy[i].type );
+        }
+        
         flag = 1;
     }
     
@@ -5839,6 +5832,102 @@ return_value:
 }
 
 //=============================================================================
+void
+sgreq_set_dev_ssid(
+    struct ubus_context *ctx,
+    struct blob_attr *data,
+    struct ubus_request_data *req,
+    struct sg_params* sg_params
+)
+//=============================================================================
+{
+    int error_state = 0;
+    struct blob_attr *tb[__DEV_SSID_MAX];
+    struct blob_attr *cur = NULL;
+    char mac_str[MAC_STR_MAX_LEN+1];
+    char ssids[BUF_LEN_128] = { 0 };
+    char *ssid_id = NULL;
+    int rem = 0;
+    bool config_change = false;
+
+    blobmsg_parse( dev_ssid_policy,
+        __DEV_SSID_MAX,
+        tb,
+        blobmsg_data( data ),
+        blobmsg_len( data ) );
+
+    if( !tb[DEV_SSID_ID] ) {
+        cfmanager_log_message( L_ERR, "miss ssid id\n" );
+        error_state = ERRCODE_PARAMETER_ERROR;
+        goto return_value;
+    }
+
+    ssid_id = blobmsg_get_string( tb[DEV_SSID_ID] );
+
+    if( tb[DEV_SSID_AVAILABLE_DEV] ) {
+        blobmsg_for_each_attr( cur, tb[DEV_SSID_AVAILABLE_DEV], rem ) {
+            if ( blobmsg_type( cur ) != BLOBMSG_TYPE_STRING ) {
+                continue;
+            }
+
+            memset( mac_str, 0, sizeof( mac_str ) );
+            memset( ssids, 0, sizeof( ssids ) );
+            strncpy( mac_str, util_blobmsg_get_string( cur, ""), sizeof( mac_str ) -1 );
+
+            config_get_cm_ap_ssids( mac_str, ssids, sizeof( ssids ) );
+
+            if( !util_match_ssids( ssids, ssid_id ) ) {
+                continue;
+            }
+
+            //If the ssid id is matched in an addable device, the ap should remove the ssid id
+            config_del_dev_ssid_id( mac_str, ssid_id );
+
+            config_change = true;
+        }
+    }
+
+    if( !config_change && tb[DEV_SSID_MEMBER_DEV] ) {
+        blobmsg_for_each_attr( cur, tb[DEV_SSID_MEMBER_DEV], rem ) {
+            if ( blobmsg_type( cur ) != BLOBMSG_TYPE_STRING ) {
+                continue;
+            }
+
+            memset( mac_str, 0, sizeof( mac_str ) );
+            memset( ssids, 0, sizeof( ssids ) );
+            strncpy( mac_str, util_blobmsg_get_string( cur, ""), sizeof( mac_str ) -1 );
+
+            config_get_cm_ap_ssids( mac_str, ssids, sizeof( ssids ) );
+
+            //If the ssid id does not match in the added devices, the device need add this ssid id
+            if( !util_match_ssids( ssids, ssid_id ) ) {
+                config_add_dev_ssid_id( mac_str, ssid_id );
+                config_change = true;
+            }
+         }
+    }
+
+    if( config_change ) {
+        config_commit( CFMANAGER_CONFIG_NAME, 0 );
+        cfparse_load_file( CFMANAGER_CONFIG_NAME, CM_VLTREE_AP, false );
+        cfparse_load_file( CFMANAGER_CONFIG_NAME, CM_VLTREE_ADDIT_SSID, true );
+    }
+    else {
+        cfmanager_log_message( L_DEBUG, "config unchanged\n" );
+    }
+
+return_value:
+
+    blob_buf_init( &reply, 0 );
+
+    sgreq_return_must_info_to_sg( &reply, sg_params, error_state );
+
+    ubus_send_reply( ctx, req, reply.head );
+    blob_buf_free( &reply );
+    return;
+}
+
+//=============================================================================
 static void
 parse_schedule_abtimes(
     struct blob_attr *attr,
@@ -5864,158 +5953,6 @@ parse_schedule_abtimes(
             util_blobmsg_get_string( tb[CM_SCHEDULE_ABTIME_ABDATE], "00000000" ),
             util_blobmsg_get_string( tb[CM_SCHEDULE_ABTIME_ABTIME], "0000-0000" ) );
     config_uci_add_list( path, value, 0 );
-}
-
-//=============================================================================
-void
-sgreq_set_ssid_wizard(
-    struct ubus_context *ctx,
-    struct blob_attr *data,
-    struct ubus_request_data *req,
-    struct sg_params* sg_params
-)
-//=============================================================================
-{
-    struct blob_attr *tb[__CM_ADDIT_SSID_MAX];
-    struct blob_attr *cm_tb[__CM_ADDIT_SSID_MAX];
-    struct cm_config *cm_cfg = NULL;
-    char *ssid_id = "ssid0";
-    char path[LOOKUP_STR_SIZE] = { 0 };
-    int error_state = 0;
-    int i = 0;
-
-    blobmsg_parse( cm_addit_ssid_policy,
-        __CM_ADDIT_SSID_MAX,
-        tb,
-        blobmsg_data( data ),
-        blobmsg_len( data ) );
-
-    if( !tb[CM_ADDIT_SSID_NAME] || !tb[CM_ADDIT_SSID_CRYPTO] || !tb[CM_ADDIT_SSID_PASSWORD] ) {
-        error_state = ERRCODE_PARAMETER_ERROR;
-        cfmanager_log_message( L_ERR, "miss parameter\n" );
-        goto return_value;
-    }
-
-    cm_cfg = util_get_vltree_node( &cm_addit_ssid_vltree, VLTREE_CM_TREE, ssid_id );
-    if( cm_cfg ) {
-        blobmsg_parse( cm_addit_ssid_policy,
-            __CM_ADDIT_SSID_MAX,
-            cm_tb,
-            blob_data( cm_cfg->cf_section.config ),
-            blob_len( cm_cfg->cf_section.config ) );
-
-        for( i = 0; i < __CM_ADDIT_SSID_MAX; i++ ) {
-            if( !cm_tb[i] ) {
-                continue;
-            }
-
-            snprintf( path, sizeof( path ), "%s.%s.%s",
-                CFMANAGER_CONFIG_NAME, ssid_id, cm_addit_ssid_policy[i].name );
-            /*
-             * Before set  SSID on this interface, delete the previous configuration
-             * Why not delete the entire configuration?
-             * Because we want to make sure that ssid0 is the first parameter returned,
-             * deleting the recreated section will put it at the end of the file,
-             * so we keep this section.
-             * If this section is deleted here please do it in the sgreq_get_additional_ssid function
-             */
-            config_uci_del( path, 0 );
-        }
-    }
-    else {
-        error_state = config_add_named_section( CFMANAGER_CONFIG_NAME, "additional_ssid", ssid_id );
-        if( error_state < 0 ) {
-            cfmanager_log_message( L_ERR, "add section ssid0 failed\n" );
-            error_state = ERRCODE_INTERNAL_ERROR;
-            goto return_value;
-        }
-    }
-
-    config_set_cm_ssid_default( ssid_id );
-
-    snprintf( path, sizeof( path ), "%s.%s.%s",
-        CFMANAGER_CONFIG_NAME, ssid_id, cm_addit_ssid_policy[CM_ADDIT_SSID_NAME].name );
-    config_set_by_blob( tb[CM_ADDIT_SSID_NAME], path, cm_addit_ssid_policy[CM_ADDIT_SSID_NAME].type );
-
-    snprintf( path, sizeof( path ), "%s.%s.%s",
-        CFMANAGER_CONFIG_NAME, ssid_id, cm_addit_ssid_policy[CM_ADDIT_SSID_CRYPTO].name );
-    config_set_by_blob( tb[CM_ADDIT_SSID_CRYPTO], path, cm_addit_ssid_policy[CM_ADDIT_SSID_CRYPTO].type );
-
-    snprintf( path, sizeof( path ), "%s.%s.%s",
-        CFMANAGER_CONFIG_NAME, ssid_id, cm_addit_ssid_policy[CM_ADDIT_SSID_PASSWORD].name );
-    config_set_by_blob( tb[CM_ADDIT_SSID_PASSWORD], path, cm_addit_ssid_policy[CM_ADDIT_SSID_PASSWORD].type );
-
-    config_commit( CFMANAGER_CONFIG_NAME, false );
-    cfparse_load_file( CFMANAGER_CONFIG_NAME, CM_VLTREE_ADDIT_SSID, false );
-
-return_value:
-
-    blob_buf_init( &reply, 0 );
-
-    sgreq_return_must_info_to_sg( &reply, sg_params, error_state );
-
-    ubus_send_reply( ctx, req, reply.head );
-    blob_buf_free( &reply );
-    return;
-}
-
-//=============================================================================
-void
-sgreq_set_ap_batch(
-    struct ubus_context *ctx,
-    struct blob_attr *data,
-    struct ubus_request_data *req,
-    struct sg_params* sg_params
-)
-//=============================================================================
-{
-    int error_state = 0;
-    struct blob_attr *tb[__CM_AP_MAX];
-    struct blob_attr *cur = NULL;
-    int rem = 0;
-    int i = 0;
-    char *mac = NULL;
-    char path[LOOKUP_STR_SIZE] = { 0 };
-
-    blobmsg_parse( cm_ap_policy,
-        __CM_AP_MAX,
-        tb,
-        blobmsg_data( data ),
-        blobmsg_len( data ) );
-
-    if( !tb[CM_AP_APSMAC] ) {
-        cfmanager_log_message( L_ERR, "miss aps mac\n" );
-        error_state = ERRCODE_PARAMETER_ERROR;
-        goto return_value;
-    }
-
-    blobmsg_for_each_attr( cur, tb[CM_AP_APSMAC], rem ) {
-        mac = blobmsg_get_string( cur );
-
-        for( i = CM_AP_TYPE; i < __CM_AP_MAX; i++ ) {
-            if( !tb[i] ) {
-                continue;
-            }
-
-            sprintf( path, "%s.%s.%s", CFMANAGER_CONFIG_NAME,
-                mac, cm_ap_policy[i].name );
-            config_set_by_blob( tb[i], path, cm_ap_policy[i].type );
-        }
-    }
-
-    config_commit( CFMANAGER_CONFIG_NAME, 0 );
-    cfparse_load_file( CFMANAGER_CONFIG_NAME, CM_VLTREE_AP, false );
-    cfparse_load_file( CFMANAGER_CONFIG_NAME, CM_VLTREE_RADIO, true );
-
-return_value:
-
-    blob_buf_init( &reply, 0 );
-
-    sgreq_return_must_info_to_sg( &reply, sg_params, error_state );
-
-    ubus_send_reply( ctx, req, reply.head );
-    blob_buf_free( &reply );
-    return;
 }
 
 //=============================================================================
@@ -6143,74 +6080,6 @@ return_value:
     blob_buf_free( &reply );
 
     return;
-}
-
-//=============================================================================
-void
-sgreq_set_dev_add_ssid(
-    struct ubus_context *ctx,
-    struct blob_attr *data,
-    struct ubus_request_data *req,
-    struct sg_params* sg_params
-)
-//=============================================================================
-{
-    int error_state = ERRCODE_SUCCESS;
-    int rem = 0;
-    struct blob_attr *tb[__CM_DEV_ADD_SSID_MAX];
-    struct blob_attr *cur = NULL;
-    char path[LOOKUP_STR_SIZE]= { 0 };
-    char *mac = NULL;
-    char ssids[BUF_LEN_256] = { 0 };
-    char temp[BUF_LEN_256] = { 0 };
-
-    blobmsg_parse( cm_dev_add_ssid_policy,
-        __CM_DEV_ADD_SSID_MAX,
-        tb,
-        blobmsg_data( data ),
-        blobmsg_len( data ) );
-
-    if( !tb[CM_DEV_ADD_SSID_SSIDS] || !tb[CM_DEV_ADD_SSID_MAC] ) {
-        cfmanager_log_message( L_ERR, "Missing parameters\n" );
-        error_state = ERRCODE_PARAMETER_ERROR;
-        goto return_value;
-    }
-
-    mac = blobmsg_get_string( tb[CM_DEV_ADD_SSID_MAC] );
-    snprintf( path, sizeof( path ), "%s.%s.%s", CFMANAGER_CONFIG_NAME, mac, cm_ap_policy[CM_AP_SSIDS].name );
-    config_uci_del( path, 0 );
-
-    blobmsg_for_each_attr( cur, tb[CM_DEV_ADD_SSID_SSIDS], rem ) {
-        if( BLOBMSG_TYPE_STRING != blobmsg_type( cur ) ) {
-            continue;
-        }
-
-        snprintf( temp, sizeof( temp ), "%s", ssids );
-        if( '\0' == temp[0] ) {
-            snprintf( ssids, sizeof( ssids ), "%s", blobmsg_get_string( cur ) );
-        }
-        else {
-            snprintf( ssids, sizeof( ssids ), "%s %s", temp, blobmsg_get_string( cur ) );
-        }
-    }
-
-    if( '\0' != ssids ) {
-        config_uci_set( path, ssids, 0 );
-    }
-
-    config_commit( CFMANAGER_CONFIG_NAME, false );
-    cfparse_load_file( CFMANAGER_CONFIG_NAME, CM_VLTREE_AP, false );
-    cfparse_load_file( CFMANAGER_CONFIG_NAME, CM_VLTREE_ADDIT_SSID, true );
-
-return_value:
-
-    blob_buf_init( &reply, 0 );
-
-    sgreq_return_must_info_to_sg( &reply, sg_params, error_state );
-
-    ubus_send_reply( ctx, req, reply.head );
-    blob_buf_free( &reply );
-
 }
 
 //=============================================================================
@@ -8973,6 +8842,118 @@ sgreq_get_ipv4_static_route(
     ubus_send_reply( ctx, req, b->head );
     blob_buf_free( b );
 }
+//=============================================================================
+static void
+sgreq_stats_dev_ssid_by_ssid_id(
+    struct blob_buf *b,
+    char *ssid_id,
+    int dev_type
+)
+//=============================================================================
+{
+    struct blob_attr *cm_tb[__CM_AP_MAX];
+    struct cm_config *cm_cfg = NULL;
+    char ssids[BUF_LEN_128] = { 0 };
+    const char *dev_field = NULL;
+    void *a = NULL;
+    void *t = NULL;
+
+    if( !b || !ssid_id ) {
+        return;
+    }
+
+    if( DEV_AVAILABLE == dev_type ) {
+        dev_field = "availableDev";
+    }
+    else {
+        dev_field = "memberDev";
+    }
+
+    a = blobmsg_open_array( b, dev_field );
+
+    vlist_for_each_element( &cm_ap_vltree, cm_cfg, node ) {
+
+        memset( ssids, 0, sizeof( ssids ) );
+        config_get_cm_ap_ssids( cm_cfg->cf_section.name, ssids, sizeof( ssids ) );
+
+        if( ( DEV_AVAILABLE == dev_type && util_match_ssids( ssids, ssid_id ) ) ||
+            ( DEV_MEMBER == dev_type && !util_match_ssids( ssids, ssid_id ) ) ) {
+
+            continue;
+        }
+
+        t = blobmsg_open_table( b, NULL );
+
+        blobmsg_parse( cm_ap_policy,
+            __CM_AP_MAX,
+            cm_tb,
+            blob_data( cm_cfg->cf_section.config ),
+            blob_len( cm_cfg->cf_section.config ) );
+
+        blobmsg_add_string( b, "type", util_blobmsg_get_string( cm_tb[CM_AP_TYPE], "" ) );
+        blobmsg_add_string( b, "mac", cm_cfg->cf_section.name );
+        // TODO:Statistics on the number of ssids of devices
+        blobmsg_add_string( b, "2g4Count", "0" );
+        blobmsg_add_string( b, "5gCount", "0" );
+        blobmsg_add_string( b, "totalSsidCount", "0" );
+
+        blobmsg_close_table( b, t );
+    }
+
+    blobmsg_close_array( b, a );
+}
+
+//=============================================================================
+void
+sgreq_get_dev_ssid(
+    struct ubus_context *ctx,
+    struct blob_attr *data,
+    struct ubus_request_data *req,
+    struct sg_params* sg_params
+)
+//=============================================================================
+{
+    int error_state = 0;
+    struct blob_buf *b;
+    struct blob_attr *tb[__DEV_SSID_MAX];
+    char *ssid_id = NULL;
+
+    if ( EXTEND_GET_ALL == sg_params->cmd ) {
+        b = (struct blob_buf *)sg_params->data;
+    }
+    else {
+        b = &reply;
+        blob_buf_init( b, 0 );
+    }
+
+    blobmsg_parse( dev_ssid_policy,
+        __DEV_SSID_MAX,
+        tb,
+        blobmsg_data( data),
+        blobmsg_len(data ) );
+
+    if( !tb[DEV_SSID_ID] ) {
+        cfmanager_log_message( L_ERR, "miss ssid id\n" );
+        error_state = ERRCODE_PARAMETER_ERROR;
+        goto return_value;
+    }
+
+    ssid_id = blobmsg_get_string( tb[DEV_SSID_ID] );
+
+    sgreq_stats_dev_ssid_by_ssid_id( b, ssid_id, DEV_AVAILABLE );
+    sgreq_stats_dev_ssid_by_ssid_id( b, ssid_id, DEV_MEMBER );
+
+return_value:
+
+    //When sg issues "get all", the return information is returned from sgreq_get_all
+    if( EXTEND_GET_ALL == sg_params->cmd ) {
+        return;
+    }
+
+    sgreq_return_must_info_to_sg( b, sg_params, error_state );
+    ubus_send_reply( ctx, req, b->head );
+    blob_buf_free( b );
+}
 
 //=============================================================================
 static void
@@ -9457,66 +9438,7 @@ return_value:
 
 //=============================================================================
 void
-sgreq_get_ssid_wizard(
-    struct ubus_context *ctx,
-    struct blob_attr *data,
-    struct ubus_request_data *req,
-    struct sg_params* sg_params
-)
-//=============================================================================
-{
-    int error_state = 0;
-    struct cm_config *cm_cfg = NULL;
-    struct blob_attr *tb[__CM_ADDIT_SSID_MAX];
-    struct blob_buf *b =NULL;
-    char *ssid_id = "ssid0";
-
-    if ( EXTEND_GET_ALL == sg_params->cmd ) {
-        b = (struct blob_buf *)sg_params->data;
-    }
-    else {
-        b = &reply;
-        blob_buf_init( b, 0 );
-    }
-
-    cm_cfg = util_get_vltree_node( &cm_addit_ssid_vltree, VLTREE_CM_TREE, ssid_id );
-    if( !cm_cfg ) {
-        cfmanager_log_message( L_ERR, "not find %s info\n", ssid_id );
-        error_state = ERRCODE_PARAMETER_ERROR;
-    }
-    else {
-        blobmsg_parse( cm_addit_ssid_policy,
-            __CM_ADDIT_SSID_MAX,
-            tb,
-            blob_data( cm_cfg->cf_section.config ),
-            blob_len( cm_cfg->cf_section.config ) );
-
-        if( tb[CM_ADDIT_SSID_NAME] ) {
-            blobmsg_add_blob( b, tb[CM_ADDIT_SSID_NAME] );
-        }
-
-        if( tb[CM_ADDIT_SSID_CRYPTO] ) {
-            blobmsg_add_blob( b, tb[CM_ADDIT_SSID_CRYPTO] );
-        }
-
-        if( tb[CM_ADDIT_SSID_PASSWORD] ) {
-            blobmsg_add_blob( b, tb[CM_ADDIT_SSID_PASSWORD] );
-        }
-    }
-
-    //When sg issues "get all", the return information is returned from sgreq_get_all
-    if( EXTEND_GET_ALL == sg_params->cmd ) {
-        return;
-    }
-
-    sgreq_return_must_info_to_sg( b, sg_params, error_state );
-    ubus_send_reply( ctx, req, b->head );
-    blob_buf_free( b );
-}
-
-//=============================================================================
-void
-sgreq_get_aps_simple_info(
+sgreq_get_ap_simple_info(
     struct ubus_context *ctx,
     struct blob_attr *data,
     struct ubus_request_data *req,
@@ -9539,7 +9461,7 @@ sgreq_get_aps_simple_info(
         blob_buf_init( b, 0 );
     }
 
-    a = blobmsg_open_array( b, "apsSimpleInfo" );
+    a = blobmsg_open_array( b, "aps simple info" );
 
     vlist_for_each_element( &cm_ap_vltree, cm_cfg, node ) {
 
@@ -9553,8 +9475,6 @@ sgreq_get_aps_simple_info(
 
         blobmsg_add_string( b, "mac", util_blobmsg_get_string( tb[CM_AP_MAC], "" ) );
         blobmsg_add_string( b, "type", util_blobmsg_get_string( tb[CM_AP_TYPE], "" ) );
-        blobmsg_add_string( b, "name", util_blobmsg_get_string( tb[CM_AP_NAME],
-            util_blobmsg_get_string( tb[CM_AP_TYPE], "" ) ) );
 
         blobmsg_close_table( b, t );
     }
@@ -9815,107 +9735,6 @@ sgreq_get_paired_devices_cb(
 }
 
 //=============================================================================
-static void
-sgreq_add_paired_devices_info(
-    struct ubus_context *ctx,
-    struct blob_buf *b,
-    struct blob_attr **tb,
-    int get_dev_type
-)
-//=============================================================================
-{
-    struct gs_device_info gs_devinfo = {{ 0 }};
-    struct blob_buf c;
-    uint32_t search_id;
-    char ap_name[BUF_LEN_64] = { 0 };
-    char mac[MAC_STR_MAX_LEN+1] = { 0 };
-    char ssids[BUF_LEN_256] = { 0 };
-    bool is_router = false;
-    void *t;
-    void *a;
-    char *p;
-
-    if( utils_device_is_me( blobmsg_get_string( tb[CM_AP_MAC] ) ) ) {
-        is_router = true;
-    }
-    else {
-        is_router = false;
-    }
-
-#if 0
-        if ( GS_GET_DEV_TYPE_MESH == get_dev_type ) {
-            /* ap do not show master router, but mesh need */
-            if ( false == is_router ) {
-                if ( !strcmp( blobmsg_get_string( tb[CM_AP_MESH] ), "0" ) )
-                    continue;
-            }
-        }
-        else if ( GS_GET_DEV_TYPE_AP == get_dev_type ) {
-            if ( is_router || !strcmp( blobmsg_get_string( tb[CM_AP_MESH] ), "1" ) )
-                continue;
-        }
-#endif
-
-    memset( &gs_devinfo, 0x0, sizeof( struct gs_device_info ) );
-    memset( &c, 0, sizeof( c ) );
-    blob_buf_init( &c, 0 );
-    blobmsg_add_blob( &c, tb[CM_AP_MAC] );
-    if ( ctx && !ubus_lookup_id( ctx, "controller.discovery", &search_id ) ) {
-        strncpy( gs_devinfo.mac, blobmsg_get_string( tb[CM_AP_MAC] ), MAC_STR_MAX_LEN );
-        ubus_invoke( ctx, search_id, "get_paired_devices", c.head, sgreq_get_paired_devices_cb, (void *)&gs_devinfo, 1000 );
-    }
-    blob_buf_free( &c );
-
-    strncpy( ap_name, util_blobmsg_get_string( tb[CM_AP_NAME], util_blobmsg_get_string( tb[CM_AP_TYPE], "" ) ),
-            sizeof( ap_name ) -1 );
-    strncpy( mac, util_blobmsg_get_string( tb[CM_AP_MAC], "" ), sizeof( mac ) -1 );
-
-    t = blobmsg_open_table( b, NULL );
-    blobmsg_add_string( b, "devMac", mac );
-    blobmsg_add_string( b, "type", blobmsg_get_string( tb[CM_AP_TYPE] ) );
-    if( is_router ) {
-        if ( ctx && !ubus_lookup_id( ctx, "network.interface.wan0", &search_id ) ) {
-            ubus_invoke( ctx, search_id, "status", NULL, sgreq_get_dev_wan0_cb, b, 1000 );
-        }
-
-        if( config_wan1_is_enable() ) {
-            if ( ctx && !ubus_lookup_id( ctx, "network.interface.wan1", &search_id ) ) {
-                ubus_invoke( ctx, search_id, "status", NULL, sgreq_get_dev_wan1_cb, b, 1000 );
-            }
-        }
-    }
-    else {
-        blobmsg_add_string( b, "ip4Address", gs_devinfo.ip4Address );
-    }
-    blobmsg_add_string( b, "devName", ap_name );
-    blobmsg_add_string( b, "systemVersion", gs_devinfo.systemVersion );
-    blobmsg_add_string( b, "status", gs_devinfo.status );
-    blobmsg_add_string( b, "upgrade", gs_devinfo.upgrade );
-    blobmsg_add_string( b, "newFirmwareVersion", gs_devinfo.newFirmwareVersion );
-    if ( GS_GET_DEV_TYPE_MESH == get_dev_type ) {
-        blobmsg_add_string( b, "curSuperior", gs_devinfo.superior );
-        blobmsg_add_string( b, "radio", gs_devinfo.radio );
-        blobmsg_add_string( b, "rssi", gs_devinfo.rssi );
-    }
-
-    config_get_cm_ap_ssids( mac, ssids, sizeof( ssids ) );
-    a = blobmsg_open_array( b, "ssidsId" );
-    p = strtok( ssids, " " );
-    while( p ) {
-        blobmsg_add_string( b, NULL, p );
-        p = strtok( NULL, " " );
-    }
-    blobmsg_close_array( b, a );
-
-#if 0
-    blobmsg_add_string( b, "devPosition", tb[CM_AP_POSITION] ? blobmsg_get_string( tb[CM_AP_POSITION] ) : "0" );
-    blobmsg_add_string( b, "customDevPosition", tb[CM_AP_POSITION_CUSTOM] ? blobmsg_get_string( tb[CM_AP_POSITION_CUSTOM] ) : "" );
-    blobmsg_add_string( b, "superior", tb[CM_AP_SUPERIOR] ? blobmsg_get_string( tb[CM_AP_SUPERIOR] ) : "" );
-#endif
-    blobmsg_close_table( b, t );
-}
-
-//=============================================================================
 void
 sgreq_get_paired_devices(
     struct ubus_context *ctx,
@@ -9925,25 +9744,24 @@ sgreq_get_paired_devices(
 )
 //=============================================================================
 {
-    struct blob_attr *tb_input[__CM_GET_PAIRED_DEVICES_MAX];
+    struct blob_attr *tb_input[__GS_GET_PAIRED_DEVICES_MAX];
     int error_state = 0;
     struct blob_buf *b;
+    struct blob_buf c;
     void *a;
+    void *t;
+    struct cm_config *cm_cfg = NULL;
     struct blob_attr *tb[__CM_AP_MAX];
-    struct uci_package *package = NULL;
-    struct uci_element *e = NULL;
+    uint32_t search_id;
     int get_dev_type = GS_GET_DEV_TYPE_NONE;
     int total_count = 0;
     char total_count_str[4] = {0};
-    char mac[MAC_STR_MAX_LEN+1] = {0};
-    char dev_type_str[BUF_LEN_16] = { 0 };
-    char filter_str[BUF_LEN_128] = { 0 };
-    char temp[BUF_LEN_128] = { 0 };
-    char dev_type_filter[BUF_LEN_16] = { 0 };
-    char ap_name[BUF_LEN_64] = { 0 };
-    char type[BUF_LEN_16] = { 0 };
-    int start = 0;
-    int amount = 0;
+    struct gs_device_info gs_devinfo = {{ 0 }};
+    char value[BUF_LEN_128] = {0};
+    char format_mac[MAC_STR_MAX_LEN+1] = {0};
+    int ret = 0;
+    int is_router = 0;
+
 
     if ( EXTEND_GET_ALL == sg_params->cmd ) {
         b = (struct blob_buf *)sg_params->data;
@@ -9953,32 +9771,22 @@ sgreq_get_paired_devices(
         blob_buf_init( b, 0 );
     }
 
-    package = cfparse_init_package( CFMANAGER_CONFIG_NAME );
-    if ( !package ) {
-        error_state = ERRCODE_INTERNAL_ERROR;
-        cfmanager_log_message( L_ERR, "load %s package failed\n", CFMANAGER_CONFIG_NAME );
-        goto return_value;
-    }
-
-    blobmsg_parse( cm_get_prired_devices_policy,
-        __CM_GET_PAIRED_DEVICES_MAX,
+    blobmsg_parse( get_prired_devices_policy,
+        __GS_GET_PAIRED_DEVICES_MAX,
         tb_input,
         blobmsg_data( data ),
         blobmsg_len( data ) );
 
-    start = util_blobmsg_get_int( tb_input[CM_GET_PAIRED_DEVICES_START], 0 );
-    amount = util_blobmsg_get_int( tb_input[CM_GET_PAIRED_DEVICES_AMOUNT], 0 );
-    strncpy( filter_str, util_blobmsg_get_string( tb_input[CM_GET_PAIRED_DEVICES_FILTER], "" ),
-            sizeof( filter_str ) -1 );
-    strncpy( dev_type_str, util_blobmsg_get_string( tb_input[CM_GET_PAIRED_DEVICES_DEVTYPE], "ap" ),
-            sizeof( dev_type_str ) -1 );
-    strncpy( dev_type_filter, util_blobmsg_get_string( tb_input[CM_GET_PAIRED_DEVICES_DEVTYPE_FILTER], "" ),
-            sizeof( dev_type_filter ) -1 );
+    if ( !tb_input[GS_GET_PAIRED_DEVICES_DEVTYPE] ) {
+        cfmanager_log_message( L_ERR, "No devType" );
+        error_state = ERRCODE_PARAMETER_ERROR;
+        goto return_value;
+    }
 
-    if ( !strcmp( dev_type_str, "ap" ) ) {
+    if ( !strcmp( blobmsg_get_string( tb_input[GS_GET_PAIRED_DEVICES_DEVTYPE] ), "ap" ) ) {
         get_dev_type = GS_GET_DEV_TYPE_AP;
     }
-    else if ( !strcmp( dev_type_str, "mesh" ) ) {
+    else if ( !strcmp( blobmsg_get_string( tb_input[GS_GET_PAIRED_DEVICES_DEVTYPE] ), "mesh" ) ) {
         get_dev_type = GS_GET_DEV_TYPE_MESH;
     }
     else {
@@ -9987,75 +9795,76 @@ sgreq_get_paired_devices(
         goto return_value;
     }
 
+    /* get master mac */
+    ret = util_read_file_content("/proc/gxp/dev_info/dev_mac", value, sizeof(value));
+    if( !ret ) {
+        util_str_erase_colon( value, format_mac );
+    }
+
     a = blobmsg_open_array( b, "devList" );
-
-    uci_foreach_element( &package->sections, e ) {
-        struct blob_buf tmp_blob;
-        struct uci_section *s = uci_to_section( e );
-        const struct uci_blob_param_list* uci_blob_list = NULL;
-
-        if( strcmp(cm_vltree_info[CM_VLTREE_AP].key, s->type) ) {
-            continue;
-        }
-
-        uci_blob_list = cm_vltree_info[CM_VLTREE_AP].policy_list;
-        memset( &tmp_blob, 0, sizeof( struct blob_buf ) );
-        blob_buf_init( &tmp_blob, 0 );
-        uci_to_blob( &tmp_blob, s, uci_blob_list );
-
+    vlist_for_each_element( &cm_ap_vltree, cm_cfg, node ) {
         blobmsg_parse( cm_ap_policy,
             __CM_AP_MAX,
             tb,
-            blob_data( tmp_blob.head ),
-            blob_len( tmp_blob.head ) );
+            blob_data( cm_cfg->cf_section.config ),
+            blob_len( cm_cfg->cf_section.config  ) );
 
-        memset( ap_name, 0, sizeof( ap_name ) );
-        memset( mac, 0, sizeof( mac ) );
-        memset( type, 0, sizeof( type ) );
-        strncpy( ap_name, util_blobmsg_get_string( tb[CM_AP_NAME], util_blobmsg_get_string( tb[CM_AP_TYPE], "" ) ),
-                sizeof( ap_name ) -1 );
-        strncpy( mac, util_blobmsg_get_string( tb[CM_AP_MAC], "" ), sizeof( mac ) -1 );
-        strncpy( type, util_blobmsg_get_string( tb[CM_AP_TYPE], "" ), sizeof( type ) -1 );
-
-        //filter type
-        if( '\0' != dev_type_filter[0] && strcasecmp( type, dev_type_filter ) ) {
-            continue;
+        if ( !strncmp( blobmsg_get_string( tb[__CM_AP_MAX] ), format_mac, MAC_STR_MAX_LEN ) ) {
+            is_router = 1;
+        }
+        else {
+            is_router = 0;
+            total_count ++;
         }
 
-        //filter mac or dev name
-        if( '\0' != filter_str[0] ) {
-            util_str_erase_colon( filter_str, temp );
-
-            if( !strcasestr( ap_name, filter_str ) &&
-                !strcasestr( mac, filter_str ) &&
-                !strcasestr( ap_name, temp) &&
-                !strcasestr( mac, temp) ) {
-
-                continue;
+        if ( GS_GET_DEV_TYPE_MESH == get_dev_type ) {
+            /* ap do not show master router, but mesh need */
+            if ( 0 == is_router ) {
+                if ( !strcmp( blobmsg_get_string( tb[CM_AP_MESH] ), "0" ) )
+                    continue;
             }
         }
-
-        //Paging processing
-        cfmanager_log_message( L_DEBUG, "start:%d amount:%d", start, amount );
-        if ( 0 == amount || ( total_count >= start && total_count < (start + amount) ) ) {
-            sgreq_add_paired_devices_info( ctx, b, tb, get_dev_type );
+        else if ( GS_GET_DEV_TYPE_AP == get_dev_type ) {
+            if ( is_router || !strcmp( blobmsg_get_string( tb[CM_AP_MESH] ), "1" ) )
+                continue;
         }
 
-        total_count++;
+        memset( &gs_devinfo, 0x0, sizeof( struct gs_device_info ) );
+        memset( &c, 0, sizeof( c ) );
+        blob_buf_init( &c, 0 );
+        blobmsg_add_blob( &c, tb[CM_AP_MAC] );
+        if ( ctx && !ubus_lookup_id( ctx, "controller.discovery", &search_id ) ) {
+            strncpy( gs_devinfo.mac, blobmsg_get_string( tb[CM_AP_MAC] ), MAC_STR_MAX_LEN );
+            ubus_invoke( ctx, search_id, "get_paired_devices", c.head, sgreq_get_paired_devices_cb, (void *)&gs_devinfo, 1000 );
+        }
+        blob_buf_free( &c );
+        t = blobmsg_open_table( b, NULL );
+        blobmsg_add_string( b, "devMac", blobmsg_get_string( tb[CM_AP_MAC] ) );
+        blobmsg_add_string( b, "type", blobmsg_get_string( tb[CM_AP_TYPE] ) );
+        blobmsg_add_string( b, "ip4Address", gs_devinfo.ip4Address );
+        blobmsg_add_string( b, "devName", tb[CM_AP_NAME] ? blobmsg_get_string( tb[CM_AP_NAME] ) : blobmsg_get_string( tb[CM_AP_TYPE] ) );
+        blobmsg_add_string( b, "systemVersion", gs_devinfo.systemVersion );
+        blobmsg_add_string( b, "status", gs_devinfo.status );
+        blobmsg_add_string( b, "upgrade", gs_devinfo.upgrade );
+        blobmsg_add_string( b, "newFirmwareVersion", gs_devinfo.newFirmwareVersion );
+        if ( GS_GET_DEV_TYPE_MESH == get_dev_type ) {
+            blobmsg_add_string( b, "curSuperior", gs_devinfo.superior );
+            blobmsg_add_string( b, "radio", gs_devinfo.radio );
+            blobmsg_add_string( b, "rssi", gs_devinfo.rssi );
+        }
+        blobmsg_add_string( b, "devPosition", tb[CM_AP_POSITION] ? blobmsg_get_string( tb[CM_AP_POSITION] ) : "0" );
+        blobmsg_add_string( b, "customDevPosition", tb[CM_AP_POSITION_CUSTOM] ? blobmsg_get_string( tb[CM_AP_POSITION_CUSTOM] ) : "" );
+        blobmsg_add_string( b, "superior", tb[CM_AP_SUPERIOR] ? blobmsg_get_string( tb[CM_AP_SUPERIOR] ) : "" );
+        blobmsg_close_table( b, t );
     }
-
     blobmsg_close_array( b, a );
 
     /* add total count */
-    snprintf( total_count_str, sizeof( total_count_str ), "%d", total_count );
+    snprintf( total_count_str, 3, "%d", total_count );
     blobmsg_add_string( b, "totalCount", total_count_str );
 
-return_value:
 
-    //When sg issues "get all", the return information is returned from sgreq_get_all
-    if( EXTEND_GET_ALL == sg_params->cmd ) {
-        return;
-    }
+return_value:
   
     sgreq_return_must_info_to_sg( b, sg_params, error_state );
     ubus_send_reply( ctx, req, b->head );
@@ -10562,46 +10371,6 @@ sgreq_get_tr069(
 }
 
 //=============================================================================
-static void
-sgreq_add_member_dev(
-    struct blob_buf *b,
-    struct blob_attr *attr
-)
-//=============================================================================
-{
-    char *ssid_id = NULL;
-    struct cm_config *cm_cfg = NULL;
-    struct blob_attr *tb[__CM_AP_MAX];
-    char ssids[BUF_LEN_256];
-    char mac[MAC_STR_MAX_LEN+1];
-
-    if( !b || !attr ) {
-        return;
-    }
-
-    ssid_id = blobmsg_get_string( attr );
-
-    vlist_for_each_element( &cm_ap_vltree, cm_cfg, node ) {
-        blobmsg_parse( cm_ap_policy,
-            __CM_AP_MAX,
-            tb,
-            blob_data(cm_cfg->cf_section.config),
-            blob_len(cm_cfg->cf_section.config) );
-
-        if( !tb[CM_AP_MAC] || !tb[CM_AP_SSIDS] ) {
-            continue;
-        }
-
-        memset( ssids, 0, sizeof( ssids ) );
-        strncpy( ssids, blobmsg_get_string( tb[CM_AP_SSIDS] ), sizeof( ssids ) -1 );
-        if( util_match_ssids( ssids,  ssid_id ) ) {
-            memset( mac, 0, sizeof( mac ) );
-            strncpy( mac, blobmsg_get_string( tb[CM_AP_MAC] ), sizeof( mac ) -1 );
-            blobmsg_add_string( b, NULL, mac );
-        }
-    }
-}
-//=============================================================================
 void
 sgreq_get_additional_ssid(
     struct ubus_context *ctx,
@@ -10618,17 +10387,16 @@ sgreq_get_additional_ssid(
     struct blob_attr *tb[__CM_ADDIT_SSID_MAX];
     void *cookie;
     int i = 0;
-    void *a;
     void *t;
+    bool enable = false;
     uint64_t rx_total = 0;
     uint64_t tx_total = 0;
     char rate_str[BUF_LEN_32] = { 0 };
 
     package = cfparse_init_package( CFMANAGER_CONFIG_NAME );
     if ( !package ) {
-        error_state = ERRCODE_INTERNAL_ERROR;
         cfmanager_log_message( L_ERR, "load %s package failed\n", CFMANAGER_CONFIG_NAME );
-        goto return_value;
+        return;
     }
 
     if( sg_params && EXTEND_GET_ALL == sg_params->cmd ) {
@@ -10662,18 +10430,18 @@ sgreq_get_additional_ssid(
 
         t = blobmsg_open_table( b, NULL );
         for ( i = 0; i < __CM_ADDIT_SSID_MAX; i++ ) {
-            if ( !tb[i] || CM_ADDIT_SSID_ACTION == i ) {
+            if ( !tb[i] ) {
                 continue;
             }
 
             blobmsg_add_blob( b, tb[i] );
         }
 
-        a = blobmsg_open_array( b, "memberDevMac" );
-        sgreq_add_member_dev( b, tb[CM_ADDIT_SSID_ID] );
-        blobmsg_close_array( b, a );
+        enable = util_blobmsg_get_bool( tb[CM_ADDIT_SSID_ENABLE], false );
+        if( !enable ) {
+            continue;
+        }
 
-        // TODO:Wireless Interface Rate Statistics
         snprintf( rate_str, sizeof( rate_str ), "%" PRIu64, rx_total );
         blobmsg_add_string( b, "currentUpRate", rate_str );
         snprintf( rate_str, sizeof( rate_str ), "%" PRIu64, tx_total );
@@ -10684,7 +10452,6 @@ sgreq_get_additional_ssid(
     }
     blobmsg_close_array( b, cookie );
 
-return_value:
     //When sg issues "get all", the return information is returned from sgreq_get_all
     if( sg_params && EXTEND_GET_ALL == sg_params->cmd ) {
         return;

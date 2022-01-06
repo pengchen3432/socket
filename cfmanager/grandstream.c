@@ -67,6 +67,7 @@ const struct blobmsg_policy manage_ap_policy[__MANAGE_AP_MAX] = {
     [MANAGE_AP_ACTION] = { .name = "action", .type = BLOBMSG_TYPE_STRING },
     [MANAGE_AP_MAC] = { .name = "mac", .type = BLOBMSG_TYPE_STRING },
     [MANAGE_AP_TYPE] = { .name = "type", .type = BLOBMSG_TYPE_STRING },
+    [MANAGE_AP_MESH] = { .name = "mesh", .type = BLOBMSG_TYPE_STRING },
 };
 
 const struct blobmsg_policy gs_ap_policy[__GS_AP_MAX] = {
@@ -196,7 +197,7 @@ const struct blobmsg_policy gs_email_policy[_GS_EMAIL_MAX] = {
     [GS_EMAIL_PASSWORD] = { .name = "password", .type = BLOBMSG_TYPE_STRING},
     [GS_EMAIL_DO_NOT_VALIDATE] = { .name = "do_not_validate", .type = BLOBMSG_TYPE_BOOL},
     [GS_EMAIL_ENABLE_NOTIFICATION] = { .name = "enable_notification", .type = BLOBMSG_TYPE_BOOL},
-    [GS_EMAIL_FROM_CM_EMAIL_ADDRESS] = { .name = "from_email_address", .type = BLOBMSG_TYPE_STRING},
+    [GS_EMAIL_FROM_ADDRESS] = { .name = "from_email_address", .type = BLOBMSG_TYPE_STRING},
     [GS_EMAIL_FROM_NAME] = { .name = "from_name", .type = BLOBMSG_TYPE_STRING},
     [GS_EMAIL_EMAILADDRESS] = { .name = "emailaddress", .type = BLOBMSG_TYPE_ARRAY},
 };
@@ -663,7 +664,7 @@ cfparse_grandstream_manage_set_ap(
         blobmsg_len( attr ) );
 
     *update = 0;
-    if ( !tb[MANAGE_AP_ACTION] || !tb[MANAGE_AP_MAC] || !tb[MANAGE_AP_TYPE] ) {
+    if ( !tb[MANAGE_AP_ACTION] || !tb[MANAGE_AP_MAC] || !tb[MANAGE_AP_TYPE] || !tb[MANAGE_AP_MESH] ) {
         cfmanager_log_message( L_ERR, "Missing some params in json!" );
         return;
     }
@@ -674,7 +675,8 @@ cfparse_grandstream_manage_set_ap(
         cfmanager_log_message( L_DEBUG, "begin add ap %s", blobmsg_get_string( tb[MANAGE_AP_MAC] ) );
         config_add_ap_default( CFMANAGER_CONFIG_NAME,
                     blobmsg_get_string( tb[MANAGE_AP_MAC] ),
-                    blobmsg_get_string( tb[MANAGE_AP_TYPE] ) );
+                    blobmsg_get_string( tb[MANAGE_AP_TYPE] ),
+                    blobmsg_get_string( tb[MANAGE_AP_MESH] ) );
         *update = 1;
     }
     else if ( cm_cfg && !strcmp( blobmsg_get_string( tb[MANAGE_AP_ACTION] ), "2" ) ) {

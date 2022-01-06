@@ -66,7 +66,7 @@ cfparse_load_notification(
 //=============================================================================
 {
     /*
-     * qos does not need to be compared, it needs to be reset every time
+     * notification does not need to be compared, it needs to be reset every time
      */
     apply_add( "notification" );
     apply_timer_start();

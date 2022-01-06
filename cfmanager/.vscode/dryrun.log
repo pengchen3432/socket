@@ -1,0 +1,43 @@
+make --dry-run --always-make --keep-going --print-directory
+make: Entering directory '/home/k4/GWN_HZ-REPO/system/closesource/cfmanager'
+gcc -c -g -O0 -Wall -Werror  -I/usr -o main.o main.c
+gcc -c -g -O0 -Wall -Werror  -I/usr -o ubus.o ubus.c
+gcc -c -g -O0 -Wall -Werror  -I/usr -o cfparse.o cfparse.c
+gcc -c -g -O0 -Wall -Werror  -I/usr -o initd.o initd.c
+gcc -c -g -O0 -Wall -Werror  -I/usr -o track.o track.c
+gcc -c -g -O0 -Wall -Werror  -I/usr -o ipc.o ipc.c
+gcc -c -g -O0 -Wall -Werror  -I/usr -o wireless.o wireless.c
+gcc -c -g -O0 -Wall -Werror  -I/usr -o utils.o utils.c
+gcc -c -g -O0 -Wall -Werror  -I/usr -o sgrequest.o sgrequest.c
+gcc -c -g -O0 -Wall -Werror  -I/usr -o config.o config.c
+gcc -c -g -O0 -Wall -Werror  -I/usr -o network.o network.c
+gcc -c -g -O0 -Wall -Werror  -I/usr -o dhcp.o dhcp.c
+gcc -c -g -O0 -Wall -Werror  -I/usr -o firewall.o firewall.c
+gcc -c -g -O0 -Wall -Werror  -I/usr -o mwan3.o mwan3.c
+gcc -c -g -O0 -Wall -Werror  -I/usr -o schedule.o schedule.c
+gcc -c -g -O0 -Wall -Werror  -I/usr -o qos.o qos.c
+gcc -c -g -O0 -Wall -Werror  -I/usr -o global_access.o global_access.c
+gcc -c -g -O0 -Wall -Werror  -I/usr -o cfmanager.o cfmanager.c
+gcc -c -g -O0 -Wall -Werror  -I/usr -o time.o time.c
+gcc -c -g -O0 -Wall -Werror  -I/usr -o apply.o apply.c
+gcc -c -g -O0 -Wall -Werror  -I/usr -o system.o system.c
+gcc -c -g -O0 -Wall -Werror  -I/usr -o email.o email.c
+gcc -c -g -O0 -Wall -Werror  -I/usr -o notification.o notification.c
+gcc -c -g -O0 -Wall -Werror  -I/usr -o grandstream.o grandstream.c
+gcc -c -g -O0 -Wall -Werror  -I/usr -o controller.o controller.c
+gcc -c -g -O0 -Wall -Werror  -I/usr -o check.o check.c
+gcc -c -g -O0 -Wall -Werror  -I/usr -o vpn.o vpn.c
+gcc -c -g -O0 -Wall -Werror  -I/usr -o upnpd.o upnpd.c
+gcc -c -g -O0 -Wall -Werror  -I/usr -o route.o route.c
+gcc -c -g -O0 -Wall -Werror  -I/usr -o bwctrl.o bwctrl.c
+gcc -c -g -O0 -Wall -Werror  -I/usr -o ddns.o ddns.c
+gcc -c -g -O0 -Wall -Werror  -I/usr -o usb.o usb.c
+gcc -c -g -O0 -Wall -Werror  -I/usr -o smb.o smb.c
+gcc -c -g -O0 -Wall -Werror  -I/usr -o gsportalcfg.o gsportalcfg.c
+gcc -c -g -O0 -Wall -Werror  -I/usr -o tr069.o tr069.c
+gcc -c -g -O0 -Wall -Werror  -I/usr -o ecm.o ecm.c
+gcc -c -g -O0 -Wall -Werror  -I/usr -o vpn_server.o vpn_server.c
+gcc -c -g -O0 -Wall -Werror  -I/usr -o cm2gs.o cm2gs.c
+gcc -g -O0 -Wall -Werror  -I/usr main.o ubus.o cfparse.o initd.o track.o ipc.o wireless.o utils.o sgrequest.o config.o network.o dhcp.o firewall.o mwan3.o schedule.o qos.o global_access.o cfmanager.o time.o apply.o system.o email.o notification.o grandstream.o controller.o check.o vpn.o upnpd.o route.o bwctrl.o ddns.o usb.o smb.o gsportalcfg.o tr069.o ecm.o vpn_server.o cm2gs.o -o cfmanager -lubus -lblobmsg_json -ljson-c -lubox -pthread -luci -lm -lgs_utils -lgs_ipc -lnbrd -lgs_crypto -ldl
+make: Leaving directory '/home/k4/GWN_HZ-REPO/system/closesource/cfmanager'
+ 

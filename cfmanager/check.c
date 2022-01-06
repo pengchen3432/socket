@@ -809,7 +809,7 @@ check_set_upnpd_defvalue(
     config_set_option_not_exist( "upnpd.config.log_output", "0" , 0 );
     config_set_option_not_exist( "upnpd.config.port", "5000" , 0 );
     config_set_option_not_exist( "upnpd.config.upnp_lease_file", "/var/upnp.leases" , 0 );
-    config_set_option_not_exist( "upnpd.config.EXTERNAL_iface", "wan0" , 0 );
+    config_set_option_not_exist( "upnpd.config.external_iface", "wan0" , 0 );
     config_uci_del( "upnpd.config.internal_iface", 0 );
     config_uci_add_list( "upnpd.config.internal_iface", "lan0_zone0", 0 );
 

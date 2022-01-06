@@ -4809,7 +4809,7 @@ cm_upnp_hooker(
         case VLTREE_ACTION_ADD:
             snprintf( path, sizeof(path), "upnpd.config.enabled" );
             config_set_by_blob( config[UPNP_ENABLE], path, blobmsg_type(config[UPNP_ENABLE]) );
-            snprintf( path, sizeof(path), "upnpd.config.EXTERNAL_iface" );
+            snprintf( path, sizeof(path), "upnpd.config.external_iface" );
             config_uci_set( path, util_blobmsg_get_string(config[UPNP_INTF],""), 0 );
             extend->set_compl_option |= BIT( BIT_MAX );
             break;
@@ -4822,7 +4822,7 @@ cm_upnp_hooker(
                     break;
 
                 case UPNP_INTF:
-                    snprintf( path, sizeof(path), "upnpd.config.EXTERNAL_iface" );
+                    snprintf( path, sizeof(path), "upnpd.config.external_iface" );
                     config_uci_set( path, util_blobmsg_get_string(config[index],""), 0 );
                     break;
 
@@ -6073,7 +6073,6 @@ cm_addit_ssid_hooker(
     char mac_str[MAC_STR_MAX_LEN+1] = { 0 };
     char ssids[BUF_LEN_128] = { 0 };
     int schedule_id = 0;
-    int vlan_id = 0;
 
     sscanf( util_blobmsg_get_string( config[CM_ADDIT_SSID_ID], "ssid0" ), "ssid%d",  &id );
 
@@ -6280,6 +6279,7 @@ cm_addit_ssid_hooker(
                 case CM_ADDIT_SSID_MCAST_TO_UCAST:
                 case CM_ADDIT_SSID_BMS:
                 case CM_ADDIT_SSID_80211W:
+                case CM_ADDIT_SSID_VLAN:
                 case CM_ADDIT_SSID_PORTAL_ENABLE:
                 case CM_ADDIT_SSID_PORTAL_POLICY:
                     config_set_wireless( index, iface_2g[id], value, RADIO_2G );
@@ -6376,25 +6376,6 @@ cm_addit_ssid_hooker(
                         config_uci_set( path, value, 0 );
                     }
                     option |= BIT( CM_CFG_SCHEDULE );
-                    break;
-                case CM_ADDIT_SSID_VLAN_ENABLE:
-                case CM_ADDIT_SSID_VLAN_ID:
-                    if ( util_blobmsg_get_bool( config[CM_ADDIT_SSID_VLAN_ENABLE], false ) ) {
-                        vlan_id = atoi( util_blobmsg_get_string( config[CM_ADDIT_SSID_VLAN_ID], "0" ) );
-                        if ( LAN_DEFAULT_VLAN_ID == vlan_id || 0 == vlan_id ) {
-                            /* To maintain compatibility with other models */
-                            snprintf( value, BUF_LEN_64, LAN_DEFAULT_INTERFACE );
-                        }
-                        else {
-                            snprintf( value, BUF_LEN_64, "zone%d", vlan_id );
-                        }
-                    }
-                    else {
-                        snprintf( value, BUF_LEN_64, LAN_DEFAULT_INTERFACE );
-                    }
-
-                    config_set_wireless( CM_ADDIT_SSID_VLAN_ID, iface_2g[id], value, RADIO_2G );
-                    config_set_wireless( CM_ADDIT_SSID_VLAN_ID, iface_5g[id], value, RADIO_5G );
                     break;
                 default:
                     break;
@@ -6493,7 +6474,6 @@ cm_extern_sys_log_hooker(
     cfmanager_log_message(LOG_ERR, "cm cb\n");
     int option = 0;
     int action = extend->action;
-    char temp[BUF_LEN_64] = { 0 };
     struct blob_attr *cur_attr = new_config[index];
     switch( action ) {
         case VLTREE_ACTION_DEL:
@@ -6502,20 +6482,13 @@ cm_extern_sys_log_hooker(
         case VLTREE_ACTION_ADD:
             switch( index ) {
                 case CM_EXTERN_LOG_URI:
-                    strncpy( temp, util_blobmsg_get_string(cur_attr, ""), sizeof(temp)-1 );
-                    if ( temp[0] == '\0' ) {
-                        config_uci_del("system.system.log_ip", 0);
-                        break;
-                    }
-                    config_uci_set("system.system.log_ip", temp, 0);
+                    config_set_by_blob(cur_attr, "system.system.log_ip", cm_extern_sys_log_policy[CM_EXTERN_LOG_URI].type);
                     break;
                 case CM_EXTERN_LOG_LEVEL:
-                    strncpy( temp, util_blobmsg_get_string(cur_attr, ""), sizeof(temp)-1 );
-                    config_uci_set("system.system.log_level", temp, 0);
+                    config_set_by_blob(cur_attr, "system.system.log_level", cm_extern_sys_log_policy[CM_EXTERN_LOG_LEVEL].type);
                     break;
                 case CM_EXTERN_LOG_PROTOCOL:
-                    strncpy( temp, util_blobmsg_get_string(cur_attr, ""), sizeof(temp)-1 );
-                    config_uci_set("system.system.log_proto", temp, 0);
+                    config_set_by_blob(cur_attr, "system.system.log_proto", cm_extern_sys_log_policy[CM_EXTERN_LOG_PROTOCOL].type);
                     break;
             }
             option |= BIT(CM_CFG_SYSTEM);
@@ -6535,7 +6508,6 @@ cm_email_hooker(
 {
     int option = 0;
     int action = extend->action;
-    char temp[BUF_LEN_64] = { 0 };
     char path[LOOKUP_STR_SIZE] = { 0 };
     unsigned int rem;
     struct blob_attr *cur_attr = new_config[index];
@@ -6547,36 +6519,28 @@ cm_email_hooker(
         case VLTREE_ACTION_ADD:
             switch( index ) {
                 case CM_EMAIL_PORT:
-                    strncpy( temp, util_blobmsg_get_string(cur_attr, ""), sizeof(temp)-1 );
-                    config_uci_set("email.email.port", temp, 0);
+                    config_set_by_blob(cur_attr, "email.email.port", cm_email_policy[CM_EMAIL_PORT].type);
                     break;
                 case CM_EMAIL_HOST:
-                    strncpy( temp, util_blobmsg_get_string(cur_attr, ""), sizeof(temp)-1 );
-                    config_uci_set("email.email.host", temp, 0);
+                    config_set_by_blob(cur_attr, "email.email.host", cm_email_policy[CM_EMAIL_HOST].type);
                     break;
                 case CM_EMAIL_USER:
-                    strncpy( temp, util_blobmsg_get_string(cur_attr, ""), sizeof(temp)-1 );
-                    config_uci_set("email.email.user", temp, 0);
+                    config_set_by_blob(cur_attr, "email.email.user", cm_email_policy[CM_EMAIL_USER].type);
                     break;
                 case CM_EMAIL_PASSWORD:
-                    strncpy( temp, util_blobmsg_get_string(cur_attr, ""), sizeof(temp)-1 );
-                    config_uci_set("email.email.password", temp, 0);
+                    config_set_by_blob(cur_attr, "email.email.password", cm_email_policy[CM_EMAIL_PASSWORD].type);
                     break;
                 case CM_EMAIL_DO_NOT_VALIDATE:
-                    strncpy( temp, util_blobmsg_get_bool(cur_attr, false) ? "1" : "0", sizeof(temp)-1 );
-                    config_uci_set("email.email.do_not_validate", temp, 0);
+                    config_set_by_blob(cur_attr, "email.email.do_not_validate", cm_email_policy[CM_EMAIL_DO_NOT_VALIDATE].type);
                     break;
                 case CM_EMAIL_ENABLE_NOTIFICATION:
-                    strncpy( temp, util_blobmsg_get_bool(cur_attr, false) ? "1" : "0", sizeof(temp)-1 );
-                    config_uci_set("email.email.enable_notification", temp, 0);
+                    config_set_by_blob(cur_attr, "email.email.enable_notification", cm_email_policy[CM_EMAIL_ENABLE_NOTIFICATION].type);
                     break;
-                case CM_EMAIL_FROM_CM_EMAIL_ADDRESS:
-                    strncpy( temp, util_blobmsg_get_string(cur_attr, ""), sizeof(temp)-1 );
-                    config_uci_set("email.email.from_CM_EMAIL_address", temp, 0);
+                case CM_EMAIL_FROM_ADDRESS:
+                    config_set_by_blob(cur_attr, "email.email.from_address", cm_email_policy[CM_EMAIL_FROM_ADDRESS].type);
                     break;
                 case CM_EMAIL_FROM_NAME:
-                    strncpy( temp, util_blobmsg_get_string(cur_attr, ""), sizeof(temp)-1 );
-                    config_uci_set("email.email.from_name", temp, 0);
+                    config_set_by_blob(cur_attr, "email.email.from_name", cm_email_policy[CM_EMAIL_FROM_NAME].type);
                 case CM_EMAIL_EMAILADDRESS:
                     sprintf( path, "%s.email.%s", "email", cm_email_policy[CM_EMAIL_EMAILADDRESS].name );
                     config_uci_del( path, 0 );
@@ -6602,8 +6566,6 @@ cm_notification_hooker(
 {
     int option = 0;
     int action = extend->action;
-    char temp[BUF_LEN_64] = { 0 };
-
     struct blob_attr *cur_attr = new_config[index];
     switch( action ) {
         case VLTREE_ACTION_DEL:
@@ -6612,44 +6574,34 @@ cm_notification_hooker(
         case VLTREE_ACTION_ADD:
             switch( index ) {
                 case CM_NOTIFY_CM_MEMORY_USAGE:
-                    strncpy( temp, util_blobmsg_get_bool(cur_attr, false) ? "1" : "0", sizeof(temp)-1 );
-                    config_uci_set("notification.notification.notify_memory_usage", temp, 0);
+                    config_set_by_blob(cur_attr, "notification.notification.notify_memory_usage", cm_notification_policy[CM_NOTIFY_CM_MEMORY_USAGE].type);
                     break;
                 case CM_MEMORY_USAGE_THRESHOLD:
-                    strncpy( temp, util_blobmsg_get_string(cur_attr, ""), sizeof(temp)-1 );
-                    config_uci_set("notification.notification.memory_usage_threshold", temp, 0);
+                    config_set_by_blob(cur_attr, "notification.notification.memory_usage_threshold", cm_notification_policy[CM_MEMORY_USAGE_THRESHOLD].type);
                     break;
                 case CM_NOTIFY_AP_THROUGHPUT:
-                    strncpy( temp, util_blobmsg_get_bool(cur_attr, false) ? "1" : "0", sizeof(temp)-1 );
-                    config_uci_set("notification.notification.notify_ap_throughput", temp, 0);
+                    config_set_by_blob(cur_attr, "notification.notification.notify_ap_throughput", cm_notification_policy[CM_NOTIFY_AP_THROUGHPUT].type);
                     break;
                 case CM_AP_THROUGHPUT_THRESHOLD:
-                    strncpy( temp, util_blobmsg_get_string(cur_attr, ""), sizeof(temp)-1 );
-                    config_uci_set("notification.notification.ap_throughput_threshold", temp, 0);
+                    config_set_by_blob(cur_attr, "notification.notification.ap_throughput_threshold", cm_notification_policy[CM_AP_THROUGHPUT_THRESHOLD].type);
                     break;
                 case CM_NOTIFY_SSID_THROUGHPUT:
-                    strncpy( temp, util_blobmsg_get_bool(cur_attr, false) ? "1" : "0", sizeof(temp)-1 );
-                    config_uci_set("notification.notification.notify_ssid_throughput", temp, 0);
+                    config_set_by_blob(cur_attr, "notification.notification.notify_ssid_throughput", cm_notification_policy[CM_NOTIFY_SSID_THROUGHPUT].type);
                     break;
                 case CM_SSID_THROUGHPUT_THRESHOLD:
-                    strncpy( temp, util_blobmsg_get_string(cur_attr, ""), sizeof(temp)-1 );
-                    config_uci_set("notification.notification.ssid_throughput_threshold", temp, 0);
+                    config_set_by_blob(cur_attr, "notification.notification.ssid_throughput_threshold", cm_notification_policy[CM_SSID_THROUGHPUT_THRESHOLD].type);
                     break;
                 case CM_NOTIFY_PASSWORD_CHANGE:
-                    strncpy( temp, util_blobmsg_get_bool(cur_attr, false) ? "1" : "0", sizeof(temp)-1 );
-                    config_uci_set("notification.notification.notify_password_change", temp, 0);
+                    config_set_by_blob(cur_attr, "notification.notification.notify_password_change", cm_notification_policy[CM_NOTIFY_PASSWORD_CHANGE].type);
                     break;
                 case CM_NOTIFY_FIRMWARE_UPGRADE:
-                    strncpy( temp, util_blobmsg_get_bool(cur_attr, false) ? "1" : "0", sizeof(temp)-1 );
-                    config_uci_set("notification.notification.notify_firmware_upgrade", temp, 0);
+                    config_set_by_blob(cur_attr, "notification.notification.notify_firmware_upgrade", cm_notification_policy[CM_NOTIFY_FIRMWARE_UPGRADE].type);
                     break;
                 case CM_NOTIFY_AP_OFFLINE:
-                    strncpy( temp, util_blobmsg_get_bool(cur_attr, false) ? "1" : "0", sizeof(temp)-1 );
-                    config_uci_set("notification.notification.notify_ap_offline", temp, 0);
+                    config_set_by_blob(cur_attr, "notification.notification.notify_ap_offline", cm_notification_policy[CM_NOTIFY_AP_OFFLINE].type);
                     break;
                 case CM_NOTIFY_FIND_ROGUEAP:
-                    strncpy( temp, util_blobmsg_get_bool(cur_attr, false) ? "1" : "0", sizeof(temp)-1 );
-                    config_uci_set("notification.notification.notify_find_rogueap", temp, 0);
+                    config_set_by_blob(cur_attr, "notification.notification.notify_find_rogueap", cm_notification_policy[CM_NOTIFY_FIND_ROGUEAP].type);
                     break;
             }
             option |= BIT(CM_CFG_NOTIFY);

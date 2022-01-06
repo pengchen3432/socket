@@ -145,10 +145,8 @@ static struct sg_handle_policy sg_hp[] = {
     { "set additional ssid", sgreq_set_additional_ssid },
     { "set radio", sgreq_set_radio },
     { "set acceleration", sgreq_set_acceleration },
+    { "set dev ssid", sgreq_set_dev_ssid },
     { "set schedule", sgreq_set_schedule },
-    { "set dev add ssid", sgreq_set_dev_add_ssid },
-    { "set ap batch", sgreq_set_ap_batch },
-    { "set ssid wizard", sgreq_set_ssid_wizard },
 
     //get request
     { "get all", sgreq_get_all },
@@ -194,10 +192,10 @@ static struct sg_handle_policy sg_hp[] = {
     { "get additional ssid", sgreq_get_additional_ssid },
     { "get radio", sgreq_get_radio },
     { "get acceleration", sgreq_get_acceleration },
+    { "get dev ssid", sgreq_get_dev_ssid },
     { "get schedule", sgreq_get_schedule },
     { "get ap status", sgreq_get_ap_status },
-    { "get aps simple info", sgreq_get_aps_simple_info },
-    { "get ssid wizard", sgreq_get_ssid_wizard },
+    { "get ap simple info", sgreq_get_ap_simple_info },
 
     //ext request
     { "ext unauthenticated info", sgreq_ext_unauthenticated_info },
@@ -645,23 +643,23 @@ send_uns_notification(
 {
    static struct blob_buf ubus_send_buf;
 
-    json_object* CM_NOTIFY_obj;
+    json_object* notify_obj;
     blob_buf_init( &ubus_send_buf, 0 );
 
-    CM_NOTIFY_obj = json_object_new_string( "cfmanager" );
+    notify_obj = json_object_new_string( "cfmanager" );
     blobmsg_add_json_element( &ubus_send_buf, "module",
-        CM_NOTIFY_obj );
-    json_object_put( CM_NOTIFY_obj );
+        notify_obj );
+    json_object_put( notify_obj );
 
-    CM_NOTIFY_obj = json_object_new_string( msg );
+    notify_obj = json_object_new_string( msg );
     blobmsg_add_json_element( &ubus_send_buf, "msg",
-        CM_NOTIFY_obj );
-    json_object_put( CM_NOTIFY_obj );
+        notify_obj );
+    json_object_put( notify_obj );
 
-    CM_NOTIFY_obj = json_object_new_int( priority );
+    notify_obj = json_object_new_int( priority );
     blobmsg_add_json_element( &ubus_send_buf, "pri",
-        CM_NOTIFY_obj );
-    json_object_put( CM_NOTIFY_obj );
+        notify_obj );
+    json_object_put( notify_obj );
 
     ubus_send_event( ctx, "grandstream", ubus_send_buf.head );
 

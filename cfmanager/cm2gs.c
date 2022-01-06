@@ -142,7 +142,7 @@ cm2gs_email_hooker(
     cm2gs_set_gs_config( section_name, cm_attr, gs_email_policy, cm_email_policy, GS_EMAIL_PASSWORD, CM_EMAIL_PASSWORD );
     cm2gs_set_gs_config( section_name, cm_attr, gs_email_policy, cm_email_policy, GS_EMAIL_DO_NOT_VALIDATE, CM_EMAIL_DO_NOT_VALIDATE );
     cm2gs_set_gs_config( section_name, cm_attr, gs_email_policy, cm_email_policy, GS_EMAIL_ENABLE_NOTIFICATION, CM_EMAIL_ENABLE_NOTIFICATION );
-    cm2gs_set_gs_config( section_name, cm_attr, gs_email_policy, cm_email_policy, GS_EMAIL_FROM_CM_EMAIL_ADDRESS, CM_EMAIL_FROM_CM_EMAIL_ADDRESS );
+    cm2gs_set_gs_config( section_name, cm_attr, gs_email_policy, cm_email_policy, GS_EMAIL_FROM_ADDRESS, CM_EMAIL_FROM_ADDRESS );
     cm2gs_set_gs_config( section_name, cm_attr, gs_email_policy, cm_email_policy, GS_EMAIL_FROM_NAME, CM_EMAIL_FROM_NAME );
     cm2gs_set_gs_config( section_name, cm_attr, gs_email_policy, cm_email_policy, GS_EMAIL_EMAILADDRESS, CM_EMAIL_EMAILADDRESS );
 
@@ -317,9 +317,7 @@ cm2gs_additional_ssid_hooker(
     cm2gs_set_gs_config( section_name, cm_attr, gs_addit_ssid_policy, cm_addit_ssid_policy, GS_ADDIT_SSID_BMS, CM_ADDIT_SSID_BMS );
     cm2gs_set_gs_config( section_name, cm_attr, gs_addit_ssid_policy, cm_addit_ssid_policy, GS_ADDIT_SSID_BRIDGE_ENABLE, CM_ADDIT_SSID_BRIDGE_ENABLE );
     cm2gs_set_gs_config( section_name, cm_attr, gs_addit_ssid_policy, cm_addit_ssid_policy, GS_ADDIT_SSID_80211W, CM_ADDIT_SSID_80211W );
-    if ( util_blobmsg_get_bool( cm_attr[CM_ADDIT_SSID_VLAN_ENABLE], false ) ) {
-        cm2gs_set_gs_config( section_name, cm_attr, gs_addit_ssid_policy, cm_addit_ssid_policy, GS_ADDIT_SSID_VLAN, CM_ADDIT_SSID_VLAN_ID );
-    }
+    cm2gs_set_gs_config( section_name, cm_attr, gs_addit_ssid_policy, cm_addit_ssid_policy, GS_ADDIT_SSID_VLAN, CM_ADDIT_SSID_VLAN );
 
     if( cm_attr[CM_ADDIT_SSID_GATEWAYMAC] ) {
         snprintf( path, sizeof( path ), "%s.%s.%s",

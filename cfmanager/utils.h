@@ -293,8 +293,8 @@ util_convert_specific_char(
 
 bool
 util_match_ssids(
-    const char *ssids,
-    const char *ssid
+    char *ssids,
+    char *ssid
 );
 
 bool
