@@ -1,4 +1,5 @@
 #include <iostream>
+#include <queue>
 using namespace std;
 class BSTNode{
 public:
@@ -24,7 +25,7 @@ int BSTNode::get_heigh(BSTNode *node)
     return node->heigh;
 }
 
-BSTNode*left_rotate(BSTNode *root)
+BSTNode*right_rotate(BSTNode *root)
 {
     BSTNode *lc = root->left;
     root->left = lc->right;
@@ -35,7 +36,7 @@ BSTNode*left_rotate(BSTNode *root)
     return lc;
 }
 
-BSTNode *right_rotate(BSTNode *root) 
+BSTNode *left_rotate(BSTNode *root) 
 {
     BSTNode *rc = root->right;
     root->right = rc->left;
@@ -162,7 +163,50 @@ BSTNode *del_node(BSTNode *root, int val)
 
     return root;
 }
+
+void sequence_traversal(BSTNode *root)
+{
+    queue<BSTNode *>q;
+    q.push(root);
+    while (!q.empty())
+    {
+        int len = q.size();
+        for (int i = 0; i < len; i++)
+        {
+            BSTNode* temp = q.front();
+            q.pop();
+            cout << temp->val << " ";
+            if (temp->left)
+            {
+                q.push(temp->left);
+            }
+            if (temp->right)
+            {
+                q.push(temp->right);
+            }
+        }
+    }
+    cout << endl;
+}
+int get_tree_heigh(BSTNode *root)
+{
+    if (!root)
+    {
+        return 0;
+    }
+    return max(get_tree_heigh(root->left), get_tree_heigh(root->right)) + 1;
+}
 int main()
 {
-    
+    BSTNode* root = NULL;
+    root = insert_node(root, new BSTNode(5));
+    root = insert_node(root, new BSTNode(4));
+    root = insert_node(root, new BSTNode(3));
+    root = insert_node(root, new BSTNode(6));
+    root = insert_node(root, new BSTNode(7));
+    root = del_node(root, 6);
+    root = del_node(root, 4);
+    root = insert_node(root, new BSTNode(8));
+    sequence_traversal(root);
+    cout <<get_tree_heigh(root) <<endl;
 }
