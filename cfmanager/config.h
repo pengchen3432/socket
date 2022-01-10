@@ -142,6 +142,13 @@ enum {
     __SSID_BAND_MAX
 };
 
+enum {
+    DEV_AVAILABLE,
+    DEV_MEMBER,
+
+    __DEV_MAX
+};
+
 typedef struct {
     struct vlist_node node;
     struct config_section_content cf_section;
@@ -385,8 +392,7 @@ int
 config_add_ap_default(
     char *package_name,
     char *mac,
-    char *type,
-    char *mesh
+    char *type
 );
 
 void
@@ -506,14 +512,14 @@ config_get_cm_ap_ssids(
 
 void
 config_add_dev_ssid_id(
-    char *mac,
-    char *ssid_id
+    const char *mac,
+    const char *ssid_id
 );
 
 void
 config_del_dev_ssid_id(
-    char *mac,
-    char *ssid_id
+    const char *mac,
+    const char *ssid_id
 );
 
 int
@@ -541,5 +547,16 @@ config_get_ssid_name(
     int buf_size
 );
 
+bool
+config_addit_ssid_set_dev(
+    struct blob_attr *mac_attr,
+    int type,
+    const char *ssid_id
+);
+
+void
+config_set_cm_ssid_default(
+    char *ssid_id
+);
 
 #endif //__CONFIG_H__

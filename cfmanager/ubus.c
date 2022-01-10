@@ -145,8 +145,10 @@ static struct sg_handle_policy sg_hp[] = {
     { "set additional ssid", sgreq_set_additional_ssid },
     { "set radio", sgreq_set_radio },
     { "set acceleration", sgreq_set_acceleration },
-    { "set dev ssid", sgreq_set_dev_ssid },
     { "set schedule", sgreq_set_schedule },
+    { "set dev add ssid", sgreq_set_dev_add_ssid },
+    { "set ap batch", sgreq_set_ap_batch },
+    { "set ssid wizard", sgreq_set_ssid_wizard },
 
     //get request
     { "get all", sgreq_get_all },
@@ -192,10 +194,10 @@ static struct sg_handle_policy sg_hp[] = {
     { "get additional ssid", sgreq_get_additional_ssid },
     { "get radio", sgreq_get_radio },
     { "get acceleration", sgreq_get_acceleration },
-    { "get dev ssid", sgreq_get_dev_ssid },
     { "get schedule", sgreq_get_schedule },
     { "get ap status", sgreq_get_ap_status },
-    { "get ap simple info", sgreq_get_ap_simple_info },
+    { "get aps simple info", sgreq_get_aps_simple_info },
+    { "get ssid wizard", sgreq_get_ssid_wizard },
 
     //ext request
     { "ext unauthenticated info", sgreq_ext_unauthenticated_info },

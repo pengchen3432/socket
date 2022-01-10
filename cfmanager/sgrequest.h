@@ -434,7 +434,7 @@ enum {
 };
 
 enum {
-    CM_NOTIFY_CM_MEMORY_USAGE,
+    CM_NOTIFY_MEMORY_USAGE,
     CM_MEMORY_USAGE_THRESHOLD,
     CM_NOTIFY_AP_THROUGHPUT,
     CM_AP_THROUGHPUT_THRESHOLD,
@@ -875,13 +875,16 @@ enum {
     CM_ADDIT_SSID_BMS,
     CM_ADDIT_SSID_BRIDGE_ENABLE,
     CM_ADDIT_SSID_80211W,
-    CM_ADDIT_SSID_VLAN,
     CM_ADDIT_SSID_PORTAL_ENABLE,
     CM_ADDIT_SSID_PORTAL_POLICY,
     CM_ADDIT_SSID_UPRATE,
     CM_ADDIT_SSID_DOWNRATE,
     CM_ADDIT_SSID_SCHEDULE_ENABLE,
     CM_ADDIT_SSID_SCHEDULE_ID,
+    CM_ADDIT_SSID_VLAN_ENABLE,
+    CM_ADDIT_SSID_VLAN_ID,
+    CM_ADDIT_SSID_MEMBER_DEV_MAC,
+    CM_ADDIT_SSID_AVAILABLE_DEV_MAC,
 
     __CM_ADDIT_SSID_MAX
 };
@@ -969,6 +972,13 @@ enum {
 };
 
 enum {
+    CM_DEV_ADD_SSID_MAC,
+    CM_DEV_ADD_SSID_SSIDS,
+
+    __CM_DEV_ADD_SSID_MAX
+};
+
+enum {
     CM_AP_MAC,
     CM_AP_TYPE,
     CM_AP_MESH,
@@ -1017,8 +1027,19 @@ enum {
     CM_AP_5G_RATE_LIMIT_TYPE,
     CM_AP_5G_MINI_RATE,
     CM_AP_5G_SHORTGI,
+    CM_AP_APSMAC,
 
     __CM_AP_MAX
+};
+
+enum {
+    CM_GET_PAIRED_DEVICES_DEVTYPE,
+    CM_GET_PAIRED_DEVICES_START,
+    CM_GET_PAIRED_DEVICES_AMOUNT,
+    CM_GET_PAIRED_DEVICES_FILTER,
+    CM_GET_PAIRED_DEVICES_DEVTYPE_FILTER,
+
+    __CM_GET_PAIRED_DEVICES_MAX
 };
 
 //=================
@@ -1381,14 +1402,6 @@ sgreq_set_acceleration(
 );
 
 void
-sgreq_set_dev_ssid(
-    struct ubus_context *ctx,
-    struct blob_attr *data,
-    struct ubus_request_data *req,
-    struct sg_params* sg_params
-);
-
-void
 sgreq_set_schedule(
     struct ubus_context *ctx,
     struct blob_attr *data,
@@ -1396,7 +1409,29 @@ sgreq_set_schedule(
     struct sg_params* sg_params
 );
 
+void
+sgreq_set_ssid_wizard(
+    struct ubus_context *ctx,
+    struct blob_attr *data,
+    struct ubus_request_data *req,
+    struct sg_params* sg_params
+);
 
+void
+sgreq_set_dev_add_ssid(
+struct ubus_context *ctx,
+    struct blob_attr *data,
+    struct ubus_request_data *req,
+    struct sg_params* sg_params
+);
+
+void
+sgreq_set_ap_batch(
+    struct ubus_context *ctx,
+    struct blob_attr *data,
+    struct ubus_request_data *req,
+    struct sg_params* sg_params
+);
 
 /*****************get cmd***************************/
 void
@@ -1609,7 +1644,15 @@ sgreq_get_vpn_client(
 );
 
 void
-sgreq_get_ap_simple_info(
+sgreq_get_aps_simple_info(
+    struct ubus_context *ctx,
+    struct blob_attr *data,
+    struct ubus_request_data *req,
+    struct sg_params* sg_params
+);
+
+void
+sgreq_get_ssid_wizard(
     struct ubus_context *ctx,
     struct blob_attr *data,
     struct ubus_request_data *req,
@@ -1714,14 +1757,6 @@ sgreq_get_snmp(
 
 void
 sgreq_get_acceleration(
-    struct ubus_context *ctx,
-    struct blob_attr *data,
-    struct ubus_request_data *req,
-    struct sg_params* sg_params
-);
-
-void
-sgreq_get_dev_ssid(
     struct ubus_context *ctx,
     struct blob_attr *data,
     struct ubus_request_data *req,

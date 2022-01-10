@@ -67,7 +67,6 @@ const struct blobmsg_policy manage_ap_policy[__MANAGE_AP_MAX] = {
     [MANAGE_AP_ACTION] = { .name = "action", .type = BLOBMSG_TYPE_STRING },
     [MANAGE_AP_MAC] = { .name = "mac", .type = BLOBMSG_TYPE_STRING },
     [MANAGE_AP_TYPE] = { .name = "type", .type = BLOBMSG_TYPE_STRING },
-    [MANAGE_AP_MESH] = { .name = "mesh", .type = BLOBMSG_TYPE_STRING },
 };
 
 const struct blobmsg_policy gs_ap_policy[__GS_AP_MAX] = {
@@ -203,7 +202,7 @@ const struct blobmsg_policy gs_email_policy[_GS_EMAIL_MAX] = {
 };
 
 const struct blobmsg_policy gs_notification_policy[_GS_NOTIFY_MAX] = {
-    [GS_NOTIFY_CM_MEMORY_USAGE] = { .name = "notify_memory_usage", .type = BLOBMSG_TYPE_BOOL},
+    [GS_NOTIFY_MEMORY_USAGE] = { .name = "notify_memory_usage", .type = BLOBMSG_TYPE_BOOL},
     [GS_MEMORY_USAGE_THRESHOLD] = { .name = "memory_usage_threshold", .type = BLOBMSG_TYPE_STRING},
     [GS_NOTIFY_AP_THROUGHPUT] = { .name = "notify_ap_throughput", .type = BLOBMSG_TYPE_BOOL},
     [GS_AP_THROUGHPUT_THRESHOLD] = { .name = "ap_throughput_threshold", .type = BLOBMSG_TYPE_STRING},
@@ -664,7 +663,7 @@ cfparse_grandstream_manage_set_ap(
         blobmsg_len( attr ) );
 
     *update = 0;
-    if ( !tb[MANAGE_AP_ACTION] || !tb[MANAGE_AP_MAC] || !tb[MANAGE_AP_TYPE] || !tb[MANAGE_AP_MESH] ) {
+    if ( !tb[MANAGE_AP_ACTION] || !tb[MANAGE_AP_MAC] || !tb[MANAGE_AP_TYPE] ) {
         cfmanager_log_message( L_ERR, "Missing some params in json!" );
         return;
     }
@@ -675,8 +674,7 @@ cfparse_grandstream_manage_set_ap(
         cfmanager_log_message( L_DEBUG, "begin add ap %s", blobmsg_get_string( tb[MANAGE_AP_MAC] ) );
         config_add_ap_default( CFMANAGER_CONFIG_NAME,
                     blobmsg_get_string( tb[MANAGE_AP_MAC] ),
-                    blobmsg_get_string( tb[MANAGE_AP_TYPE] ),
-                    blobmsg_get_string( tb[MANAGE_AP_MESH] ) );
+                    blobmsg_get_string( tb[MANAGE_AP_TYPE] ) );
         *update = 1;
     }
     else if ( cm_cfg && !strcmp( blobmsg_get_string( tb[MANAGE_AP_ACTION] ), "2" ) ) {

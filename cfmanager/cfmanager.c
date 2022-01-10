@@ -6073,6 +6073,7 @@ cm_addit_ssid_hooker(
     char mac_str[MAC_STR_MAX_LEN+1] = { 0 };
     char ssids[BUF_LEN_128] = { 0 };
     int schedule_id = 0;
+    int vlan_id = 0;
 
     sscanf( util_blobmsg_get_string( config[CM_ADDIT_SSID_ID], "ssid0" ), "ssid%d",  &id );
 
@@ -6279,7 +6280,6 @@ cm_addit_ssid_hooker(
                 case CM_ADDIT_SSID_MCAST_TO_UCAST:
                 case CM_ADDIT_SSID_BMS:
                 case CM_ADDIT_SSID_80211W:
-                case CM_ADDIT_SSID_VLAN:
                 case CM_ADDIT_SSID_PORTAL_ENABLE:
                 case CM_ADDIT_SSID_PORTAL_POLICY:
                     config_set_wireless( index, iface_2g[id], value, RADIO_2G );
@@ -6376,6 +6376,25 @@ cm_addit_ssid_hooker(
                         config_uci_set( path, value, 0 );
                     }
                     option |= BIT( CM_CFG_SCHEDULE );
+                    break;
+                case CM_ADDIT_SSID_VLAN_ENABLE:
+                case CM_ADDIT_SSID_VLAN_ID:
+                    if ( util_blobmsg_get_bool( config[CM_ADDIT_SSID_VLAN_ENABLE], false ) ) {
+                        vlan_id = atoi( util_blobmsg_get_string( config[CM_ADDIT_SSID_VLAN_ID], "0" ) );
+                        if ( LAN_DEFAULT_VLAN_ID == vlan_id || 0 == vlan_id ) {
+                            /* To maintain compatibility with other models */
+                            snprintf( value, BUF_LEN_64, LAN_DEFAULT_INTERFACE );
+                        }
+                        else {
+                            snprintf( value, BUF_LEN_64, "zone%d", vlan_id );
+                        }
+                    }
+                    else {
+                        snprintf( value, BUF_LEN_64, LAN_DEFAULT_INTERFACE );
+                    }
+
+                    config_set_wireless( CM_ADDIT_SSID_VLAN_ID, iface_2g[id], value, RADIO_2G );
+                    config_set_wireless( CM_ADDIT_SSID_VLAN_ID, iface_5g[id], value, RADIO_5G );
                     break;
                 default:
                     break;
@@ -6573,8 +6592,8 @@ cm_notification_hooker(
         case VLTREE_ACTION_UPDATE:
         case VLTREE_ACTION_ADD:
             switch( index ) {
-                case CM_NOTIFY_CM_MEMORY_USAGE:
-                    config_set_by_blob(cur_attr, "notification.notification.notify_memory_usage", cm_notification_policy[CM_NOTIFY_CM_MEMORY_USAGE].type);
+                case CM_NOTIFY_MEMORY_USAGE:
+                    config_set_by_blob(cur_attr, "notification.notification.notify_memory_usage", cm_notification_policy[CM_NOTIFY_MEMORY_USAGE].type);
                     break;
                 case CM_MEMORY_USAGE_THRESHOLD:
                     config_set_by_blob(cur_attr, "notification.notification.memory_usage_threshold", cm_notification_policy[CM_MEMORY_USAGE_THRESHOLD].type);

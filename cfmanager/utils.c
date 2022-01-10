@@ -505,15 +505,18 @@ util_blobmsg_get_int(
 {
     const char *value = NULL;
 
-    if ( !attr )
+    if ( !attr ) {
         return defalut_value;
+    }
 
     value = blobmsg_get_string( attr );
-    if ( value == NULL )
+    if ( value == NULL ) {
         return defalut_value;
+    }
 
-    if ( strlen( value ) == 0 )
+    if ( strlen( value ) == 0 ) {
         return defalut_value;
+    }
 
     return atoi( value );
 }
@@ -1004,8 +1007,8 @@ util_convert_specific_char(
 //=============================================================================
 bool
 util_match_ssids(
-    char *ssids,
-    char *ssid
+    const char *ssids,
+    const char *ssid
 )
 //=============================================================================
 {

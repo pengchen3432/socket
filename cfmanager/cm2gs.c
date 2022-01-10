@@ -101,14 +101,30 @@ cm2gs_extern_sys_log_hooker(
 )
 //=============================================================================
 {
+    char path[LOOKUP_STR_SIZE] = { 0 };
     char *section_name = extend->section_name;
     int rc = 0;
-    
+    struct blob_attr *cm_data = cm_attr[CM_ISSUE_AP_LIST];
+    struct blob_attr *cur;
+    unsigned int rem;
+
     rc |= BIT( CM_CFG_GRANDSTREAM );
     cm2gs_set_gs_config( section_name, cm_attr, gs_extern_sys_log_policy, cm_extern_sys_log_policy, GS_ISSUE_AP_LIST, CM_ISSUE_AP_LIST );
     cm2gs_set_gs_config( section_name, cm_attr, gs_extern_sys_log_policy, cm_extern_sys_log_policy, GS_EXTERN_LOG_URI, CM_EXTERN_LOG_URI );
     cm2gs_set_gs_config( section_name, cm_attr, gs_extern_sys_log_policy, cm_extern_sys_log_policy, GS_EXTERN_LOG_LEVEL, CM_EXTERN_LOG_LEVEL );
     cm2gs_set_gs_config( section_name, cm_attr, gs_extern_sys_log_policy, cm_extern_sys_log_policy, GS_EXTERN_LOG_PROTOCOL, CM_EXTERN_LOG_PROTOCOL );
+    
+    snprintf( path, sizeof(path), "%s.%s.%s", CF_CONFIG_NAME_GRANDSTREAM,
+            section_name, gs_extern_sys_log_policy[GS_ISSUE_AP_LIST].name );
+
+    config_uci_del(path, 0);
+    blobmsg_for_each_attr(cur, cm_data, rem) {
+        if ( blobmsg_type( cur ) != BLOBMSG_TYPE_STRING ) {
+            continue;
+        }
+        config_uci_add_list( path, blobmsg_get_string( cur ), 0 );
+    }
+
     return rc;
 }
 
@@ -123,6 +139,10 @@ cm2gs_email_hooker(
     struct grandstream_config_parse *gs_cfg = NULL;
     char *section_name = extend->section_name;
     int rc = 0;
+    char path[LOOKUP_STR_SIZE] = { 0 };
+    struct blob_attr *cm_data = cm_attr[CM_EMAIL_EMAILADDRESS];
+    struct blob_attr *cur;
+    unsigned int rem;
 
     gs_cfg = util_get_vltree_node( &grandstream_email_vltree, VLTREE_GRANDSTREAM, section_name );
     if( gs_cfg ) {
@@ -144,7 +164,16 @@ cm2gs_email_hooker(
     cm2gs_set_gs_config( section_name, cm_attr, gs_email_policy, cm_email_policy, GS_EMAIL_ENABLE_NOTIFICATION, CM_EMAIL_ENABLE_NOTIFICATION );
     cm2gs_set_gs_config( section_name, cm_attr, gs_email_policy, cm_email_policy, GS_EMAIL_FROM_ADDRESS, CM_EMAIL_FROM_ADDRESS );
     cm2gs_set_gs_config( section_name, cm_attr, gs_email_policy, cm_email_policy, GS_EMAIL_FROM_NAME, CM_EMAIL_FROM_NAME );
-    cm2gs_set_gs_config( section_name, cm_attr, gs_email_policy, cm_email_policy, GS_EMAIL_EMAILADDRESS, CM_EMAIL_EMAILADDRESS );
+
+    snprintf( path, sizeof(path), "%s.%s.%s", CF_CONFIG_NAME_GRANDSTREAM,
+            section_name, gs_email_policy[GS_EMAIL_EMAILADDRESS].name );
+    
+    blobmsg_for_each_attr(cur, cm_data, rem) {
+        if ( blobmsg_type( cur ) != BLOBMSG_TYPE_STRING ) {
+            continue;
+        }
+        config_uci_add_list( path, blobmsg_get_string( cur ), 0 );
+    }
 
     return rc;
 }
@@ -173,7 +202,7 @@ cm2gs_notification_hooker(
     }
 
     config_add_named_section( CF_CONFIG_NAME_GRANDSTREAM, "notification", section_name );
-    cm2gs_set_gs_config( section_name, cm_attr, gs_notification_policy, cm_notification_policy, GS_NOTIFY_CM_MEMORY_USAGE, CM_NOTIFY_CM_MEMORY_USAGE );
+    cm2gs_set_gs_config( section_name, cm_attr, gs_notification_policy, cm_notification_policy, GS_NOTIFY_MEMORY_USAGE, CM_NOTIFY_MEMORY_USAGE );
     cm2gs_set_gs_config( section_name, cm_attr, gs_notification_policy, cm_notification_policy, GS_MEMORY_USAGE_THRESHOLD, CM_MEMORY_USAGE_THRESHOLD );
     cm2gs_set_gs_config( section_name, cm_attr, gs_notification_policy, cm_notification_policy, GS_NOTIFY_AP_THROUGHPUT, CM_NOTIFY_AP_THROUGHPUT );
     cm2gs_set_gs_config( section_name, cm_attr, gs_notification_policy, cm_notification_policy, GS_AP_THROUGHPUT_THRESHOLD, CM_AP_THROUGHPUT_THRESHOLD );
@@ -317,7 +346,9 @@ cm2gs_additional_ssid_hooker(
     cm2gs_set_gs_config( section_name, cm_attr, gs_addit_ssid_policy, cm_addit_ssid_policy, GS_ADDIT_SSID_BMS, CM_ADDIT_SSID_BMS );
     cm2gs_set_gs_config( section_name, cm_attr, gs_addit_ssid_policy, cm_addit_ssid_policy, GS_ADDIT_SSID_BRIDGE_ENABLE, CM_ADDIT_SSID_BRIDGE_ENABLE );
     cm2gs_set_gs_config( section_name, cm_attr, gs_addit_ssid_policy, cm_addit_ssid_policy, GS_ADDIT_SSID_80211W, CM_ADDIT_SSID_80211W );
-    cm2gs_set_gs_config( section_name, cm_attr, gs_addit_ssid_policy, cm_addit_ssid_policy, GS_ADDIT_SSID_VLAN, CM_ADDIT_SSID_VLAN );
+    if ( util_blobmsg_get_bool( cm_attr[CM_ADDIT_SSID_VLAN_ENABLE], false ) ) {
+        cm2gs_set_gs_config( section_name, cm_attr, gs_addit_ssid_policy, cm_addit_ssid_policy, GS_ADDIT_SSID_VLAN, CM_ADDIT_SSID_VLAN_ID );
+    }
 
     if( cm_attr[CM_ADDIT_SSID_GATEWAYMAC] ) {
         snprintf( path, sizeof( path ), "%s.%s.%s",

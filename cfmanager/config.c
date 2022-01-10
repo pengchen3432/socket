@@ -1868,8 +1868,7 @@ int
 config_add_ap_default(
     char *package_name,
     char *mac,
-    char *type,
-    char *mesh
+    char *type
 )
 //=============================================================================
 {
@@ -1880,8 +1879,6 @@ config_add_ap_default(
     config_set_option_not_exist( path, mac, 0 );
     snprintf( path, LOOKUP_STR_SIZE, "%s.%s.%s", package_name, mac, cm_ap_policy[CM_AP_TYPE].name );
     config_set_option_not_exist( path, type, 0 );
-    snprintf( path, LOOKUP_STR_SIZE, "%s.%s.%s", package_name, mac, cm_ap_policy[CM_AP_MESH].name );
-    config_set_option_not_exist( path, mesh, 0 );
     snprintf( path, LOOKUP_STR_SIZE, "%s.%s.%s", package_name, mac, cm_ap_policy[CM_AP_FREQUENCY].name );
     config_set_option_not_exist( path, "2", 0 );
     snprintf( path, LOOKUP_STR_SIZE, "%s.%s.%s", package_name, mac, cm_ap_policy[CM_AP_2G4_MODE].name );
@@ -2395,7 +2392,6 @@ config_set_wireless(
 //=============================================================================
 {
     char path[LOOKUP_STR_SIZE] = { 0 };
-    char temp[BUF_LEN_64] = { 0 };
 
     if( NULL == iface || NULL == value ) {
         cfmanager_log_message( L_ERR, "Illegal parameter\n" );
@@ -2494,16 +2490,9 @@ config_set_wireless(
             snprintf( path, sizeof( path ), "wireless.%s.ieee80211w", iface );
             config_uci_set( path, value, 0 );
             break;
-        case CM_ADDIT_SSID_VLAN:
+        case CM_ADDIT_SSID_VLAN_ID:
             snprintf( path, sizeof( path ), "wireless.%s.network", iface );
-            if ( LAN_DEFAULT_VLAN_ID == atoi( value ) || 0 == atoi( value ) ) {
-                /* To maintain compatibility with other models */
-                snprintf( temp, BUF_LEN_64, LAN_DEFAULT_INTERFACE );
-            }
-            else {
-                snprintf( temp, BUF_LEN_64, "zone%s", value );
-            }
-            config_uci_set( path, temp, 0 );
+            config_uci_set( path, value, 0 );
             break;
         case CM_ADDIT_SSID_PORTAL_ENABLE:
             snprintf( path, sizeof( path ), "wireless.%s.portal_enable", iface );
@@ -2936,8 +2925,8 @@ config_del_bwctrl_section(
 //=============================================================================
 void
 config_add_dev_ssid_id(
-    char *mac,
-    char *ssid_id
+    const char *mac,
+    const char *ssid_id
 )
 //=============================================================================
 {
@@ -2965,8 +2954,8 @@ config_add_dev_ssid_id(
 //=============================================================================
 void
 config_del_dev_ssid_id(
-    char *mac,
-    char *ssid_id
+    const char *mac,
+    const char *ssid_id
 )
 //=============================================================================
 {
@@ -2993,7 +2982,12 @@ config_del_dev_ssid_id(
     }
 
     snprintf( path, sizeof(path), "%s.%s.%s", CFMANAGER_CONFIG_NAME, mac, cm_ap_policy[CM_AP_SSIDS].name );
-    config_uci_set( path, temp, 0 );
+    if( '\0' == temp[0] ) {
+        config_uci_del( path, 0 );
+    }
+    else {
+        config_uci_set( path, temp, 0 );
+    }
 }
 
 //=============================================================================
@@ -3175,3 +3169,149 @@ config_get_ssid_name(
     strncpy( buf, util_blobmsg_get_string( tb[CM_ADDIT_SSID_NAME], "" ), buf_size -1 );
 }
 
+//=============================================================================
+bool
+config_addit_ssid_set_dev(
+    struct blob_attr *mac_attr,
+    int type,
+    const char *ssid_id
+)
+//=============================================================================
+{
+    struct blob_attr *cur = NULL;
+    int rem = 0;
+    char mac_str[MAC_STR_MAX_LEN+1];
+    char ssids[BUF_LEN_256];
+    bool config_change = false;
+
+    if( !mac_attr || !ssid_id ) {
+        cfmanager_log_message( L_ERR, "Parameter not legal\n" );
+        return config_change;
+    }
+
+    if( DEV_MEMBER == type ) {
+        blobmsg_for_each_attr( cur, mac_attr, rem ) {
+            if ( blobmsg_type( cur ) != BLOBMSG_TYPE_STRING ) {
+                continue;
+            }
+
+            memset( mac_str, 0, sizeof( mac_str ) );
+            memset( ssids, 0, sizeof( ssids ) );
+            strncpy( mac_str, util_blobmsg_get_string( cur, ""), sizeof( mac_str ) -1 );
+
+            config_get_cm_ap_ssids( mac_str, ssids, sizeof( ssids ) );
+
+            //If the ssid id does not match in the added devices, the device need add this ssid id
+            if( !util_match_ssids( ssids, ssid_id ) ) {
+                config_add_dev_ssid_id( mac_str, ssid_id );
+                config_change = true;
+            }
+         }
+    }
+    else {
+        blobmsg_for_each_attr( cur, mac_attr, rem ) {
+            if ( blobmsg_type( cur ) != BLOBMSG_TYPE_STRING ) {
+                continue;
+            }
+
+            memset( mac_str, 0, sizeof( mac_str ) );
+            memset( ssids, 0, sizeof( ssids ) );
+            strncpy( mac_str, util_blobmsg_get_string( cur, ""), sizeof( mac_str ) -1 );
+
+            config_get_cm_ap_ssids( mac_str, ssids, sizeof( ssids ) );
+
+            if( !util_match_ssids( ssids, ssid_id ) ) {
+                continue;
+            }
+
+            //If the ssid id is matched in an addable device, the ap should remove the ssid id
+            config_del_dev_ssid_id( mac_str, ssid_id );
+            config_change = true;
+        }
+    }
+
+    return config_change;
+}
+
+//=============================================================================
+void
+config_set_cm_ssid_default(
+    char *ssid_id
+)
+//=============================================================================
+{
+    char path[LOOKUP_STR_SIZE] = { 0 };
+
+    if( !ssid_id ) {
+        cfmanager_log_message( L_ERR, "miss ssid id" );
+        return;
+    }
+
+    snprintf( path, sizeof( path ), "%s.%s.%s",
+        CFMANAGER_CONFIG_NAME, ssid_id, cm_addit_ssid_policy[CM_ADDIT_SSID_ID].name );
+    config_uci_set( path, ssid_id, 0 );
+
+    snprintf( path, sizeof( path ), "%s.%s.%s",
+        CFMANAGER_CONFIG_NAME, ssid_id, cm_addit_ssid_policy[CM_ADDIT_SSID_ENABLE].name );
+    config_uci_set( path, "1", 0 );
+
+    snprintf( path, sizeof( path ), "%s.%s.%s",
+        CFMANAGER_CONFIG_NAME, ssid_id, cm_addit_ssid_policy[CM_ADDIT_SSID_BAND].name );
+    config_uci_set( path, "0", 0 );
+
+    snprintf( path, sizeof( path ), "%s.%s.%s",
+        CFMANAGER_CONFIG_NAME, ssid_id, cm_addit_ssid_policy[CM_ADDIT_SSID_WPA_KEY_MODE].name );
+    config_uci_set( path, "0", 0 );
+
+    snprintf( path, sizeof( path ), "%s.%s.%s",
+        CFMANAGER_CONFIG_NAME, ssid_id, cm_addit_ssid_policy[CM_ADDIT_SSID_WPA_CRYPTO_TYPE].name );
+    config_uci_set( path, "0", 0 );
+
+    snprintf( path, sizeof( path ), "%s.%s.%s",
+        CFMANAGER_CONFIG_NAME, ssid_id, cm_addit_ssid_policy[CM_ADDIT_SSID_SSIDHIDEENABLE].name );
+    config_uci_set( path, "0", 0 );
+
+    snprintf( path, sizeof( path ), "%s.%s.%s",
+        CFMANAGER_CONFIG_NAME, ssid_id, cm_addit_ssid_policy[CM_ADDIT_SSID_ISOLATEMODE].name );
+    config_uci_set( path, "0", 0 );
+
+    snprintf( path, sizeof( path ), "%s.%s.%s",
+        CFMANAGER_CONFIG_NAME, ssid_id, cm_addit_ssid_policy[CM_ADDIT_SSID_DTIM_PERIOD].name );
+    config_uci_set( path, "1", 0 );
+
+    snprintf( path, sizeof( path ), "%s.%s.%s",
+        CFMANAGER_CONFIG_NAME, ssid_id, cm_addit_ssid_policy[CM_ADDIT_SSID_STA_IDLE_TIMEOUT].name );
+    config_uci_set( path, "300", 0 );
+
+    snprintf( path, sizeof( path ), "%s.%s.%s",
+        CFMANAGER_CONFIG_NAME, ssid_id, cm_addit_ssid_policy[CM_ADDIT_SSID_UAPSD].name );
+    config_uci_set( path, "1", 0 );
+
+    snprintf( path, sizeof( path ), "%s.%s.%s",
+        CFMANAGER_CONFIG_NAME, ssid_id, cm_addit_ssid_policy[CM_ADDIT_SSID_PROXY_ARP].name );
+    config_uci_set( path, "0", 0 );
+
+    snprintf( path, sizeof( path ), "%s.%s.%s",
+        CFMANAGER_CONFIG_NAME, ssid_id, cm_addit_ssid_policy[CM_ADDIT_SSID_MCAST_TO_UCAST].name );
+    config_uci_set( path, "0", 0 );
+
+    snprintf( path, sizeof( path ), "%s.%s.%s",
+        CFMANAGER_CONFIG_NAME, ssid_id, cm_addit_ssid_policy[CM_ADDIT_SSID_BMS].name );
+    config_uci_set( path, "0", 0 );
+
+    snprintf( path, sizeof( path ), "%s.%s.%s",
+        CFMANAGER_CONFIG_NAME, ssid_id, cm_addit_ssid_policy[CM_ADDIT_SSID_80211W].name );
+    config_uci_set( path, "0", 0 );
+
+    snprintf( path, sizeof( path ), "%s.%s.%s",
+        CFMANAGER_CONFIG_NAME, ssid_id, cm_addit_ssid_policy[CM_ADDIT_SSID_PORTAL_ENABLE].name );
+    config_uci_set( path, "0", 0 );
+
+    snprintf( path, sizeof( path ), "%s.%s.%s",
+        CFMANAGER_CONFIG_NAME, ssid_id, cm_addit_ssid_policy[CM_ADDIT_SSID_SCHEDULE_ENABLE].name );
+    config_uci_set( path, "0", 0 );
+
+    snprintf( path, sizeof( path ), "%s.%s.%s",
+        CFMANAGER_CONFIG_NAME, ssid_id, cm_addit_ssid_policy[CM_ADDIT_SSID_VLAN_ENABLE].name );
+    config_uci_set( path, "0", 0 );
+}
