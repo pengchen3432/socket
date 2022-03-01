@@ -8,7 +8,7 @@ make: *** No rule to make target 'all'.  Stop.
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Fri Feb 25 15:21:16 2022
+# Make data base, printed on Mon Feb 21 11:09:53 2022
 
 # Variables
 
@@ -41,13 +41,15 @@ GDMSESSION = ubuntu
 # environment
 XMODIFIERS = @im=fcitx
 # makefile
-CURDIR := /home/k4/socket
+CURDIR := /home/k4/socket/my_test
 # makefile
 SHELL = /bin/sh
 # environment
+VTE_VERSION = 5202
+# environment
 VSCODE_NLS_CONFIG = {"locale":"zh-cn","availableLanguages":{"*":"zh-cn"},"_languagePackId":"7e2798734d22b5386c06852fa8a7c560.zh-cn","_translationsConfigFile":"/home/k4/.config/Code/clp/7e2798734d22b5386c06852fa8a7c560.zh-cn/tcf.json","_cacheRoot":"/home/k4/.config/Code/clp/7e2798734d22b5386c06852fa8a7c560.zh-cn","_resolvedLanguagePackCoreLocation":"/home/k4/.config/Code/clp/7e2798734d22b5386c06852fa8a7c560.zh-cn/379476f0e13988d90fab105c5c19e7abc8b1dea8","_corruptedFile":"/home/k4/.config/Code/clp/7e2798734d22b5386c06852fa8a7c560.zh-cn/corrupted.info","_languagePackSupport":true}
 # environment
-_ = /usr/share/code/code
+_ = /usr/bin/code
 # environment
 XDG_CONFIG_DIRS = /etc/xdg/xdg-ubuntu:/etc/xdg
 # makefile
@@ -55,7 +57,7 @@ MAKEFILE_LIST :=
 # automatic
 @F = $(notdir $@)
 # environment
-GIO_LAUNCHED_DESKTOP_FILE = /usr/share/applications/code.desktop
+GIO_LAUNCHED_DESKTOP_FILE = /etc/xdg/autostart/org.gnome.SettingsDaemon.MediaKeys.desktop
 # environment
 USERNAME = k4
 # environment
@@ -69,13 +71,15 @@ DBUS_SESSION_BUS_ADDRESS = unix:path=/run/user/1000/bus
 # environment
 VSCODE_VERBOSE_LOGGING = true
 # environment
+TERMINATOR_UUID = urn:uuid:01c817d4-990d-441a-9083-8ec923c34308
+# environment
 CLUTTER_IM_MODULE = xim
 # environment
 LESSOPEN = | /usr/bin/lesspipe %s
 # environment
 LC_NAME = zh_SG.UTF-8
 # environment
-VSCODE_CWD = /home/k4
+VSCODE_CWD = /home/k4/socket/my_test
 # default
 MAKE_HOST := x86_64-pc-linux-gnu
 # environment
@@ -83,9 +87,7 @@ PATH = /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/
 # environment
 GPG_AGENT_INFO = /run/user/1000/gnupg/S.gpg-agent:0:1
 # environment
-GJS_DEBUG_OUTPUT = stderr
-# environment
-SESSION_MANAGER = local/k4:@/tmp/.ICE-unix/2009,unix/k4:/tmp/.ICE-unix/2009
+SESSION_MANAGER = local/k4:@/tmp/.ICE-unix/2021,unix/k4:/tmp/.ICE-unix/2021
 # environment
 XDG_RUNTIME_DIR = /run/user/1000
 # environment
@@ -99,13 +101,13 @@ VSCODE_CRASH_REPORTER_START_OPTIONS = {"companyName":"Microsoft","productName":"
 # default
 .FEATURES := target-specific order-only second-expansion else-if shortest-stem undefine oneshell archives jobserver output-sync check-symlink load
 # environment
-LS_COLORS = 
+LS_COLORS = rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:
 # environment
 XDG_SESSION_DESKTOP = ubuntu
 # environment
 SSH_AUTH_SOCK = /run/user/1000/keyring/ssh
 # environment
-GIO_LAUNCHED_DESKTOP_FILE_PID = 4914
+GIO_LAUNCHED_DESKTOP_FILE_PID = 2352
 # automatic
 %F = $(notdir $%)
 # environment
@@ -115,11 +117,11 @@ GTK_IM_MODULE = fcitx
 # environment
 VSCODE_PIPE_LOGGING = true
 # environment
-PWD = /home/k4/socket
+PWD = /home/k4/socket/my_test
 # environment
 XDG_SEAT = seat0
 # environment
-SSH_AGENT_PID = 2098
+SSH_AGENT_PID = 2110
 # environment
 ORIGINAL_XDG_CURRENT_DESKTOP = ubuntu:GNOME
 # environment
@@ -131,6 +133,8 @@ HOME = /home/k4
 # environment
 LESSCLOSE = /usr/bin/lesspipe %s %s
 # environment
+VSCODE_CLI = 1
+# environment
 VSCODE_CODE_CACHE_PATH = /home/k4/.config/Code/CachedData/379476f0e13988d90fab105c5c19e7abc8b1dea8
 # environment
 LOGNAME = k4
@@ -138,6 +142,8 @@ LOGNAME = k4
 APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = true
 # automatic
 +F = $(notdir $+)
+# environment
+ELECTRON_NO_ATTACH_CONSOLE = 1
 # environment
 VSCODE_HANDLES_UNCAUGHT_ERRORS = true
 # default
@@ -150,6 +156,8 @@ GNOME_DESKTOP_SESSION_ID = this-is-deprecated
 XDG_VTNR = 2
 # environment
 LC_TIME = zh_SG.UTF-8
+# environment
+COLORTERM = truecolor
 # default
 MAKE = $(MAKE_COMMAND)
 # default
@@ -161,7 +169,7 @@ SHLVL = 1
 # environment
 GNOME_SHELL_SESSION_MODE = ubuntu
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-77cc7661-7ebb-4f8e-936c-1c962fc866c4.sock
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-3439ac5c-21c7-4bc2-ad7f-815026759fce.sock
 # environment
 XDG_SESSION_ID = 2
 # environment
@@ -178,6 +186,10 @@ XDG_CURRENT_DESKTOP = Unity
 LC_TELEPHONE = zh_SG.UTF-8
 # default
 MAKE_COMMAND := make
+# environment
+OLDPWD = /home/k4
+# environment
+TERMINATOR_DBUS_PATH = /net/tenshu/Terminator2
 # default
 .VARIABLES := 
 # automatic
@@ -203,6 +215,8 @@ LC_PAPER = zh_SG.UTF-8
 # environment
 QT_ACCESSIBILITY = 1
 # environment
+DESKTOP_AUTOSTART_ID = 1021a7c2d2734bfff5164482437080391900000020210007
+# environment
 DEFAULTS_PATH = /usr/share/gconf/ubuntu.default.path
 # environment
 TEXTDOMAINDIR = /usr/share/locale/
@@ -222,8 +236,6 @@ LC_MEASUREMENT = zh_SG.UTF-8
 LC_ALL = C
 # environment
 QT4_IM_MODULE = fcitx
-# environment
-GJS_DEBUG_TOPICS = JS ERROR;JS LOG
 # automatic
 ^F = $(notdir $^)
 # default
@@ -243,9 +255,13 @@ LC_ADDRESS = zh_SG.UTF-8
 # environment
 LANG = C
 # environment
-VSCODE_PID = 4914
+TERM = xterm-256color
+# environment
+TERMINATOR_DBUS_NAME = net.tenshu.Terminator20x1a6021154d881c
+# environment
+VSCODE_PID = 25286
 # variable set hash-table stats:
-# Load=116/1024=11%, Rehash=0, Collisions=20/138=14%
+# Load=124/1024=12%, Rehash=0, Collisions=22/146=15%
 
 # Pattern-specific Variable Values
 
@@ -253,9 +269,9 @@ VSCODE_PID = 4914
 
 # Directories
 
-# . (device 2054, inode 19805861): 65 files, no impossibilities.
+# . (device 2054, inode 21639083): 25 files, no impossibilities.
 
-# 65 files, no impossibilities in 1 directories.
+# 25 files, no impossibilities in 1 directories.
 
 # Implicit Rules
 
@@ -268,6 +284,7 @@ all:
 #  Command line target.
 #  Implicit rule search has been done.
 #  File does not exist.
+ 
 #  File has not been updated.
 
 # Not a target:
@@ -279,7 +296,6 @@ Makefile:
 
 # Not a target:
 makefile:
- 
 #  Implicit rule search has been done.
 #  File does not exist.
 #  File has been updated.
@@ -306,12 +322,12 @@ GNUmakefile:
 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 73 / storage = 634 B / avg = 8 B
-# current buf: size = 8162 B / used = 634 B / count = 73 / avg = 8 B
+# strcache buffers: 1 (0) / strings = 33 / storage = 290 B / avg = 8 B
+# current buf: size = 8162 B / used = 290 B / count = 33 / avg = 8 B
 
-# strcache performance: lookups = 76 / hit rate = 3%
+# strcache performance: lookups = 36 / hit rate = 8%
 # hash-table stats:
-# Load=73/8192=1%, Rehash=0, Collisions=1/76=1%
-# Finished Make data base on Fri Feb 25 15:21:16 2022
+# Load=33/8192=0%, Rehash=0, Collisions=1/36=3%
+# Finished Make data base on Mon Feb 21 11:09:53 2022
 
  
