@@ -11,16 +11,18 @@
 #include <unistd.h>
 #include <netinet/in.h>
 #define path "/tmp/local.sock"
-static int idx = 3;
+static int idx = 2;
 static struct epoll_event events[64] = {0};
 struct obj{
     int fd;
     char msg[64];
 };
-struct obj creat_obj(int fd) {
-    struct obj o;
-    o.fd = fd;
-    sprintf( o.msg, "my index id %d", idx++ );
+struct obj *creat_obj(int fd) {
+    struct obj *o;
+    o = (struct obj*) calloc( 1, sizeof(struct obj) );
+    o->fd = fd;
+    idx++;
+    sprintf( o->msg, "my index id %d", idx );
     return o;
 }
 
@@ -75,8 +77,9 @@ void local_listen_sock( int fd, int n ) {
 void run( int ep_fd, int local_fd ) {
     int nfds, n, i, cli_fd, res_fd;
     struct obj *obj;
-    struct obj cli_obj;
+    struct obj *cli_obj;
     char buf[1024];
+    struct epoll_event ev;
     for ( ;; ) {
         nfds = epoll_wait( ep_fd, events, 64, -1 );
         if ( nfds < 0 ) {
@@ -86,11 +89,12 @@ void run( int ep_fd, int local_fd ) {
         for ( i = 0; i < nfds; i++ ) {
             obj = (struct obj*)events[i].data.ptr;
             res_fd = obj->fd;
-            printf("message:%s\n", obj->msg);
+            printf(" %d msg:%s \n ", res_fd, obj->msg);
             if ( local_fd == res_fd ) {
                 cli_fd = accept( local_fd, NULL, NULL );
                 cli_obj = creat_obj( cli_fd );
-                epoll_add_fd( ep_fd, cli_fd, (void *)&cli_obj );
+                printf( "%d obj ptr %p\n", cli_fd, cli_obj );
+                epoll_add_fd( ep_fd, cli_fd, (void *)cli_obj );
             }
             else {
                 memset( buf, 0, sizeof( buf ) );
@@ -98,11 +102,16 @@ void run( int ep_fd, int local_fd ) {
                 if ( n > 0 ) {
                     printf("buf:%s\n", buf);
                 }
-                else {
-                    printf("cli exit\n");
-                    close( res_fd );
+                else if ( n == 0 ) {
+                    printf("%d obj ptr %p exit \n ", res_fd, events[i].data.ptr);
                     epoll_ctl( ep_fd, EPOLL_CTL_DEL, res_fd, &events[i] );
+                    close( res_fd );
                     idx--;
+                }
+                else {
+                    epoll_ctl( ep_fd, EPOLL_CTL_DEL, res_fd, &events[i] );
+                    close( res_fd );
+                    exit(1);
                 }
             }
         }
@@ -112,7 +121,7 @@ void run( int ep_fd, int local_fd ) {
 int main()
 {
     int ep_fd, local_fd;
-    struct obj o;
+    struct obj *o;
 
     local_fd = local_sock_init();
     local_bind_sock( local_fd, AF_LOCAL, path );
@@ -120,7 +129,7 @@ int main()
 
     ep_fd = epoll_init();
     o = creat_obj( local_fd );
-    epoll_add_fd( ep_fd, local_fd, (void *)&o );
+    epoll_add_fd( ep_fd, local_fd, (void *)o );
 
     run( ep_fd, local_fd );
 
