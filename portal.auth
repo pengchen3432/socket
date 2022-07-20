@@ -1,0 +1,148 @@
+#!/bin/sh
+# portal.auth
+#
+
+DICTIONARY_DIR="/etc/freeradius"
+
+freeradius_handle() {
+    REJECT="Access-Reject"
+    ACCEPT="Access-Accept"
+    NO_RESPONSE="no response"
+    SECRET_ERROR="Shared secret is incorrect"
+    IP_PROTO=" -4 "
+    [ "$5" = "1" ] && IP_PROTO=" -6 "
+
+    logger -t "portal.auth" -p 7 $(cat $1)
+    logger -t "portal.auth" -p 7 "USE_IPV6=$5"
+    logger -t "portal.auth" -p 7 "IP_PROTO=$IP_PROTO"
+
+    if [ "$3" == "auth" ]; then
+        RADIUS_SERVER=$(/usr/sbin/radclient $IP_PROTO -x -r 1 -t 10 -d "$DICTIONARY_DIR" -f "$1" "$2" "$3" "$4" 2>&1)
+        if [ $? -eq 0 ]; then
+	    # auth success, try to parse some attributes
+            local session_timeout limit_up limit_down idle_timeout acct_interval
+
+            session_timeout=`echo $RADIUS_SERVER | sed 's/.*Session-Timeout = \([0-9]\+\).*/\1/p' -n`
+            if [ -z "$session_timeout" ]; then
+                session_timeout=0
+            fi
+
+            limit_up=`echo $RADIUS_SERVER | sed 's/.*WISPr-Bandwidth-Max-Up = \([0-9]\+\).*/\1/p' -n`
+            if [ -z "$limit_up" ]; then
+                limit_up=0
+            fi
+
+            limit_down=`echo $RADIUS_SERVER | sed 's/.*WISPr-Bandwidth-Max-Down = \([0-9]\+\).*/\1/p' -n`
+            if [ -z "$limit_down" ]; then
+                limit_down=0
+            fi
+
+            idle_timeout=`echo $RADIUS_SERVER | sed 's/.*Idle-Timeout = \([0-9]\+\).*/\1/p' -n`
+            if [ -z "$idle_timeout" ]; then
+                idle_timeout=0
+            fi
+
+            acct_interval=`echo $RADIUS_SERVER | sed 's/.*Acct-Interim-Interval = \([0-9]\+\).*/\1/p' -n`
+            if [ -z "$acct_interval" ]; then
+                acct_interval=0
+            fi
+
+            echo "{ \"status\":0, \"session_timeout\":$session_timeout, \"limit_up\":$limit_up, \"limit_down\":$limit_down, \"idle_timeout\":$idle_timeout, \"acct_interval\":$acct_interval }"
+        else
+            # don't change the order
+            echo ${RADIUS_SERVER} | grep -q "${SECRET_ERROR}"
+            [ $? -eq 0 ] && echo "{ \"status\":-1 }"
+            echo ${RADIUS_SERVER} | grep -q "${REJECT}"
+            [ $? -eq 0 ] && echo "{ \"status\":-2 }"
+            echo ${RADIUS_SERVER} | grep -q "${NO_RESPONSE}"
+            [ $? -eq 0 ] && echo "{ \"status\":-3 }"
+        fi
+    elif [ "$3" == "acct" ]; then
+        /usr/sbin/radclient $IP_PROTO -q -d "$DICTIONARY_DIR" -f "$1" "$2" "$3" "$4"
+        echo '{ "status":0 }'
+    else
+        echo '{ "status":-1 }'
+    fi
+
+    rm -rf "$1"
+}
+
+facebook_get_app_token() {
+    local URL="https://graph.facebook.com/oauth/access_token?client_id=$1&client_secret=$2&grant_type=client_credentials"
+    local ACCESS_TOKEN=
+
+    rsp=$(curl -k "$URL")
+    json_load "$rsp"
+    json_get_var ACCESS_TOKEN access_token
+    if  [ -z $ACCESS_TOKEN ]; then
+        echo "{\"result\":-1,\"access_token\" : \"\" }"
+    else
+        echo "{\"result\":0,\"access_token\" : \"$ACCESS_TOKEN\" }"
+    fi
+}
+
+facebook_check_auth() {
+    local URL="https://graph.facebook.com/debug_token?input_token=$1&access_token=$2"
+    local IS_VALID=
+
+    rsp=$(curl -k "$URL")
+    json_load "$rsp"
+    json_select data
+    json_get_var IS_VALID is_valid
+    [ "$IS_VALID" = "1" ] && echo '{ "status":0 }'
+    [ "$IS_VALID" = "0" ] && echo '{ "status":-1 }'
+    json_select ..
+}
+
+case "$1" in
+    list)
+        echo '{"radius":{"server":"str", "command":"str", "secret":"str", "radfile":"str", "use_ipv6":1}, "facebook_app-token":{"appid":"str", "appsecret":"str"}, "facebook_authcheck":{"user_token":"str", "app_token":"str"}}'
+    ;;
+    call)
+        case "$2" in
+            radius)
+                local SERVER=
+                local COMMAND=
+                local SECRET=
+                local RADFILE=
+                local USE_IPV6=
+
+                . /usr/share/libubox/jshn.sh
+
+                read VARS
+                json_load "$VARS"
+                json_get_var SERVER server
+                json_get_var COMMAND command
+                json_get_var SECRET secret
+                json_get_var RADFILE radfile
+                json_get_var USE_IPV6 use_ipv6
+                echo $(freeradius_handle "$RADFILE" "$SERVER" "$COMMAND" "$SECRET" "$USE_IPV6")
+            ;;
+            facebook_app-token)
+                local APPID=
+                local APPSECRET=
+
+                . /usr/share/libubox/jshn.sh
+
+                read VARS
+                json_load "$VARS"
+                json_get_var APPID appid
+                json_get_var APPSECRET appsecret
+                echo $(facebook_get_app_token "$APPID" "$APPSECRET" )
+            ;;
+            facebook_authcheck)
+                local USER_TOKEN=
+                local APP_TOKEN=
+
+                . /usr/share/libubox/jshn.sh
+
+                read VARS
+                json_load "$VARS"
+                json_get_var USER_TOKEN user_token
+                json_get_var APP_TOKEN app_token
+                echo $(facebook_check_auth "$USER_TOKEN" "$APP_TOKEN" )
+            ;;
+        esac
+    ;;
+esac
+# EOF
