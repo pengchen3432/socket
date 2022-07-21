@@ -1,0 +1,6 @@
+make --dry-run --always-make --keep-going --print-directory
+make: Entering directory '/home/chen/grandstream/GWN/develop/system/closesource/local'
+gcc -c -g -O0 -Wall -Werror  -I/usr -o main.o main.c
+gcc -g -O0 -Wall -Werror  -I/usr main.o -o local -lubus -lblobmsg_json -ljson-c -lubox -pthread -luci -lm -lgs_utils -lgs_ipc -lnbrd -lgs_crypto -ldl
+make: Leaving directory '/home/chen/grandstream/GWN/develop/system/closesource/local'
+ 

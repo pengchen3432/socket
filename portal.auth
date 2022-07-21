@@ -17,10 +17,10 @@ freeradius_handle() {
     logger -t "portal.auth" -p 7 "IP_PROTO=$IP_PROTO"
 
     if [ "$3" == "auth" ]; then
-        RADIUS_SERVER=$(/usr/sbin/radclient $IP_PROTO -x -r 1 -t 10 -d "$DICTIONARY_DIR" -f "$1" "$2" "$3" "$4" 2>&1)
+        RADIUS_SERVER=$(/usr/sbin/radclient $IP_PROTO -x -r "$7" -t "$6" -d "$DICTIONARY_DIR" -f "$1" "$2" "$3" "$4" 2>&1)
         if [ $? -eq 0 ]; then
-	    # auth success, try to parse some attributes
-            local session_timeout limit_up limit_down idle_timeout acct_interval
+        # auth success, try to parse some attributes
+            local session_timeout limit_up limit_down idle_timeout acct_interval total_limit
 
             session_timeout=`echo $RADIUS_SERVER | sed 's/.*Session-Timeout = \([0-9]\+\).*/\1/p' -n`
             if [ -z "$session_timeout" ]; then
@@ -47,7 +47,12 @@ freeradius_handle() {
                 acct_interval=0
             fi
 
-            echo "{ \"status\":0, \"session_timeout\":$session_timeout, \"limit_up\":$limit_up, \"limit_down\":$limit_down, \"idle_timeout\":$idle_timeout, \"acct_interval\":$acct_interval }"
+            total_limit=`echo $RADIUS_SERVER | sed 's/.*Grandstream-Total-Limit = \([0-9]\+\).*/\1/p' -n`
+            if [ -z "$total_limit" ]; then
+                total_limit=0
+            fi
+
+            echo "{ \"status\":0, \"session_timeout\":$session_timeout, \"limit_up\":$limit_up, \"limit_down\":$limit_down, \"idle_timeout\":$idle_timeout, \"acct_interval\":$acct_interval, \"total_limit\":$total_limit }"
         else
             # don't change the order
             echo ${RADIUS_SERVER} | grep -q "${SECRET_ERROR}"
@@ -96,7 +101,7 @@ facebook_check_auth() {
 
 case "$1" in
     list)
-        echo '{"radius":{"server":"str", "command":"str", "secret":"str", "radfile":"str", "use_ipv6":1}, "facebook_app-token":{"appid":"str", "appsecret":"str"}, "facebook_authcheck":{"user_token":"str", "app_token":"str"}}'
+        echo '{"radius":{"server":"str", "command":"str", "secret":"str", "radfile":"str", "use_ipv6":1, "timeout":10, "attempts":1}, "facebook_app-token":{"appid":"str", "appsecret":"str"}, "facebook_authcheck":{"user_token":"str", "app_token":"str"}}'
     ;;
     call)
         case "$2" in
@@ -106,6 +111,8 @@ case "$1" in
                 local SECRET=
                 local RADFILE=
                 local USE_IPV6=
+                local RADIUS_TIMEOUT=
+                local RADIUS_ATTEMPTS=
 
                 . /usr/share/libubox/jshn.sh
 
@@ -116,7 +123,9 @@ case "$1" in
                 json_get_var SECRET secret
                 json_get_var RADFILE radfile
                 json_get_var USE_IPV6 use_ipv6
-                echo $(freeradius_handle "$RADFILE" "$SERVER" "$COMMAND" "$SECRET" "$USE_IPV6")
+                json_get_var RADIUS_TIMEOUT timeout
+                json_get_var RADIUS_ATTEMPTS attempts
+                echo $(freeradius_handle "$RADFILE" "$SERVER" "$COMMAND" "$SECRET" "$USE_IPV6" "$RADIUS_TIMEOUT" "$RADIUS_ATTEMPTS")
             ;;
             facebook_app-token)
                 local APPID=
