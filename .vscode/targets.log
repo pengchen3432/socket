@@ -8,7 +8,7 @@ make: *** No rule to make target 'all'.  Stop.
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Fri Jul 15 10:14:33 2022
+# Make data base, printed on Fri Jul 22 14:28:33 2022
 
 # Variables
 
@@ -55,7 +55,7 @@ VSCODE_NLS_CONFIG = {"locale":"zh-cn","availableLanguages":{"*":"zh-cn"},"_langu
 # environment
 _ = /usr/bin/code
 # environment
-JOURNAL_STREAM = 8:54611
+JOURNAL_STREAM = 8:54595
 # environment
 XDG_CONFIG_DIRS = /etc/xdg/xdg-ubuntu:/etc/xdg
 # makefile
@@ -75,7 +75,7 @@ DBUS_SESSION_BUS_ADDRESS = unix:path=/run/user/1000/bus
 # environment
 VSCODE_VERBOSE_LOGGING = true
 # environment
-MANAGERPID = 1504
+MANAGERPID = 1505
 # environment
 CLUTTER_IM_MODULE = fcitx
 # environment
@@ -93,7 +93,7 @@ GPG_AGENT_INFO = /run/user/1000/gnupg/S.gpg-agent:0:1
 # environment
 GJS_DEBUG_OUTPUT = stderr
 # environment
-SESSION_MANAGER = local/ubuntu:@/tmp/.ICE-unix/1729,unix/ubuntu:/tmp/.ICE-unix/1729
+SESSION_MANAGER = local/ubuntu:@/tmp/.ICE-unix/1725,unix/ubuntu:/tmp/.ICE-unix/1725
 # environment
 XDG_RUNTIME_DIR = /run/user/1000
 # environment
@@ -103,7 +103,7 @@ VSCODE_LOG_STACK = false
 # environment
 ELECTRON_RUN_AS_NODE = 1
 # environment
-INVOCATION_ID = 87e94797fb0149e78807024f2ecb24bc
+INVOCATION_ID = 04bf30142d48488b9093793c36805116
 # default
 .FEATURES := target-specific order-only second-expansion else-if shortest-stem undefine oneshell archives jobserver output-sync check-symlink load
 # environment
@@ -113,7 +113,7 @@ XDG_SESSION_DESKTOP = ubuntu
 # environment
 SSH_AUTH_SOCK = /run/user/1000/keyring/ssh
 # environment
-GIO_LAUNCHED_DESKTOP_FILE_PID = 5676
+GIO_LAUNCHED_DESKTOP_FILE_PID = 27273
 # automatic
 %F = $(notdir $%)
 # environment
@@ -127,7 +127,7 @@ PWD = /home/chen/my_git/socket
 # default
 .LOADED := 
 # environment
-SSH_AGENT_PID = 1683
+SSH_AGENT_PID = 1679
 # environment
 ORIGINAL_XDG_CURRENT_DESKTOP = ubuntu:GNOME
 # environment
@@ -171,7 +171,7 @@ SHLVL = 1
 # environment
 GNOME_SHELL_SESSION_MODE = ubuntu
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-1a63ec70-88e6-4c2f-a2cb-3dfac2f13b27.sock
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-d828dbf7-9d15-4d6f-82b9-532bb2de7288.sock
 # default
 MAKE_VERSION := 4.2.1
 # environment
@@ -189,7 +189,7 @@ LC_TELEPHONE = zh_CN.UTF-8
 # default
 MAKE_COMMAND := make
 # environment
-OLDPWD = /home/chen/my_git
+OLDPWD = /home/chen
 # environment
 TERMINATOR_DBUS_PATH = /net/tenshu/Terminator2
 # default
@@ -253,22 +253,21 @@ TERM = xterm-256color
 # environment
 TERMINATOR_DBUS_NAME = net.tenshu.Terminator21a9d5db22c73a993ff0b42f64b396873
 # environment
-VSCODE_PID = 4371
+VSCODE_PID = 2110
 # environment
-TERMINATOR_UUID = urn:uuid:e532441d-ea7c-452b-8f79-78904348b0f9
+TERMINATOR_UUID = urn:uuid:cf59c34d-2f77-4f1c-a206-542cfd45b051
 # variable set hash-table stats:
 # Load=122/1024=12%, Rehash=0, Collisions=23/144=16%
 
 # Pattern-specific Variable Values
- 
 
 # No pattern-specific variable values.
 
 # Directories
 
-# . (device 66306, inode 8660683): 49 files, no impossibilities.
+# . (device 66306, inode 8660683): 52 files, no impossibilities.
 
-# 49 files, no impossibilities in 1 directories.
+# 52 files, no impossibilities in 1 directories.
 
 # Implicit Rules
 
@@ -317,13 +316,14 @@ GNUmakefile:
 # No 'vpath' search paths.
 
 # No general ('VPATH' variable) search path.
+ 
 
-# strcache buffers: 1 (0) / strings = 57 / storage = 520 B / avg = 9 B
-# current buf: size = 8162 B / used = 520 B / count = 57 / avg = 9 B
+# strcache buffers: 1 (0) / strings = 60 / storage = 550 B / avg = 9 B
+# current buf: size = 8162 B / used = 550 B / count = 60 / avg = 9 B
 
-# strcache performance: lookups = 60 / hit rate = 5%
+# strcache performance: lookups = 63 / hit rate = 4%
 # hash-table stats:
-# Load=57/8192=1%, Rehash=0, Collisions=1/60=2%
-# Finished Make data base on Fri Jul 15 10:14:33 2022
+# Load=60/8192=1%, Rehash=0, Collisions=1/63=2%
+# Finished Make data base on Fri Jul 22 14:28:33 2022
 
  
