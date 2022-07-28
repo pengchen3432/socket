@@ -8,7 +8,8 @@
 #include <syslog.h>
 #include <string.h>
 #include <unistd.h>
-#define PATH "local_sem"
+#define SEM_PATH "local_sem"
+#define SHM_PATH "local_shm"
 int sem_init();
 int init_sem_id(char *path, int count);
 int semaphort_p(int sem_id);
@@ -16,6 +17,7 @@ int semaphort_v(int sem_id);
 int sem_wait(int sem_id);
 int sem_post(int sem_id);
 int sem_deinit(int sem_id);
+
 int main()
 {
     int sem_id;
@@ -30,6 +32,8 @@ int main()
     sleep(10);
     printf("2222222222\n");
     sem_post(sem_id);
+
+    sem_post( sem_id );
     return 0;
 }
     
@@ -37,7 +41,7 @@ int main()
 int sem_init()
 {
     int fd, key, sem_id;
-    fd = open( PATH, O_RDWR | O_CREAT | O_EXCL, 0666 );
+    fd = open( SEM_PATH, O_RDWR | O_CREAT | O_EXCL, 0666 );
     if ( fd < 0 ) {
         if ( errno == EEXIST ) {
             syslog(LOG_NOTICE, "file exist\n");
@@ -51,7 +55,7 @@ int sem_init()
         close(fd);
     }
 
-    sem_id = init_sem_id( PATH, 1 );
+    sem_id = init_sem_id( SEM_PATH, 1 );
 }
 
 int init_sem_id(char *path, int count) 
@@ -71,10 +75,17 @@ int init_sem_id(char *path, int count)
         return key;
     }
     // 得到一个信号量集
-    id = semget( key, 1, 0666 | IPC_CREAT );
+    id = semget( key, 1, IPC_EXCL );
     if ( id < 0 ) {
-        syslog(LOG_ERR, "id failed\n");
+        id = semget(key, 1, 0666 | IPC_CREAT );
+    }
+    else {
+        printf("1111111\n");
         return id;
+    }
+    if ( id < 0 ) {
+        printf("id failed\n");
+        return -1;
     }
 
     // 初始化一个信号量集
