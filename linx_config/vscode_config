@@ -1,0 +1,35 @@
+{
+    "editor.fontFamily": "Fira Code",
+    "editor.fontLigatures": true,
+    "C_Cpp.errorSquiggles": "Disabled",
+    "terminal.integrated.fontFamily": "Menlo for Powerline",
+    "editor.suggestSelection": "first",
+    "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
+    "editor.fontSize": 15,
+    "terminal.integrated.fontSize": 14,
+    "editor.renderWhitespace": "all",
+    "editor.renderControlCharacters": true,
+    "emmet.excludeLanguages": [
+        "markdown"
+    ],
+    "leetcode.endpoint": "leetcode-cn",
+    "leetcode.defaultLanguage": "cpp",
+    "leetcode.workspaceFolder": "/home/k4/socket/leetcode",
+    "leetcode.hint.configWebviewMarkdown": false,
+    "workbench.editorAssociations": {
+        "*.html": "default",
+        "*.txt": "default"
+    },
+    "files.autoSave": "onFocusChange",
+    "editor.formatOnSave": false,
+    "launch": {
+        "configurations": [],
+        "compounds": []
+    },
+    "cmake.configureSettings": {
+    
+    },
+    "workbench.colorTheme": "Visual Studio Dark - C++",
+    "window.zoomLevel": 1
+    "window.titleBarStyle": "custom"
+}

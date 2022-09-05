@@ -18,6 +18,7 @@
 const char *app_name = "local";
 static struct ubus_context *ubus_ctx = NULL;
 static struct blob_buf b;
+static int chen_fd = -1;
 enum {
     LOCAL_READ_NAME,
     LOCAL_READ_AGE,
@@ -30,6 +31,7 @@ enum {
     LOCAL_LIST_SEC,
     __LOCAL_LIST_MAX,
 };
+
 
 static int
 local_write(
@@ -53,6 +55,15 @@ static void parse_local_list(
     struct blob_buf *b
 );
 
+static int
+read_log(
+    struct ubus_context *ctx,
+    struct ubus_object *obj,
+    struct ubus_request_data *req,
+    const char *method,
+    struct blob_attr *msg
+);
+
 
 struct blobmsg_policy local_read_policy[ __LOCAL_READ_MAX ] = {
     [LOCAL_READ_NAME] = { .name = "name", .type = BLOBMSG_TYPE_STRING },
@@ -70,6 +81,7 @@ struct ubus_method local_methods[] = {
     UBUS_METHOD( "read", local_read, local_read_policy ),
 };
 
+
 struct ubus_object_type local_type = 
     UBUS_OBJECT_TYPE( "local", local_methods );
 struct ubus_object local_obj = {
@@ -80,13 +92,46 @@ struct ubus_object local_obj = {
 };
 
 
+
+
+struct ubus_method log_methods[] = {
+    UBUS_METHOD_NOARG( "read_log", read_log ),
+};
+
+struct ubus_object_type log_type = 
+    UBUS_OBJECT_TYPE( "log_chen", log_methods );
+
+struct ubus_object log_obj = {
+    .name = "log_chen",
+    .type = &log_type,
+    .methods = log_methods,
+    .n_methods = ARRAY_SIZE( log_methods ),
+};
+
+
+static void logread_fd_cb(struct ubus_request *req, int fd)
+{
+	chen_fd = fd;
+    syslog(LOG_ERR, "success get fd\n");
+}
+
 int main()
 {
+    static struct ubus_request req;
+    int ret = -1;
+	uint32_t id;
     uloop_init();
     ubus_ctx = ubus_connect( NULL );
     ubus_add_uloop( ubus_ctx );
+    ubus_add_object( ubus_ctx, &log_obj );
     ubus_add_object( ubus_ctx, &local_obj );
-
+    ret = ubus_lookup_id(ubus_ctx, "log", &id);
+	if (ret) {
+        syslog( LOG_ERR, "chen get id err\n");
+	}
+    ubus_invoke_async(ubus_ctx, id, "read", b.head, &req);
+	req.fd_cb = logread_fd_cb;
+	ubus_complete_request_async(ubus_ctx, &req);
     uloop_run();
     
     return 0;
@@ -114,6 +159,29 @@ local_write(
     }
     write( fd, "hello world", strlen( "hello world" ) );
     close(fd);
+    return 0;
+}
+
+static int
+read_log(
+    struct ubus_context *ctx,
+    struct ubus_object *obj,
+    struct ubus_request_data *req,
+    const char *method,
+    struct blob_attr *msg
+)
+{
+    int n;
+    char buf[1024] = {0};
+    n = read( chen_fd, buf, sizeof(buf) );
+    if ( n < 0) {
+        syslog(LOG_ERR, "read err\n");
+    }
+    else {
+        syslog(LOG_ERR, "======================\n");
+        syslog(LOG_ERR, "====buf = %s\n", buf);
+        syslog(LOG_ERR, "======================\n");
+    }
     return 0;
 }
 
