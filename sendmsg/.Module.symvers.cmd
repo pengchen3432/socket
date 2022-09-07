@@ -1,0 +1,1 @@
+cmd_/home/chen/my_git/socket/sendmsg/Module.symvers := sed 's/\.ko$$/\.o/' /home/chen/my_git/socket/sendmsg/modules.order | scripts/mod/modpost -m -a  -o /home/chen/my_git/socket/sendmsg/Module.symvers -e -i Module.symvers   -T -

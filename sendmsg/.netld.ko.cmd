@@ -1,0 +1,1 @@
+cmd_/home/chen/my_git/socket/sendmsg/netld.ko := ld -r  -m elf_x86_64  --build-id=sha1  -T scripts/module.lds -o /home/chen/my_git/socket/sendmsg/netld.ko /home/chen/my_git/socket/sendmsg/netld.o /home/chen/my_git/socket/sendmsg/netld.mod.o;  true
