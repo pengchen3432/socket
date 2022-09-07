@@ -1,0 +1,55 @@
+[  237.823288] oops: loading out-of-tree module taints kernel.
+[  237.823320] oops: module verification failed: signature and/or required key missing - tainting kernel
+[  237.823664] will init
+[  237.823668] BUG: kernel NULL pointer dereference, address: 0000000000000000
+[  237.823670] #PF: supervisor write access in kernel mode
+[  237.823671] #PF: error_code(0x0002) - not-present page
+[  237.823672] PGD 0 P4D 0 
+[  237.823674] Oops: 0002 [#1] SMP NOPTI
+[  237.823676] CPU: 0 PID: 2451 Comm: insmod Tainted: G           OE     5.11.0-22-generic #23-Ubuntu
+[  237.823678] Hardware name: VMware, Inc. VMware Virtual Platform/440BX Desktop Reference Platform, BIOS 6.00 02/27/2020
+[  237.823679] RIP: 0010:init_module+0x17/0x1000 [oops]
+[  237.823682] Code: Unable to access opcode bytes at RIP 0xffffffffc07d1fed.
+[  237.823683] RSP: 0018:ffffb59843c43d60 EFLAGS: 00010246
+[  237.823685] RAX: 0000000000000000 RBX: 0000000000000000 RCX: ffff981539e18ac8
+[  237.823686] RDX: 0000000000000000 RSI: 0000000000000027 RDI: ffff981539e18ac0
+[  237.823687] RBP: ffffb59843c43d60 R08: 0000000000000000 R09: ffffb59843c43b58
+[  237.823687] R10: ffffb59843c43b50 R11: ffff98153fec68a8 R12: ffffffffc07d2000
+[  237.823688] R13: ffff981429558510 R14: 0000000000000000 R15: ffffffffc0848000
+[  237.823689] FS:  00007f11f3cc1580(0000) GS:ffff981539e00000(0000) knlGS:0000000000000000
+[  237.823691] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  237.823692] CR2: ffffffffc07d1fed CR3: 000000001feee002 CR4: 00000000003706f0
+[  237.823709] Call Trace:
+[  237.823712]  do_one_initcall+0x48/0x1d0
+[  237.823715]  ? kmem_cache_alloc_trace+0xf6/0x200
+[  237.823718]  ? do_init_module+0x28/0x290
+[  237.823720]  do_init_module+0x62/0x290
+[  237.823722]  load_module+0x6fd/0x780
+[  237.823723]  __do_sys_finit_module+0xc2/0x120
+[  237.823725]  __x64_sys_finit_module+0x1a/0x20
+[  237.823726]  do_syscall_64+0x38/0x90
+[  237.823728]  entry_SYSCALL_64_after_hwframe+0x44/0xa9
+[  237.823730] RIP: 0033:0x7f11f3dfcf6d
+[  237.823732] Code: 28 0d 00 0f 05 eb a9 66 0f 1f 44 00 00 f3 0f 1e fa 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d cb de 0c 00 f7 d8 64 89 01 48
+[  237.823734] RSP: 002b:00007fff7002cdb8 EFLAGS: 00000246 ORIG_RAX: 0000000000000139
+[  237.823736] RAX: ffffffffffffffda RBX: 000055f0f974d790 RCX: 00007f11f3dfcf6d
+[  237.823736] RDX: 0000000000000000 RSI: 000055f0f7b04260 RDI: 0000000000000003
+[  237.823737] RBP: 0000000000000000 R08: 0000000000000000 R09: 00007f11f3ecf520
+[  237.823738] R10: 0000000000000003 R11: 0000000000000246 R12: 000055f0f7b04260
+[  237.823739] R13: 0000000000000000 R14: 000055f0f974d760 R15: 0000000000000000
+[  237.823740] Modules linked in: oops(OE+) nls_utf8 isofs rfcomm xt_conntrack nft_chain_nat xt_MASQUERADE nf_nat nf_conntrack_netlink nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 xfrm_user xfrm_algo nft_counter xt_addrtype nft_compat nf_tables libcrc32c nfnetlink br_netfilter bridge stp llc overlay bnep vsock_loopback vmw_vsock_virtio_transport_common vmw_vsock_vmci_transport vsock nls_iso8859_1 intel_rapl_msr intel_rapl_common snd_ens1371 snd_ac97_codec crct10dif_pclmul gameport ghash_clmulni_intel ac97_bus snd_pcm snd_seq_midi snd_seq_midi_event aesni_intel crypto_simd cryptd glue_helper rapl vmw_balloon snd_rawmidi snd_seq joydev input_leds snd_seq_device serio_raw snd_timer snd soundcore vmw_vmci mac_hid btusb btrtl btbcm btintel bluetooth ecdh_generic ecc sch_fq_codel vmwgfx ttm drm_kms_helper cec rc_core fb_sys_fops syscopyarea sysfillrect sysimgblt msr parport_pc ppdev drm lp parport ip_tables x_tables autofs4 hid_generic usbhid hid crc32_pclmul mptspi mptscsih psmouse ahci e1000
+[  237.823777]  libahci mptbase scsi_transport_spi i2c_piix4 pata_acpi
+[  237.823781] CR2: 0000000000000000
+[  237.823782] ---[ end trace 4f3baa0cf2fdf2af ]---
+[  237.823783] RIP: 0010:init_module+0x17/0x1000 [oops]
+[  237.823786] Code: Unable to access opcode bytes at RIP 0xffffffffc07d1fed.
+[  237.823787] RSP: 0018:ffffb59843c43d60 EFLAGS: 00010246
+[  237.823788] RAX: 0000000000000000 RBX: 0000000000000000 RCX: ffff981539e18ac8
+[  237.823789] RDX: 0000000000000000 RSI: 0000000000000027 RDI: ffff981539e18ac0
+[  237.823790] RBP: ffffb59843c43d60 R08: 0000000000000000 R09: ffffb59843c43b58
+[  237.823790] R10: ffffb59843c43b50 R11: ffff98153fec68a8 R12: ffffffffc07d2000
+[  237.823791] R13: ffff981429558510 R14: 0000000000000000 R15: ffffffffc0848000
+[  237.823792] FS:  00007f11f3cc1580(0000) GS:ffff981539e00000(0000) knlGS:0000000000000000
+[  237.823793] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  237.823794] CR2: ffffffffc07d1fed CR3: 000000001feee002 CR4: 00000000003706f0
+[ 5705.181536] audit: type=1400 audit(1632931211.345:41): apparmor="DENIED" operation="capable" profile="/usr/sbin/cupsd" pid=2786 comm="cupsd" capability=12  capname="net_admin"

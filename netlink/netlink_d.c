@@ -24,27 +24,17 @@ void sendnlmsg(char *message, int pid)
     }
     printk(KERN_ERR "pid:%d\n",pid);
     skb_1 = alloc_skb(len,GFP_KERNEL);
+    printk(KERN_ERR "chenchenchen\n");
     if(!skb_1)
     {
         printk(KERN_ERR "my_net_link:alloc_skb error\n");
     }
-    slen = stringlength(message);
     nlh = nlmsg_put(skb_1,0,0,0,MAX_MSGSIZE,0);
     NETLINK_CB(skb_1).portid = 0;
     NETLINK_CB(skb_1).dst_group = 0;
-    message[slen]= '\0';
     memcpy(NLMSG_DATA(nlh),message,slen+1);
     printk("my_net_link:send message '%s'.\n",(char *)NLMSG_DATA(nlh));
     netlink_unicast(nl_sk,skb_1,pid,MSG_DONTWAIT);
-}
-int stringlength(char *s)
-{
-    int slen = 0;
-    for(; *s; s++)
-    {
-        slen++;
-    }
-    return slen;
 }
 //接收用户态发来的消息
 void nl_data_ready(struct sk_buff *__skb)

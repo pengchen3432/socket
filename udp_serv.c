@@ -24,7 +24,7 @@ int main()
     bzero(&in, sizeof(in));
     in.sin_family = AF_INET;
     in.sin_port = htons(9999);
-    in.sin_addr.s_addr = inet_addr("192.168.2.11");
+    in.sin_addr.s_addr = inet_addr("192.168.80.139");
     bind(ser_fd, (void *)&in, sizeof(in));
 
     while (1)

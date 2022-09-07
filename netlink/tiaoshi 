@@ -1,0 +1,407 @@
+0000000000000000 <sendnlmsg>:
+int err;
+struct sock *nl_sk = NULL;
+int flag = 0;
+//向用户态进程回发消息
+void sendnlmsg(char *message, int pid)
+{
+   0:   e8 00 00 00 00          callq  5 <sendnlmsg+0x5>
+    struct sk_buff *skb_1;
+    struct nlmsghdr *nlh;
+    int len = NLMSG_SPACE(MAX_MSGSIZE);
+    int slen = 0;
+    if(!message || !nl_sk)
+   5:   48 85 ff                test   %rdi,%rdi
+   8:   74 18                   je     22 <sendnlmsg+0x22>
+{
+   a:   55                      push   %rbp
+    if(!message || !nl_sk)
+   b:   48 83 3d 00 00 00 00    cmpq   $0x0,0x0(%rip)        # 13 <sendnlmsg+0x13>
+  12:   00 
+{
+  13:   48 89 e5                mov    %rsp,%rbp
+    if(!message || !nl_sk)
+  16:   0f 85 00 00 00 00       jne    1c <sendnlmsg+0x1c>
+    NETLINK_CB(skb_1).dst_group = 0;
+    message[slen]= '\0';
+    memcpy(NLMSG_DATA(nlh),message,slen+1);
+    printk("my_net_link:send message '%s'.\n",(char *)NLMSG_DATA(nlh));
+    netlink_unicast(nl_sk,skb_1,pid,MSG_DONTWAIT);
+}
+  1c:   5d                      pop    %rbp
+  1d:   e9 00 00 00 00          jmpq   22 <sendnlmsg+0x22>
+  22:   e9 00 00 00 00          jmpq   27 <sendnlmsg+0x27>
+  27:   66 0f 1f 84 00 00 00    nopw   0x0(%rax,%rax,1)
+  2e:   00 00 
+
+0000000000000030 <stringlength>:
+int stringlength(char *s)
+{
+  30:   e8 00 00 00 00          callq  35 <stringlength+0x5>
+  35:   55                      push   %rbp
+    int slen = 0;
+    for(; *s; s++)
+  36:   80 3f 00                cmpb   $0x0,(%rdi)
+{
+  39:   48 89 e5                mov    %rsp,%rbp
+    for(; *s; s++)
+  3c:   74 1d                   je     5b <stringlength+0x2b>
+  3e:   b8 01 00 00 00          mov    $0x1,%eax
+  43:   29 f8                   sub    %edi,%eax
+    {
+        slen++;
+  45:   44 8d 04 38             lea    (%rax,%rdi,1),%r8d
+    for(; *s; s++)
+  49:   48 83 c7 01             add    $0x1,%rdi
+  4d:   80 3f 00                cmpb   $0x0,(%rdi)
+  50:   75 f3                   jne    45 <stringlength+0x15>
+    }
+    return slen;
+}
+  52:   44 89 c0                mov    %r8d,%eax
+  55:   5d                      pop    %rbp
+  56:   e9 00 00 00 00          jmpq   5b <stringlength+0x2b>
+    int slen = 0;
+  5b:   45 31 c0                xor    %r8d,%r8d
+}
+  5e:   5d                      pop    %rbp
+  5f:   44 89 c0                mov    %r8d,%eax
+  62:   e9 00 00 00 00          jmpq   67 <stringlength+0x37>
+  67:   66 0f 1f 84 00 00 00    nopw   0x0(%rax,%rax,1)
+  6e:   00 00 
+
+0000000000000070 <init_module>:
+static struct netlink_kernel_cfg cfg = 
+    {.input = nl_data_ready};
+
+// Initialize netlink
+int netlink_init(void)
+{
+  70:   e8 00 00 00 00          callq  75 <init_module+0x5>
+  75:   55                      push   %rbp
+                                            struct module *module,
+                                            struct netlink_kernel_cfg *cfg);
+static inline struct sock *
+netlink_kernel_create(struct net *net, int unit, struct netlink_kernel_cfg *cfg)
+{
+        return __netlink_kernel_create(net, unit, THIS_MODULE, cfg);
+  76:   48 c7 c1 00 00 00 00    mov    $0x0,%rcx
+  7d:   48 c7 c2 00 00 00 00    mov    $0x0,%rdx
+  84:   be 1a 00 00 00          mov    $0x1a,%esi
+  89:   48 c7 c7 00 00 00 00    mov    $0x0,%rdi
+  90:   48 89 e5                mov    %rsp,%rbp
+  93:   e8 00 00 00 00          callq  98 <init_module+0x28>
+    nl_sk = netlink_kernel_create(&init_net, NETLINK_TEST, &cfg);
+  98:   48 89 05 00 00 00 00    mov    %rax,0x0(%rip)        # 9f <init_module+0x2f>
+    if(!nl_sk){
+  9f:   48 85 c0                test   %rax,%rax
+  a2:   0f 85 00 00 00 00       jne    a8 <init_module+0x38>
+  a8:   e9 00 00 00 00          jmpq   ad <init_module+0x3d>
+  ad:   0f 1f 00                nopl   (%rax)
+
+00000000000000b0 <cleanup_module>:
+    }
+    printk("my_net_link_4: create netlink socket ok.\n");
+    return 0;
+}
+static void netlink_exit(void)
+{
+  b0:   e8 00 00 00 00          callq  b5 <cleanup_module+0x5>
+  b5:   55                      push   %rbp
+    if(nl_sk != NULL){
+  b6:   48 8b 05 00 00 00 00    mov    0x0(%rip),%rax        # bd <cleanup_module+0xd>
+{
+  bd:   48 89 e5                mov    %rsp,%rbp
+    if(nl_sk != NULL){
+  c0:   48 85 c0                test   %rax,%rax
+  c3:   0f 84 00 00 00 00       je     c9 <cleanup_module+0x19>
+        sock_release(nl_sk->sk_socket);
+  c9:   48 8b b8 90 02 00 00    mov    0x290(%rax),%rdi
+  d0:   e8 00 00 00 00          callq  d5 <cleanup_module+0x25>
+  d5:   e9 00 00 00 00          jmpq   da <cleanup_module+0x2a>
+
+Disassembly of section .text.unlikely:
+
+0000000000000000 <sendnlmsg.part.0>:
+void sendnlmsg(char *message, int pid)
+   0:   e8 00 00 00 00          callq  5 <sendnlmsg.part.0+0x5>
+   5:   55                      push   %rbp
+   6:   48 89 e5                mov    %rsp,%rbp
+   9:   41 57                   push   %r15
+   b:   41 56                   push   %r14
+   d:   41 89 f6                mov    %esi,%r14d
+  10:   41 55                   push   %r13
+  12:   41 54                   push   %r12
+  14:   53                      push   %rbx
+  15:   48 89 fb                mov    %rdi,%rbx
+    printk(KERN_ERR "pid:%d\n",pid);
+  18:   48 c7 c7 00 00 00 00    mov    $0x0,%rdi
+  1f:   e8 00 00 00 00          callq  24 <sendnlmsg.part.0+0x24>
+ * This function is a convenient wrapper around __alloc_skb().
+ */
+static inline struct sk_buff *alloc_skb(unsigned int size,
+                                        gfp_t priority)
+{
+        return __alloc_skb(size, priority, 0, NUMA_NO_NODE);
+  24:   83 c9 ff                or     $0xffffffff,%ecx
+  27:   31 d2                   xor    %edx,%edx
+  29:   bf 10 04 00 00          mov    $0x410,%edi
+  2e:   be c0 0c 00 00          mov    $0xcc0,%esi
+  33:   e8 00 00 00 00          callq  38 <sendnlmsg.part.0+0x38>
+    printk(KERN_ERR "chenchenchen\n");
+  38:   48 c7 c7 00 00 00 00    mov    $0x0,%rdi
+  3f:   49 89 c4                mov    %rax,%r12
+  42:   e8 00 00 00 00          callq  47 <sendnlmsg.part.0+0x47>
+    if(!skb_1)
+  47:   4d 85 e4                test   %r12,%r12
+  4a:   75 0c                   jne    58 <sendnlmsg.part.0+0x58>
+        printk(KERN_ERR "my_net_link:alloc_skb error\n");
+  4c:   48 c7 c7 00 00 00 00    mov    $0x0,%rdi
+  53:   e8 00 00 00 00          callq  58 <sendnlmsg.part.0+0x58>
+    for(; *s; s++)
+  58:   31 c0                   xor    %eax,%eax
+  5a:   8a 14 03                mov    (%rbx,%rax,1),%dl
+  5d:   4c 63 f8                movslq %eax,%r15
+  60:   44 8d 68 01             lea    0x1(%rax),%r13d
+  64:   48 ff c0                inc    %rax
+  67:   84 d2                   test   %dl,%dl
+  69:   75 ef                   jne    5a <sendnlmsg.part.0+0x5a>
+ */
+static inline struct nlmsghdr *nlmsg_put(struct sk_buff *skb, u32 portid, u32 seq,
+                                         int type, int payload, int flags)
+{
+        if (unlikely(skb_tailroom(skb) < nlmsg_total_size(payload)))
+                return NULL;
+  6b:   31 c0                   xor    %eax,%eax
+ *
+ *      Return the number of bytes of free space at the tail of an sk_buff
+ */
+static inline int skb_tailroom(const struct sk_buff *skb)
+{
+        return skb_is_nonlinear(skb) ? 0 : skb->end - skb->tail;
+  6d:   41 83 7c 24 74 00       cmpl   $0x0,0x74(%r12)
+  73:   75 2f                   jne    a4 <sendnlmsg.part.0+0xa4>
+  75:   41 8b 94 24 bc 00 00    mov    0xbc(%r12),%edx
+  7c:   00 
+  7d:   41 2b 94 24 b8 00 00    sub    0xb8(%r12),%edx
+  84:   00 
+        if (unlikely(skb_tailroom(skb) < nlmsg_total_size(payload)))
+  85:   81 fa 0f 04 00 00       cmp    $0x40f,%edx
+  8b:   7e 17                   jle    a4 <sendnlmsg.part.0+0xa4>
+
+        return __nlmsg_put(skb, portid, seq, type, payload, flags);
+  8d:   45 31 c9                xor    %r9d,%r9d
+  90:   41 b8 00 04 00 00       mov    $0x400,%r8d
+  96:   31 c9                   xor    %ecx,%ecx
+  98:   31 d2                   xor    %edx,%edx
+  9a:   31 f6                   xor    %esi,%esi
+  9c:   4c 89 e7                mov    %r12,%rdi
+  9f:   e8 00 00 00 00          callq  a4 <sendnlmsg.part.0+0xa4>
+    memcpy(NLMSG_DATA(nlh),message,slen+1);
+  a4:   4c 8d 40 10             lea    0x10(%rax),%r8
+  a8:   49 63 cd                movslq %r13d,%rcx
+                if (q_size < size)
+                        __read_overflow2();
+        }
+        if (p_size < size || q_size < size)
+                fortify_panic(__func__);
+        return __underlying_memcpy(p, q, size);
+  ab:   48 89 de                mov    %rbx,%rsi
+    NETLINK_CB(skb_1).portid = 0;
+  ae:   49 c7 44 24 34 00 00    movq   $0x0,0x34(%r12)
+  b5:   00 00 
+  b7:   4c 89 c7                mov    %r8,%rdi
+    message[slen]= '\0';
+  ba:   42 c6 04 3b 00          movb   $0x0,(%rbx,%r15,1)
+  bf:   f3 a4                   rep movsb %ds:(%rsi),%es:(%rdi)
+    printk("my_net_link:send message '%s'.\n",(char *)NLMSG_DATA(nlh));
+  c1:   4c 89 c6                mov    %r8,%rsi
+  c4:   48 c7 c7 00 00 00 00    mov    $0x0,%rdi
+  cb:   e8 00 00 00 00          callq  d0 <sendnlmsg.part.0+0xd0>
+    netlink_unicast(nl_sk,skb_1,pid,MSG_DONTWAIT);
+  d0:   44 89 f2                mov    %r14d,%edx
+  d3:   4c 89 e6                mov    %r12,%rsi
+  d6:   b9 40 00 00 00          mov    $0x40,%ecx
+  db:   48 8b 3d 00 00 00 00    mov    0x0(%rip),%rdi        # e2 <sendnlmsg.part.0+0xe2>
+  e2:   e8 00 00 00 00          callq  e7 <sendnlmsg.part.0+0xe7>
+}
+  e7:   5b                      pop    %rbx
+  e8:   41 5c                   pop    %r12
+  ea:   41 5d                   pop    %r13
+  ec:   41 5e                   pop    %r14
+  ee:   41 5f                   pop    %r15
+  f0:   5d                      pop    %rbp
+  f1:   e9 00 00 00 00          jmpq   f6 <nl_data_ready>
+
+00000000000000f6 <nl_data_ready>:
+ {
+  f6:   e8 00 00 00 00          callq  fb <nl_data_ready+0x5>
+  fb:   55                      push   %rbp
+  fc:   48 89 e5                mov    %rsp,%rbp
+  ff:   41 55                   push   %r13
+ 101:   41 54                   push   %r12
+ 103:   49 89 fc                mov    %rdi,%r12
+     printk("begin data_ready\n");
+ 106:   48 c7 c7 00 00 00 00    mov    $0x0,%rdi
+ {
+ 10d:   53                      push   %rbx
+ 10e:   48 81 ec 90 00 00 00    sub    $0x90,%rsp
+ 115:   65 48 8b 04 25 28 00    mov    %gs:0x28,%rax
+ 11c:   00 00 
+ 11e:   48 89 45 e0             mov    %rax,-0x20(%rbp)
+ 122:   31 c0                   xor    %eax,%eax
+     printk("begin data_ready\n");
+ 124:   e8 00 00 00 00          callq  129 <nl_data_ready+0x33>
+        refcount_inc(&skb->users);
+ 129:   49 8d bc 24 d4 00 00    lea    0xd4(%r12),%rdi
+ 130:   00 
+}
+#define arch_atomic_sub_return arch_atomic_sub_return
+
+static __always_inline int arch_atomic_fetch_add(int i, atomic_t *v)
+{
+        return xadd(&v->counter, i);
+ 131:   b8 01 00 00 00          mov    $0x1,%eax
+ 136:   f0 41 0f c1 84 24 d4    lock xadd %eax,0xd4(%r12)
+ 13d:   00 00 00 
+        int old = atomic_fetch_add_relaxed(i, &r->refs);
+
+        if (oldp)
+                *oldp = old;
+
+        if (unlikely(!old))
+ 140:   85 c0                   test   %eax,%eax
+ 142:   75 0c                   jne    150 <nl_data_ready+0x5a>
+                refcount_warn_saturate(r, REFCOUNT_ADD_UAF);
+ 144:   be 02 00 00 00          mov    $0x2,%esi
+ 149:   e8 00 00 00 00          callq  14e <nl_data_ready+0x58>
+ 14e:   eb 10                   jmp    160 <nl_data_ready+0x6a>
+        else if (unlikely(old < 0 || old + i < 0))
+ 150:   78 04                   js     156 <nl_data_ready+0x60>
+ 152:   ff c0                   inc    %eax
+ 154:   79 0a                   jns    160 <nl_data_ready+0x6a>
+                refcount_warn_saturate(r, REFCOUNT_ADD_OVF);
+ 156:   be 01 00 00 00          mov    $0x1,%esi
+ 15b:   e8 00 00 00 00          callq  160 <nl_data_ready+0x6a>
+     if(skb->len >= NLMSG_SPACE(0))
+ 160:   41 83 7c 24 70 0f       cmpl   $0xf,0x70(%r12)
+ 166:   0f 86 b4 00 00 00       jbe    220 <nl_data_ready+0x12a>
+         nlh = nlmsg_hdr(skb);
+ 16c:   49 8b 9c 24 c8 00 00    mov    0xc8(%r12),%rbx
+ 173:   00 
+ 174:   48 8d bd 7c ff ff ff    lea    -0x84(%rbp),%rdi
+ 17b:   b9 19 00 00 00          mov    $0x19,%ecx
+ 180:   48 8d 73 10             lea    0x10(%rbx),%rsi
+ 184:   f3 a5                   rep movsl %ds:(%rsi),%es:(%rdi)
+         printk("Message received:%s\n",str) ;
+ 186:   48 8d b5 7c ff ff ff    lea    -0x84(%rbp),%rsi
+ 18d:   48 c7 c7 00 00 00 00    mov    $0x0,%rdi
+ 194:   e8 00 00 00 00          callq  199 <nl_data_ready+0xa3>
+         printk("===================\n") ;
+ 199:   48 c7 c7 00 00 00 00    mov    $0x0,%rdi
+ 1a0:   e8 00 00 00 00          callq  1a5 <nl_data_ready+0xaf>
+         printk("===================\n") ;
+ 1a5:   48 c7 c7 00 00 00 00    mov    $0x0,%rdi
+         pid = nlh->nlmsg_pid;
+ 1ac:   44 8b 6b 0c             mov    0xc(%rbx),%r13d
+         while(i--)
+ 1b0:   bb 0b 00 00 00          mov    $0xb,%ebx
+         printk("===================\n") ;
+ 1b5:   e8 00 00 00 00          callq  1ba <nl_data_ready+0xc4>
+         while(i--)
+ 1ba:   ff cb                   dec    %ebx
+ 1bc:   74 50                   je     20e <nl_data_ready+0x118>
+ * structure.
+ */
+static inline void init_completion(struct completion *x)
+{
+        x->done = 0;
+        init_swait_queue_head(&x->wait);
+ 1be:   48 c7 c2 00 00 00 00    mov    $0x0,%rdx
+ 1c5:   48 c7 c6 00 00 00 00    mov    $0x0,%rsi
+ 1cc:   48 8d bd 60 ff ff ff    lea    -0xa0(%rbp),%rdi
+        x->done = 0;
+ 1d3:   c7 85 58 ff ff ff 00    movl   $0x0,-0xa8(%rbp)
+ 1da:   00 00 00 
+        init_swait_queue_head(&x->wait);
+ 1dd:   e8 00 00 00 00          callq  1e2 <nl_data_ready+0xec>
+            wait_for_completion_timeout(&cmpl,3 * HZ);
+ 1e2:   be ee 02 00 00          mov    $0x2ee,%esi
+ 1e7:   48 8d bd 58 ff ff ff    lea    -0xa8(%rbp),%rdi
+ 1ee:   e8 00 00 00 00          callq  1f3 <nl_data_ready+0xfd>
+    if(!message || !nl_sk)
+ 1f3:   48 83 3d 00 00 00 00    cmpq   $0x0,0x0(%rip)        # 1fb <nl_data_ready+0x105>
+ 1fa:   00 
+ 1fb:   74 bd                   je     1ba <nl_data_ready+0xc4>
+ 1fd:   44 89 ee                mov    %r13d,%esi
+ 200:   48 c7 c7 00 00 00 00    mov    $0x0,%rdi
+ 207:   e8 f4 fd ff ff          callq  0 <sendnlmsg.part.0>
+ 20c:   eb ac                   jmp    1ba <nl_data_ready+0xc4>
+         flag = 1;
+ 20e:   c7 05 00 00 00 00 01    movl   $0x1,0x0(%rip)        # 218 <nl_data_ready+0x122>
+ 215:   00 00 00 
+         kfree_skb(skb);
+ 218:   4c 89 e7                mov    %r12,%rdi
+ 21b:   e8 00 00 00 00          callq  220 <nl_data_ready+0x12a>
+ }
+ 220:   48 8b 45 e0             mov    -0x20(%rbp),%rax
+ 224:   65 48 33 04 25 28 00    xor    %gs:0x28,%rax
+ 22b:   00 00 
+ 22d:   74 05                   je     234 <nl_data_ready+0x13e>
+ 22f:   e8 00 00 00 00          callq  234 <nl_data_ready+0x13e>
+ 234:   48 81 c4 90 00 00 00    add    $0x90,%rsp
+ 23b:   5b                      pop    %rbx
+ 23c:   41 5c                   pop    %r12
+ 23e:   41 5d                   pop    %r13
+ 240:   5d                      pop    %rbp
+ 241:   e9 00 00 00 00          jmpq   246 <sendnlmsg.cold>
+
+0000000000000246 <sendnlmsg.cold>:
+ 246:   e8 b5 fd ff ff          callq  0 <sendnlmsg.part.0>
+}
+ 24b:   e9 00 00 00 00          jmpq   250 <netlink_init.cold>
+
+0000000000000250 <netlink_init.cold>:
+    printk("my_net_link_4: create netlink socket ok.\n");
+ 250:   48 c7 c7 00 00 00 00    mov    $0x0,%rdi
+ 257:   e8 00 00 00 00          callq  25c <netlink_init.cold+0xc>
+    return 0;
+ 25c:   31 c0                   xor    %eax,%eax
+}
+ 25e:   5d                      pop    %rbp
+ 25f:   e9 00 00 00 00          jmpq   264 <netlink_init.cold+0x14>
+        printk(KERN_ERR "my_net_link: create netlink socket error.\n");
+ 264:   48 c7 c7 00 00 00 00    mov    $0x0,%rdi
+ 26b:   e8 00 00 00 00          callq  270 <netlink_init.cold+0x20>
+        return 1;
+ 270:   b8 01 00 00 00          mov    $0x1,%eax
+}
+ 275:   5d                      pop    %rbp
+ 276:   e9 00 00 00 00          jmpq   27b <netlink_exit.cold>
+
+000000000000027b <netlink_exit.cold>:
+    }
+    printk("my_net_link: self module exited\n");
+ 27b:   48 c7 c7 00 00 00 00    mov    $0x0,%rdi
+ 282:   e8 00 00 00 00          callq  287 <netlink_exit.cold+0xc>
+}
+ 287:   5d                      pop    %rbp
+ 288:   e9 00 00 00 00          jmpq   28d <netlink_exit.cold+0x12>
+
+[三 9月  7 10:49:14 2022] BUG: unable to handle page fault for address: ffffffffc0bf20c4
+[三 9月  7 10:49:14 2022] #PF: supervisor write access in kernel mode
+[三 9月  7 10:49:14 2022] #PF: error_code(0x0003) - permissions violation
+[三 9月  7 10:49:14 2022] PGD 102415067 P4D 102415067 PUD 102417067 PMD 10df61067 PTE 8000000351b04161
+[三 9月  7 10:49:14 2022] Oops: 0003 [#12] SMP NOPTI
+[三 9月  7 10:49:14 2022] CPU: 6 PID: 238459 Comm: net Tainted: G      D W  OE     5.15.0-46-generic #49~20.04.1-Ubuntu
+[三 9月  7 10:49:14 2022] Hardware name: Dell Inc. Inspiron 3910/094KKF, BIOS 1.0.5 12/22/2021
+[三 9月  7 10:49:14 2022] RIP: 0010:sendnlmsg.part.0+0xba/0xf6 [netlink_d]
+[三 9月  7 10:49:14 2022] Code: 41 b8 00 04 00 00 31 c9 31 d2 31 f6 4c 89 e7 e8 12 6d d4 eb 4c 8d 40 10 49 63 cd 48 89 de 49 c7 44 24 34 00 00 00 00 4c 89 c7 <42> c6 04 3b 00 f3 a4 4c 89 c6 48 c7 c7 e8 20 bf c0 e8 c7 09 ed eb
+[三 9月  7 10:49:14 2022] RSP: 0018:ffffa771442a7a08 EFLAGS: 00010282
+[三 9月  7 10:49:14 2022] RAX: ffff9051102dd800 RBX: ffffffffc0bf20b3 RCX: 0000000000000012
+[三 9月  7 10:49:14 2022] RDX: 0000000000000000 RSI: ffffffffc0bf20b3 RDI: ffff9051102dd810
+[三 9月  7 10:49:14 2022] RBP: ffffa771442a7a30 R08: ffff9051102dd810 R09: ffff9051102ddc10
+[三 9月  7 10:49:14 2022] R10: 0000000000ffff0a R11: 0000000000000010 R12: ffff9051d3655a00
+[三 9月  7 10:49:14 2022] R13: 0000000000000012 R14: 0000000000000064 R15: 0000000000000011
+[三 9月  7 10:49:14 2022] FS:  00007f79ed975540(0000) GS:ffff90547f980000(0000) knlGS:0000000000000000
+
