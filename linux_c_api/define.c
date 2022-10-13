@@ -2,7 +2,7 @@
 
 int main()
 {
-#if (defined(GWN7062) || defined(GWN7052))
+#if ! defined(GWN7062)
     printf("yes\n");
 #endif
 }

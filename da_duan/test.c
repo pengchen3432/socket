@@ -4,7 +4,7 @@ int main()
 {
     int i;
     unsigned char *b;
-    unsigned int a = 1;
+    unsigned int a = 1113;
     printf("len = %ld\n", sizeof(unsigned int));
     b = (unsigned char *)&a;
     for (i = 0; i < 4; i++)
