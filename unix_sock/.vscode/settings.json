@@ -1,0 +1,13 @@
+{
+    "files.associations": {
+        "stdlib.h": "c",
+        "types.h": "c",
+        "socket": "c",
+        "fcntl.h": "c",
+        "array": "c",
+        "buffer": "c",
+        "string_view": "c",
+        "initializer_list": "c",
+        "utility": "c"
+    }
+}
