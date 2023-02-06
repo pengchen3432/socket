@@ -6,12 +6,15 @@
 #include <errno.h>
 #include <arpa/inet.h>
 #include <sys/select.h>
-int main()
+#include <syslog.h>
+#include <stdlib.h>
+int main(
+  int argc, 
+  char **argv
+)
 {
-    int a = 1;
-    int b = 0;
-    if ( (b = a) && b == 1 )
-    {
-        printf("success\n");
-    }
+   int i = 0;
+   for (i = 0; i < argc; i++) {
+   	printf("i = %d  %s\n", i, argv[i]);
+   }
 }

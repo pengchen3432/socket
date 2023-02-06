@@ -1,0 +1,30 @@
+    if ( str_start ) {
+        syslog(LOG_ERR, "chen start %s\n", str_start);
+    }
+    if ( str_amount ) {
+        syslog(LOG_ERR, "chen amount %s\n", str_amount);
+    }
+    if ( search_family ) {
+        syslog(LOG_ERR, "chen search_family %s\n", search_family);
+    }
+    if ( search_protocol ) {
+        syslog(LOG_ERR, "chen search_protocol %s\n", search_protocol);
+    }
+    if ( search_ip ) {
+        syslog(LOG_ERR, "chen search_ip %s\n", search_ip);
+    }
+    if ( search_port ) {
+        syslog(LOG_ERR, "chen search_port %s\n", search_port);
+    }
+    if ( search_src_ip ) {
+        syslog(LOG_ERR, "chen search_src_ip %s\n", search_src_ip);
+    }
+    if ( search_dst_ip ) {
+        syslog(LOG_ERR, "chen search_dst_ip %s\n", search_dst_ip);
+    }
+    if ( search_src_port ) {
+        syslog(LOG_ERR, "chen search_src_port %s\n", search_src_port);
+    }
+    if ( search_dst_port ) {
+        syslog(LOG_ERR, "chen search_dst_port %s\n", search_dst_port);
+    }

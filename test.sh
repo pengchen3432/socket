@@ -1,4 +1,4 @@
 #!/bin/sh
-email=pengchen@grandstream.cn
-name=${email%%@*};
-echo $name
+var="a b d"
+./a.out "$var"
+
